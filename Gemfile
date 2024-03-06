@@ -1,11 +1,13 @@
 source 'https://rubygems.org'
-gem 'rails', '4.2.1'
+gem 'rails', '6.1.7.6'
 
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '~> 5.0'
 gem 'jquery-rails'
 
+#gem 'faraday'
+#gem 'faraday-multipart'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 group :development, :test do
@@ -24,8 +26,8 @@ gem 'devise'
 gem 'pundit'
 gem "erb2haml", :group => :development
 gem 'soundcloud'
-gem 'instagram'
-gem "koala", "~> 2.0"
+#gem 'instagram'
+gem "koala", "~> 3.5"
 gem 'rqrcode_png'  
 gem 'omniauth-facebook'
 group :development do
@@ -36,7 +38,6 @@ group :development do
   gem 'libnotify'
   gem 'better_errors'
   gem 'binding_of_caller', platforms: :mri_21
-  gem 'quiet_assets'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rails_layout'

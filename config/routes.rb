@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
 
-  mount Spree::Core::Engine, :at => '/mall'
+  #mount Spree::Core::Engine, :at => '/mall'
   get 'lifestyles/index'
   get 'lifestyles/new'
   get 'lifestyles/create'
