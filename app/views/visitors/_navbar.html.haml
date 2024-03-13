@@ -77,7 +77,3 @@
                 %a{:href => "https://www.instagram.com/redcupvillage", :target => "_blank"}
                   %img.img-responsive{:alt => "Youtube", :src => "/images/youtube_circle.png"}
 / end header
-- flash.each do |key, value|
-  %div{:class => "alert alert-#{key} alert-dismissable"}
-    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} ×
-    = value

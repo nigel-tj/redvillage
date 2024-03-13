@@ -1,4 +1,4 @@
-class ChangePaintingsTo < ActiveRecord::Migration
+class ChangePaintingsTo < ActiveRecord::Migration[6.1]
   def change
   end
 end

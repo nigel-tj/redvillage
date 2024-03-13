@@ -1,4 +1,4 @@
-class RecreateLifestyles < ActiveRecord::Migration
+class RecreateLifestyles < ActiveRecord::Migration[6.1]
   def change
     create_table :lifestyles do |t|
       t.string :image

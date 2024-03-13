@@ -1,4 +1,4 @@
-class CreateMainBanner < ActiveRecord::Migration
+class CreateMainBanner < ActiveRecord::Migration[6.1]
   def change
     create_table :main_banners do |t|
       t.string :name

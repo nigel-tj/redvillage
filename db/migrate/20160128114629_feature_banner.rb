@@ -1,4 +1,4 @@
-class FeatureBanner < ActiveRecord::Migration
+class FeatureBanner < ActiveRecord::Migration[6.1]
   def change
   end
 end

@@ -1,4 +1,4 @@
-class CreateMusicBanners < ActiveRecord::Migration
+class CreateMusicBanners < ActiveRecord::Migration[6.1]
   def change
     create_table :music_banners do |t|
       t.string :name
