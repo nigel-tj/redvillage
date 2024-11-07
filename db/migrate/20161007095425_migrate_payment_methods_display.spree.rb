@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150627090949)
-class MigratePaymentMethodsDisplay < ActiveRecord::Migration
+class MigratePaymentMethodsDisplay < ActiveRecord::Migration[7.2]
   def change
     Spree::PaymentMethod.all.each do |method|
       if method.display_on.blank?

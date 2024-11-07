@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20130830001159)
-class MigrateOldShippingCalculators < ActiveRecord::Migration
+class MigrateOldShippingCalculators < ActiveRecord::Migration[7.2]
   def up
     Spree::ShippingMethod.all.each do |shipping_method|
       old_calculator = shipping_method.calculator

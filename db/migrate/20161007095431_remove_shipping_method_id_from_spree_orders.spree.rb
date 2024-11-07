@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20151220072838)
-class RemoveShippingMethodIdFromSpreeOrders < ActiveRecord::Migration
+class RemoveShippingMethodIdFromSpreeOrders < ActiveRecord::Migration[7.2]
   def up
     if column_exists?(:spree_orders, :shipping_method_id, :integer)
       remove_column :spree_orders, :shipping_method_id, :integer

@@ -1,4 +1,4 @@
-class AddImageEvents < ActiveRecord::Migration
+class AddImageEvents < ActiveRecord::Migration[7.2]
   def change
   end
 end

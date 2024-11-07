@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150118211500)
-class CreateSpreeStoreCreditCategories < ActiveRecord::Migration
+class CreateSpreeStoreCreditCategories < ActiveRecord::Migration[7.2]
   def change
     create_table :spree_store_credit_categories do |t|
       t.string :name

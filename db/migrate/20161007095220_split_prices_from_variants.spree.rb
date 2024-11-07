@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20121031162139)
-class SplitPricesFromVariants < ActiveRecord::Migration
+class SplitPricesFromVariants < ActiveRecord::Migration[7.2]
   def up
     create_table :spree_prices do |t|
       t.integer :variant_id, :null => false

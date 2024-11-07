@@ -1,51 +1,12 @@
 Rails.application.routes.draw do
-
-
-  mount Spree::Core::Engine, :at => '/mall'
-  get 'lifestyles/index'
-  get 'lifestyles/new'
-  get 'lifestyles/create'
-  get 'lifestyles/update'
-  get 'lifestyle/index'
-  get 'lifestyle/new'
-  get 'lifestyle/create'
-  get 'lifestyle/update'
-  get 'coming_soon/index'
-  get 'albums/new'
-  get 'albums/all_albums'
-  get 'albums/edit'
-  get 'albums/create'
-  get 'albums/update'
-  get 'albums/delete'
-  get 'stores/index'
-  get 'stores/new'
-  get 'stores/show'
-  get 'stores/create'
-  get 'stores/update'
-  get 'stores/activate'
-  get 'stores/deactivate'
-  get 'music/index'
-  get 'gallery/index'
-  get "/callback" => "facebook#callback"
-  get "/facebook_profile" => "facebook#facebook_profile"
-  get 'visitors/news'
-  get 'visitors/gallery'
-  get 'visitors/videos'
-  get 'visitors/social'
-  get 'visitors/events'
-  get 'visitors/contact'
-  get 'videos/test'
-  get 'visitors/stage'
-  get 'visitors/show_gallery'
-  
-
-  resources :feature_banners
+  # Devise routes for user authentication
   devise_for :admin_users
   devise_for :users
   devise_for :admins
+  
+  # Standard RESTful routes
   resources :lifestyles
   resources :albums
-  resources :users
   resources :stores
   resources :tracks
   resources :main_banners
@@ -55,54 +16,66 @@ Rails.application.routes.draw do
   resources :videos
   resources :artists
   resources :events
-  #resources :vip_tickets
-  #resources :standard_tickets
-  
-  
-  # get '/auth/:provider/callback', to: 'sessions#create'
-  # delete '/logout', to: 'sessions#destroy', as: :logout
 
-  match '/gallery' => 'visitors#gallery', :via => :get
-  match '/gallery/:id' => 'galleries#show_gallery', :via => :get
-  match '/music' => 'tracks#music', :via => :get
-  match '/news' => 'features#index', :via => :get
-  match '/social' => 'visitors#social', :via => :get
-  match '/videos' => 'videos#index', :via => :get
-  match '/contact_us' => 'visitors#contact', :via => :get
-  match '/artist' => 'artists#show', :via => :get
-  match '/store' => 'visitors#store', :via => :get
-  match '/new_artist_upload' => 'artists#new', :via => :get
-  match '/new_feature_upload' => 'features#new', :via => :get
-  match '/downloads' => 'artists#downloads', :via => :get
-  match '/new_music_upload' => 'tracks#new', :via => :get
-  match '/new_gallery_upload' => 'galleries#new', :via => :get
-  match '/admin_show' => 'galleries#admin_show', :via => :get
-  match '/new_video_upload' => 'videos#new', :via => :get
-  match '/all_videos' => 'videos#all_videos', :via => :get 
-  match '/new_store_upload' => 'stores#new', :via => :get
-  match '/new_event_upload' => 'events#new', :via => :get
-  match '/portfolio' => 'visitors#portfolio', :via => :get
-  match '/new_banner_upload' => 'main_banners#new', :via => :get
-  match '/admin_index' => 'features#admin_index', :via => :get
-  match '/artist_songs' => 'artists#artist', :via => :get
-  match '/banners_index' => 'main_banners#index', :via => :get
-  match '/users' => 'users#index', :via => :get
-  match '/stage' => 'visitors#stage', :via => :get
-  match '/coming_soon' => 'coming_soon#index', :via => :get
-  match '/team' => 'visitors#team', :via => :get
-  match '/new_lifestyle_upload' => 'lifestyles#new', :via => :get
-  match '/lifestyle_admin_index' => 'lifestyles#lifestyle_admin_index', :via => :get
-  match '/lifestyle' => 'lifestyles#index', :via => :get
-  match '/admin_album_index' => 'albums#admin_album_index', :via => :get
-  match '/admin_show_album' => 'albums#admin_show_album', :via => :get
-  match '/admin_all_music' => 'tracks#admin_all_music', :via => :get
-  match '/admin_artist_index' => 'artists#admin_artist_index', :via => :get
-  match '/new_album_upload' => 'albums#new', :via => :get
-  match '/lifestyle_admin_index' => 'lifestyles#lifestyle_admin_index', :via => :get
-  match '/admins' => 'galleries#new', :via => :get
-  match '/admin_all_events' => 'events#admin_all_events', :via => :get
-  match '/admin_show_album/:id' => 'albums#admin_show_album', :via => :get
-  match '/mall' => 'spree/home#index', :via => :get
-  #root to: 'coming_soon#index'
-  root :to => "visitors#index"
+  # Custom routes (non-RESTful)
+  get 'visitors/news'
+  get 'visitors/gallery'
+  get 'visitors/videos'
+  get 'visitors/social'
+  get 'visitors/events'
+  get 'visitors/contact'
+  get 'videos/test'
+  get 'visitors/stage'
+  get 'visitors/show_gallery'
+
+  # Facebook callback
+  get "/callback" => "facebook#callback"
+  get "/facebook_profile" => "facebook#facebook_profile"
+
+  # Custom named routes (e.g., for specific actions)
+  get '/gallery', to: 'visitors#gallery'
+  get '/gallery/:id', to: 'galleries#show_gallery', as: :show_gallery
+  get '/music', to: 'tracks#music'
+  get '/news', to: 'features#index'
+  get '/social', to: 'visitors#social'
+  get '/videos', to: 'videos#index'
+  get '/contact_us', to: 'visitors#contact'
+  get '/artist', to: 'artists#show'
+  get '/store', to: 'visitors#store'
+  get '/new_artist_upload', to: 'artists#new'
+  get '/new_feature_upload', to: 'features#new'
+  get '/downloads', to: 'artists#downloads'
+  get '/new_music_upload', to: 'tracks#new'
+  get '/new_gallery_upload', to: 'galleries#new'
+  get '/admin_show', to: 'galleries#admin_show'
+  get '/new_video_upload', to: 'videos#new'
+  get '/all_videos', to: 'videos#all_videos'
+  get '/new_store_upload', to: 'stores#new'
+  get '/new_event_upload', to: 'events#new'
+  get '/portfolio', to: 'visitors#portfolio'
+  get '/new_banner_upload', to: 'main_banners#new'
+  get '/admin_index', to: 'features#admin_index'
+  get '/artist_songs', to: 'artists#artist'
+  get '/banners_index', to: 'main_banners#index'
+  get '/users', to: 'users#index'
+  get '/stage', to: 'visitors#stage'
+  get '/coming_soon', to: 'coming_soon#index'
+  get '/team', to: 'visitors#team'
+  get '/new_lifestyle_upload', to: 'lifestyles#new'
+  get '/lifestyle_admin_index', to: 'lifestyles#lifestyle_admin_index'
+  get '/lifestyle', to: 'lifestyles#index'
+  get '/admin_album_index', to: 'albums#admin_album_index'
+  
+  # Renamed route for 'admin_show_album' to avoid conflict
+  get '/admin_show_album/:id', to: 'albums#admin_show_album', as: :admin_show_album
+  
+  get '/admin_all_music', to: 'tracks#admin_all_music'
+  get '/admin_artist_index', to: 'artists#admin_artist_index'
+  get '/new_album_upload', to: 'albums#new'
+  get '/admins', to: 'galleries#new'
+  get '/admin_all_events', to: 'events#admin_all_events'
+  get '/mall', to: 'spree/home#index'
+
+  # Root path
+  root 'visitors#index'
 end

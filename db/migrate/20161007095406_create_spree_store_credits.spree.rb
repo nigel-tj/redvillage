@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150118210639)
-class CreateSpreeStoreCredits < ActiveRecord::Migration
+class CreateSpreeStoreCredits < ActiveRecord::Migration[7.2]
   def change
     create_table :spree_store_credits do |t|
       t.references :user

@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20160207191757)
-class AddIdColumnToEarlierHabtmTables < ActiveRecord::Migration
+class AddIdColumnToEarlierHabtmTables < ActiveRecord::Migration[7.2]
   def up
     add_column :spree_option_type_prototypes, :id, :primary_key
     add_column :spree_option_value_variants, :id, :primary_key

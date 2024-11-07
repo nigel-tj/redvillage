@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150714154102)
-class SpreePaymentMethodStoreCredits < ActiveRecord::Migration
+class SpreePaymentMethodStoreCredits < ActiveRecord::Migration[7.2]
   def up
     # Reload to pick up new position column for acts_as_list
     Spree::PaymentMethod.reset_column_information

@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20130807024301)
-class UpgradeAdjustments < ActiveRecord::Migration
+class UpgradeAdjustments < ActiveRecord::Migration[7.2]
   def up
     # Temporarily make originator association available
     Spree::Adjustment.class_eval do

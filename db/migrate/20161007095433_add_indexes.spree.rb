@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20160219165458)
-class AddIndexes < ActiveRecord::Migration
+class AddIndexes < ActiveRecord::Migration[7.2]
   def change
     add_index :spree_assets, :position
     add_index :spree_option_types, :name

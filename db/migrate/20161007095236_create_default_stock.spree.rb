@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20130213191427)
-class CreateDefaultStock < ActiveRecord::Migration
+class CreateDefaultStock < ActiveRecord::Migration[7.2]
   def up
     unless column_exists? :spree_stock_locations, :default
       add_column :spree_stock_locations, :default, :boolean, null: false, default: false

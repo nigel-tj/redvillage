@@ -20,3 +20,5 @@
 /db/schema.rb 
 /spring/*
 /RackMultipart*
+.env
+

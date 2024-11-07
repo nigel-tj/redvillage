@@ -1,5 +1,5 @@
 # This migration comes from spree_auth (originally 20101214150824)
-class ConvertUserRememberField < ActiveRecord::Migration
+class ConvertUserRememberField < ActiveRecord::Migration[7.2]
   def up
     remove_column :spree_users, :remember_created_at
     add_column :spree_users, :remember_created_at, :datetime

@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150314013438)
-class AddMissingIndexes < ActiveRecord::Migration
+class AddMissingIndexes < ActiveRecord::Migration[7.2]
   def change
     add_index   :spree_promotion_rules_users,
                         [:user_id, :promotion_rule_id],

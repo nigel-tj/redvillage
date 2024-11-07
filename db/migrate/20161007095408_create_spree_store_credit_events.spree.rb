@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150118212051)
-class CreateSpreeStoreCreditEvents < ActiveRecord::Migration
+class CreateSpreeStoreCreditEvents < ActiveRecord::Migration[7.2]
   def change
     create_table :spree_store_credit_events do |t|
       t.integer  :store_credit_id,    null: false

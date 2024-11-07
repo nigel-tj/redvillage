@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20130228210442)
-class CreateShippingMethodZone < ActiveRecord::Migration
+class CreateShippingMethodZone < ActiveRecord::Migration[7.2]
   class ShippingMethodZone < ActiveRecord::Base
     self.table_name = 'shipping_methods_zones'
   end

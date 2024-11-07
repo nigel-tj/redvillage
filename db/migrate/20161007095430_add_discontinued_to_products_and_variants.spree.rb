@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150819154308)
-class AddDiscontinuedToProductsAndVariants < ActiveRecord::Migration
+class AddDiscontinuedToProductsAndVariants < ActiveRecord::Migration[7.2]
   def up
     add_column :spree_products, :discontinue_on, :datetime, after: :available_on
     add_column :spree_variants, :discontinue_on, :datetime, after: :deleted_at

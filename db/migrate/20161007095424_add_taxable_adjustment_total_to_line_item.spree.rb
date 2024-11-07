@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20150626181949)
-class AddTaxableAdjustmentTotalToLineItem < ActiveRecord::Migration
+class AddTaxableAdjustmentTotalToLineItem < ActiveRecord::Migration[7.2]
   def change
     add_column :spree_line_items, :taxable_adjustment_total, :decimal,
                precision: 10, scale: 2, default: 0.0, null: false
