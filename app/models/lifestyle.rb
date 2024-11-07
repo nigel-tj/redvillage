@@ -1,3 +1,3 @@
 class Lifestyle < ActiveRecord::Base
-  mount_uploader :image, ImageUploader
+  include ImageUploader::Attachment(:image)
 end

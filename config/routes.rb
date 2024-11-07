@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
   devise_for :admins
-  
+
   # Standard RESTful routes
   resources :lifestyles
   resources :albums
@@ -74,7 +74,9 @@ Rails.application.routes.draw do
   get '/new_album_upload', to: 'albums#new'
   get '/admins', to: 'galleries#new'
   get '/admin_all_events', to: 'events#admin_all_events'
-  get '/mall', to: 'spree/home#index'
+
+  # Spree engine (ensure Spree is properly installed)
+  #mount Spree::Core::Engine, at: '/mall'
 
   # Root path
   root 'visitors#index'

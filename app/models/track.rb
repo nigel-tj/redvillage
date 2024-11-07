@@ -1,6 +1,6 @@
 class Track < ActiveRecord::Base
   belongs_to :album
-  mount_uploader :image, ImageUploader
+  include ImageUploader::Attachment(:image)
   mount_uploader :track, FileUploader
   attr_accessor :image_cache
 end

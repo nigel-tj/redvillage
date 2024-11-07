@@ -10,11 +10,19 @@ gem 'simple_form'
 gem 'font-awesome-sass'
 gem 'kaminari'
 #gem 'carrierwave'
+gem 'shrine', '~> 3.0'
+gem 'image_processing', '~> 1.2'
 gem 'rmagick'
+gem 'haml-rails'
+gem 'slim-rails'
+gem 'coffee-script', '~> 2.4'
+
+
+
 
 # Development and Test gems
 group :development, :test do
-  gem 'sqlite3', '~> 1.4'
+  gem 'sqlite3'
   gem 'byebug'
   gem 'web-console', '>= 4.0.0'
   gem 'spring'
@@ -30,3 +38,5 @@ gem 'twitter'
 gem 'yt'
 gem 'dotenv-rails', groups: [:development, :test]
 gem "puma"
+gem 'rqrcode_png'
+

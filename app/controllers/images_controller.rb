@@ -50,7 +50,7 @@ class ImagesController < ApplicationController
 
   private
   def painting_params
-    params.require(:image).permit(:gallery_id, :name, :images, :remote_image_url)
+    params.require(:image).permit(:gallery_id, :name, :images, :remote_image_url,:file)
   end
 
 end

@@ -18,7 +18,7 @@ class VisitorsController < ApplicationController
     # @feed = @graph.get_connections("TheRedcupvillage", "posts",'type' => 'large')
     # @qr = RQRCode::QRCode.new("http://redvillage.herokuapp.com").to_img.resize(200, 200).to_data_url
     
-    
+     #render :index
     end
 
     def videos

@@ -1,3 +1,3 @@
 class MainBanner < ActiveRecord::Base
-  mount_uploader :image, ImageUploader
+  include ImageUploader::Attachment(:image) # This replaces `mount_uploader`
 end

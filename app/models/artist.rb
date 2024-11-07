@@ -1,5 +1,5 @@
 class Artist < ActiveRecord::Base
   has_many :tracks
-  mount_uploader :cover, ImageUploader
-  mount_uploader :profile_picture, ImageUploader
+  include ImageUploader::Attachment(:cover)           
+  include ImageUploader::Attachment(:profile_picture) 
 end
