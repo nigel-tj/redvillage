@@ -34,12 +34,20 @@ Rails.application.routes.draw do
 
   # Custom named routes (e.g., for specific actions)
   get '/gallery', to: 'visitors#gallery'
+  get '/gallery_new_look', to: 'visitors#gallery'
   get '/gallery/:id', to: 'galleries#show_gallery', as: :show_gallery
   get '/music', to: 'tracks#music'
   get '/news', to: 'features#index'
+  get '/about_us', to: 'visitors#about_us'
+  get '/event_new_look', to: 'visitors#event_new_look'
   get '/social', to: 'visitors#social'
   get '/videos', to: 'videos#index'
-  get '/contact_us', to: 'visitors#contact'
+  get '/top_dj', to: 'visitors#top_dj'
+  get '/schedule', to: 'visitors#schedule'
+  get '/blog', to: 'visitors#blog'
+  get '/blog_details', to: 'visitors#blog_details'
+  get '/faq', to: 'visitors#faq'
+  get '/contact_us', to: 'visitors#contact_us'
   get '/artist', to: 'artists#show'
   get '/store', to: 'visitors#store'
   get '/new_artist_upload', to: 'artists#new'
@@ -65,6 +73,8 @@ Rails.application.routes.draw do
   get '/lifestyle_admin_index', to: 'lifestyles#lifestyle_admin_index'
   get '/lifestyle', to: 'lifestyles#index'
   get '/admin_album_index', to: 'albums#admin_album_index'
+  get 'index_old', to: 'visitors#index_old', as: 'visitors_old'
+  
   
   # Renamed route for 'admin_show_album' to avoid conflict
   get '/admin_show_album/:id', to: 'albums#admin_show_album', as: :admin_show_album

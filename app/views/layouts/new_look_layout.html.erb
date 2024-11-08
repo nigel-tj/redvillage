@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Red Cup Village</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="new_look/assets/css/bootstrap.min.css">
+    <!-- fontawesome icon  -->
+    <link rel="stylesheet" href="new_look/assets/css/fontawesome.min.css">
+    <!-- flaticon css -->
+    <link rel="stylesheet" href="new_look/assets/fonts/flaticon.css">
+    <!-- animate.css -->
+    <link rel="stylesheet" href="new_look/assets/css/animate.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="new_look/assets/css/owl.carousel.min.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="new_look/assets/css/magnific-popup.css">
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="new_look/assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="new_look/assets/css/responsive.css">
+    <%= javascript_include_tag 'application' %>
+</head>
+
+    <body>
+
+        <!-- preloader begin -->
+        <div class="preloader">
+            <div class="loader">
+                <hr>
+                <hr>
+            </div>
+        </div>
+        <!-- preloader end -->
+
+        <!-- header begin -->
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 d-xl-flex d-lg-flex align-items-center">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-6 d-xl-block d-lg-block d-flex align-items-center">
+                                <div class="logo">
+                                    <a href="index-2.html"><img src="new_look/assets/img/logo.png" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="d-xl-none d-lg-none d-block col-6">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="mainmenu">
+  <nav class="navbar navbar-expand-lg">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(about_us_path) %>" href="<%= about_us_path %>">About <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(event_new_look_path) %>" href="<%= event_new_look_path %>">Event</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(gallery_new_look_path) %>" href="<%= gallery_new_look_path %>">Gallery</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(top_dj_path) %>" href="<%= top_dj_path %>">Top DJ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(schedule_path) %>" href="<%= schedule_path %>">Schedule</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(blog_path) %>" href="<%= blog_path %>">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(faq_path) %>" href="<%= faq_path %>">Faq</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= active_class(contact_us_path) %>" href="<%= contact_us_path %>">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- header end -->
+
+        <!-- page content-->
+        <%= yield %>
+        <!-- page content end -->
+        
+        <!-- footer begin -->
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-4 d-xl-flex d-lg-flex align-items-center">
+                        <div class="logo">
+                            <a href="index-2.html"><img src="new_look/assets/img/logo.png" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-lg-8">
+                        <div class="footer-menu">
+                            <nav class="navbar navbar-expand-lg">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="index-2.html">About <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="event.html">Event</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="gallery.html">Gallery</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="top_dj.html">Top DJ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="schedule.html">Schedule</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="blog.html">Blog</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="faq.html">Faq</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="contact_us.html">Contact</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer end -->
+     
+        <!-- jquery -->
+        <script src="new_look/assets/js/jquery.js"></script>
+        <!-- bootstrap -->
+        <script src="new_look/assets/js/bootstrap.min.js"></script>
+        <!-- owl carousel -->
+        <script src="new_look/assets/js/owl.carousel.js"></script>
+        <!-- magnific popup -->
+        <script src="new_look/assets/js/jquery.magnific-popup.js"></script>
+        <!-- way poin js-->
+        <script src="new_look/assets/js/waypoints.min.js"></script>
+        <!-- wow js-->
+        <script src="new_look/assets/js/wow.min.js"></script>
+        <!-- main -->
+        <script src="new_look/assets/js/main.js"></script>
+    </body>
+
+</html>

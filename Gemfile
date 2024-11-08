@@ -15,6 +15,7 @@ gem 'image_processing', '~> 1.2'
 gem 'rmagick'
 gem 'haml-rails'
 gem 'slim-rails'
+gem 'erb'
 gem 'coffee-script', '~> 2.4'
 
 
@@ -39,4 +40,6 @@ gem 'yt'
 gem 'dotenv-rails', groups: [:development, :test]
 gem "puma"
 gem 'rqrcode_png'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
 
