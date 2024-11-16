@@ -1,0 +1,42 @@
+<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.init.js" type="text/javascript"></script>
+
+<div id="services">
+  <div class="container">
+    <div class="row">
+      <div class="row services">
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="grid">
+              <% @gallery.images.each do |image| %>
+                <div class="grid-item grid-sizer col-sm-4 servicebox featured_club">
+                  <div class="servicebox-image">
+                    <a class="pretty-photo" rel="prettyPhoto[iframes]" href="/image/<%= image.id %>">
+                      <img class="img-responsive" src="<%= image.image_url(:thumb) %>" alt="<%= image.name %>" />
+                    </a>
+                  </div>
+                  <div class="servicebox-inner">
+                    <p><%= image.name %></p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    document.getElementById('#all_tab').classList.add("active");
+    $('.grid').masonry({
+      // options...
+      itemSelector: '.grid-item',
+      columnWidth: '.grid-sizer',
+      percentPosition: true
+    });
+  });
+</script>
