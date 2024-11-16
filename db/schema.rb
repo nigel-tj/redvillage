@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_07_212827) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_16_062849) do
   create_table "admin_users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -114,6 +114,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_07_212827) do
     t.datetime "updated_at", null: false
     t.string "category"
     t.string "image"
+    t.text "image_data"
   end
 
   create_table "gallery_banners", force: :cascade do |t|
@@ -133,6 +134,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_07_212827) do
     t.datetime "updated_at", null: false
     t.string "image"
     t.text "file_data"
+    t.text "image_data"
   end
 
   create_table "lifestyle_banners", force: :cascade do |t|

@@ -29,7 +29,7 @@ class GalleriesController < ApplicationController
     @gallery = Gallery.new(gallery_params)
     if @gallery.save
       flash[:notice] = "Successfully created gallery."
-      render :action => '/admin_show'
+      render :action => 'admin_show'
     else
       render :action => 'new'
     end
