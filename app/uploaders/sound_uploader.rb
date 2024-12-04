@@ -16,7 +16,11 @@ class SoundUploader < Shrine
   end
 
   process(:store) do |io, context|
-    # Optionally extract audio metadata or perform transformations here
+    audio = FFMPEG::Movie.new(io.path)
+    io.metadata.update(
+      duration: audio.duration,
+      bitrate: audio.bitrate
+    )
     io
   end
 
