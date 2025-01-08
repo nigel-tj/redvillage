@@ -1,0 +1,30 @@
+<!-- Event of the month -->
+<div class="container">
+  <div id="events">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 class="wow fadeInUp" data-wow-duration="1s">EVENTS OF THE MONTH</h1>
+      </div>
+      <ul class="event-inner bxslider one">
+        <% @events.each do |event| %>
+        <div class="col-sm-4">
+          <div class="event-box row text-center">
+            <div class="event-box-right">
+              <img class="img-responsive" alt="<%= event.name %>" src="<%= event.image_url(:thumbnail) %>" />
+
+            </div>
+            <div>
+              <p>
+                <%= link_to "Edit", edit_event_path(event), class: "btn btn-primary" %>
+              </p>
+            </div>
+            <div class="event-box-bottom clearfix">
+              <h2><%= event.name %></h2>
+            </div>
+          </div>
+        </div>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

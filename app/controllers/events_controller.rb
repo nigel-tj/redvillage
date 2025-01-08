@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_admin!, except: [:index]
-  layout "admin", only: [:new, :create, :update,  :admin_all_events, :admin_show_event]
+  layout "admin", only: [:new, :create, :update,  :admin_all_events, :admin_show_event, :edit]
   def index
     @events = Event.order('created_at DESC')  
   end

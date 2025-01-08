@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_16_062849) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_08_120423) do
   create_table "admin_users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -87,6 +87,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_16_062849) do
     t.string "venue"
     t.string "image"
     t.text "summary"
+    t.text "image_data"
   end
 
   create_table "feature_banners", force: :cascade do |t|
