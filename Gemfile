@@ -17,8 +17,7 @@ gem 'haml-rails'
 gem 'slim-rails'
 gem 'erb'
 gem 'coffee-script', '~> 2.4'
-
-
+# Gemfile
 
 
 # Development and Test gems

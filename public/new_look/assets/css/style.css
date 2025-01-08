@@ -353,7 +353,7 @@ ul {
     padding: 280px 0 237px; }
     .banner .banner-content h1 {
       font-family: amrFont;
-      font-size: 180px;
+      font-size: 100px;
       background-image: -webkit-gradient(linear, left top, right top, from(#f4627c), to(#b439a8));
       background-image: -webkit-linear-gradient(left, #f4627c, #b439a8);
       background-image: -o-linear-gradient(left, #f4627c, #b439a8);
@@ -365,7 +365,14 @@ ul {
       color: #fff;
       text-transform: uppercase;
       letter-spacing: 8px;
-      text-align: right; }
+      text-align: right; 
+    }
+    .banner .banner-content h5 {
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      text-align: center; }
+
   .banner .banner-bottom {
     position: relative;
     z-index: 2; }
@@ -373,7 +380,7 @@ ul {
       position: absolute;
       content: '';
       left: 0;
-      top: 20px;
+      top: 0;
       bottom: 0;
       width: 999999px;
       background: #03111e;

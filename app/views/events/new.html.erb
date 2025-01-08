@@ -1,0 +1,60 @@
+<div id="services">
+  <div class="container">
+    <div class="row">
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>New Event</h1>
+  <%= form_for @event, html: { class: "form-horizontal" } do |f| %>
+    <%= render 'shared/errors', object: @event %>
+    
+    <div class="form-group">
+      <%= f.label :name, class: "control-label col-sm-2" %>
+      <div class="col-sm-10">
+        <%= f.text_field :name, class: 'form-control', required: true %>
+        <span class="help-block">Event name.</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :image, class: "control-label col-sm-2" %>
+      <div class="col-sm-10">
+        <%= f.file_field :image, required: true %>
+        <span class="help-block">Event Poster.</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :summary, class: "control-label col-sm-2" %>
+      <div class="col-sm-10">
+        <%= f.text_area :summary, class: 'form-control', required: true %>
+        <span class="help-block">Event headlines.</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :date, class: "control-label col-sm-2" %>
+      <div class="col-sm-10">
+        <%= f.date_field :date, class: 'form-control', required: true %>
+        <span class="help-block">Event date.</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :start_time, class: "control-label col-sm-2" %>
+      <div class="col-sm-10">
+        <%= f.time_field :start_time, class: 'form-control', required: true %>
+        <span class="help-block">Event start time.</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
