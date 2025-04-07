@@ -12,16 +12,17 @@ class ImageUploader < Shrine
 
   Attacher.validate do
     validate_mime_type_inclusion %w[image/jpeg image/png image/gif]
+    validate_max_size 5 * 1024 * 1024 # 5MB
   end
 
   process(:store) do |io, context|
     versions = { original: io }
 
-    if io.is_a?(UploadedFile)
-      versions.merge! process_versions(io)
-    else
-      versions.merge! process_versions(io.download)
-      io.close! if io.respond_to?(:close!)
+    io_path = io.download.path if io.respond_to?(:download)
+    io_path ||= io.path if io.respond_to?(:path)
+
+    if io_path
+      versions.merge! process_versions(io_path)
     end
 
     versions
@@ -29,13 +30,16 @@ class ImageUploader < Shrine
 
   private
 
-  def process_versions(io)
-    magick = ImageProcessing::MiniMagick.source(io)
+  def process_versions(io_path)
+    magick = ImageProcessing::MiniMagick.source(io_path)
 
     {
       large:     magick.resize_to_limit!(800, 800),
       medium:    magick.resize_to_limit!(500, 500),
       thumbnail: magick.resize_to_limit!(300, 300)
     }
+  rescue => e
+    Rails.logger.error "Error processing image: #{e.message}"
+    { large: io_path, medium: io_path, thumbnail: io_path }
   end
 end

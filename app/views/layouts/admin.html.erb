@@ -9,6 +9,8 @@
     <link href="/css/admin-styles.css" rel="stylesheet" type="text/css" />
     <link href="/css/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
+    <%= csrf_meta_tags %>
+    <%= javascript_include_tag 'application' %>
   </head>
   <body id="wrapper" data-spy="scroll" data-target="#bs-example-navbar-collapse-1">
     <div id="loader">
@@ -17,7 +19,21 @@
     <header>
       <%= render 'admins/navbar' %>
     </header>
+    
+    <% flash.each do |type, message| %>
+      <div class="alert <%= type == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show m-3" role="alert">
+        <%= message %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <% end %>
+    
     <%= yield %>
     <%= render 'admins/footer_button' %>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   </body>
 </html> 

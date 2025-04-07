@@ -11,6 +11,7 @@ gem 'font-awesome-sass'
 gem 'kaminari'
 gem 'streamio-ffmpeg'
 gem 'shrine', '~> 3.0'
+gem 'fastimage'  # Required for Shrine image processing
 gem 'image_processing', '~> 1.2'
 gem 'rmagick'
 gem 'haml-rails'

@@ -83,7 +83,7 @@ Rails.application.routes.draw do
   get '/admin_artist_index', to: 'artists#admin_artist_index'
   get '/new_album_upload', to: 'albums#new'
   get '/admins', to: 'galleries#new'
-  get '/admin_all_events', to: 'events#admin_all_events'
+  get '/admin_all_events', to: 'events#admin_all_events', as: :admin_all_events
 
   # Spree engine (ensure Spree is properly installed)
   #mount Spree::Core::Engine, at: '/mall'

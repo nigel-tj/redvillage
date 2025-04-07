@@ -41,15 +41,28 @@ class EventsController < ApplicationController
   
   def update
     @event = Event.find(params[:id])
-    if @artist.update(event_params)
+    if @event.update(event_params)
       flash[:notice] = "Event has been updated."
-      #   redirect_to admin_panel_index_path
+      redirect_to admin_all_events_path
+    else
+      flash[:alert] = "Event could not be updated."
+      render "edit"
     end  
+  end
+  
+  def destroy
+    @event = Event.find(params[:id])
+    if @event.destroy
+      flash[:notice] = "Event has been deleted."
+    else
+      flash[:alert] = "Event could not be deleted."
+    end
+    redirect_to admin_all_events_path
   end
 
   private
   def event_params
-    params.require(:event).permit(:name , :image, :summary, :date, :start_time)  
+    params.require(:event).permit(:name, :image, :summary, :date, :start_time, :venue)  
   end
 
 end

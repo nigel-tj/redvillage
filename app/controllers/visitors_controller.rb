@@ -7,6 +7,7 @@ class VisitorsController < ApplicationController
     @banners = MainBanner.where(:page => "home")
     @trends  = Feature.all
     @videos = Video.order('created_at DESC')
+    @events = Event.order('date ASC').limit(4)
     # twiiter
         #@tweets = $twitter.search("UpperEchelon12June ", result_type: "recent").take(20)
     
