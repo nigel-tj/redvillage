@@ -21,7 +21,16 @@
                                                 <div class="carousel-inner">
                                                     <% @banners.each_with_index do |banner, index| %>
                                                         <div class="carousel-item <%= 'active' if index == 0 %>">
-                                                            <img src="<%= banner.image_url %>" alt="<%= banner.name %>">
+                                                            <% if banner.image %>
+                                                                <% img_url = shrine_image_url(banner, :image, :medium) || shrine_image_url(banner, :image) %>
+                                                                <% if img_url %>
+                                                                    <img src="<%= img_url %>" alt="<%= banner.name %>">
+                                                                <% else %>
+                                                                    <img src="/new_look/assets/img/banner-bottom-img.jpg" alt="<%= banner.name %>">
+                                                                <% end %>
+                                                            <% else %>
+                                                                <img src="/new_look/assets/img/banner-bottom-img.jpg" alt="<%= banner.name %>">
+                                                            <% end %>
                                                             <div class="carousel-caption">
                                                                 <h5><%= banner.title %></h5>
                                                             </div>
@@ -38,7 +47,7 @@
                                                 </a>
                                             </div>
                                         <% else %>
-                                            <img src="new_look/assets/img/banner-bottom-img.jpg" alt="">
+                                            <img src="/new_look/assets/img/banner-bottom-img.jpg" alt="Default Banner">
                                         <% end %>
                                     </div>
                                 </div>

@@ -1,3 +1,3 @@
 class MainBanner < ActiveRecord::Base
-  include ImageUploader::Attachment(:image) # This replaces `mount_uploader`
+  include ImageUploader::Attachment.new(:image) # Uses the new Shrine syntax
 end

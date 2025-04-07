@@ -20,17 +20,21 @@
         .gallery-photo-grid
           .gallery-photos
             .gallery-photos-thumb
-              - for banner  in @banners
+              - for banner in @banners
                 .col-md-4{:style => "height:300px"}
                   %h1
                     #{banner.name}
                   .col-md-12
                     %a{:href => "#"}
-                      = image_tag banner.image_url(:thumb) if banner.image?
+                      - if banner.image
+                        - img_url = shrine_image_url(banner, :image, :thumbnail) || shrine_image_url(banner, :image)
+                        - if img_url
+                          %img.img-responsive{:src => img_url, :alt => banner.name}
                   .col-md-12
                     %p
                       #{banner.title}
                     %p
-                      = link_to "edit", edit_main_banner_path(banner) | 
+                      = link_to "edit", edit_main_banner_path(banner) 
+                      |
                       = button_to 'delete', banner, confirm: 'Are you sure?', method: :delete
 
