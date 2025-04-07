@@ -1,0 +1,67 @@
+<div id="services">
+  <div class="container">
+    <div class="row">
+    </div>
+  </div>
+</div>
+<!-- start gallery -->
+<div id="gallery" class="text-center">
+  <div class="container">
+    <div class="row text-center">
+      <div class="tabs tabs-style-linebox wow fadeInUp" data-wow-duration="2s">
+        <nav>
+          <ul class="filters">
+            <li class="hvr-sweep-to-top active filter" data-filter="all">
+              <span>All</span>
+            </li>
+            <li class="hvr-sweep-to-top filter" data-filter=".active">
+              <span>Currently Enabled</span>
+            </li>
+            <li class="hvr-sweep-to-top filter" data-filter=".disabled">
+              <span>Disabled</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row gallery text-center">
+      <div class="col-md-12 noPadding">
+        <div class="gallery-photo-grid">
+          <div class="gallery-photos">
+            <div class="gallery-photos-thumb">
+              <% @banners.each do |banner| %>
+                <div class="col-md-4" style="height:300px">
+                  <h1>
+                    <%= banner.name %>
+                  </h1>
+                  <div class="col-md-12">
+                    <a href="#">
+                      <% if banner.image %>
+                        <% img_url = shrine_image_url(banner, :image, :thumbnail) || shrine_image_url(banner, :image) %>
+                        <% if img_url %>
+                          <img class="img-responsive" src="<%= img_url %>" alt="<%= banner.name %>">
+                        <% end %>
+                      <% end %>
+                    </a>
+                  </div>
+                  <div class="col-md-12">
+                    <p>
+                      <%= banner.title %>
+                    </p>
+                    <p>
+                      <%= link_to "edit", edit_main_banner_path(banner) %>
+                      |
+                      <%= button_to 'delete', banner, data: { confirm: 'Are you sure?' }, method: :delete %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
