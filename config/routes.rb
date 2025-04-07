@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   get '/about_us', to: 'visitors#about_us'
   get '/event_new_look', to: 'visitors#event_new_look'
   get '/event_new_look/:id', to: 'visitors#event_new_look', as: 'event_new_look_with_id'
-  get '/featured_events', to: 'visitors#event_new_look', as: 'featured_events'
+  get '/featured_events', to: 'visitors#featured_events', as: 'featured_events'
   get '/social', to: 'visitors#social'
   get '/videos', to: 'videos#index'
   get '/top_dj', to: 'visitors#top_dj'
