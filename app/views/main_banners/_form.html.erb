@@ -1,0 +1,129 @@
+<div class="form-group">
+  <%= form_for @banner do |f| %>
+    <% if @banner.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@banner.errors.count, "error") %> prohibited this banner from being saved:</h2>
+        <ul>
+          <% @banner.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :page %>
+      <%= f.select :page, 
+          options_for_select([
+            ['Home', 'home'],
+            ['Events', 'events'],
+            ['Artists', 'artists'],
+            ['Gallery', 'gallery']
+          ], @banner.page),
+          {}, 
+          class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :image %>
+      <%= f.file_field :image, class: 'form-control' %>
+      <small class="form-text text-muted">Banner image to be displayed.</small>
+    </div>
+
+    <div class="form-group mt-4">
+      <label class="d-block mb-2">Ticket & Promo Options</label>
+      <div class="custom-control custom-switch">
+        <%= f.check_box :ticket_promo, class: 'custom-control-input', id: 'ticketPromoToggle' %>
+        <%= f.label :ticket_promo, 'Enable Ticket & Promo Section', class: 'custom-control-label', for: 'ticketPromoToggle' %>
+      </div>
+      <small class="form-text text-muted">When enabled, this banner will show the ticket booking and promo video section.</small>
+    </div>
+
+    <div class="form-group mt-4">
+      <%= f.submit 'Save Banner', class: 'btn btn-primary' %>
+      <%= link_to 'Back', main_banners_path, class: 'btn btn-secondary ml-2' %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+.custom-switch {
+  padding-left: 3.25rem;
+  padding-bottom: 1rem;
+}
+
+.custom-control-input {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  width: 2.5rem;
+  height: 1.5rem;
+  opacity: 0;
+}
+
+.custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+  vertical-align: top;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-control-label::before {
+  position: absolute;
+  top: 0.125rem;
+  left: -3.25rem;
+  display: block;
+  width: 2.5rem;
+  height: 1.5rem;
+  content: "";
+  background-color: #e9ecef;
+  border: #adb5bd solid 1px;
+  border-radius: 1.5rem;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-control-label::after {
+  position: absolute;
+  top: calc(0.125rem + 2px);
+  left: calc(-3.25rem + 2px);
+  display: block;
+  width: calc(1.5rem - 4px);
+  height: calc(1.5rem - 4px);
+  content: "";
+  background-color: #fff;
+  border-radius: 1.5rem;
+  transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #ff006c;
+  background-color: #ff006c;
+}
+
+.custom-control-input:checked ~ .custom-control-label::after {
+  background-color: #fff;
+  transform: translateX(1rem);
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 108, 0.25);
+}
+
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  color: #fff;
+  background-color: #ffe6f0;
+  border-color: #ffe6f0;
+}
+</style> 

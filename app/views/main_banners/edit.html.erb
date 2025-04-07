@@ -1,47 +1,107 @@
-<div class="container">
-  <h1>Edit Banner</h1>
+<div class="container mt-4">
+  <h1 class="mb-4">Edit Banner</h1>
   <%= form_for @banner, html: { class: "form-horizontal", multipart: true } do |f| %>
     <%= render 'shared/errors', object: @banner %>
-    <div class="form-group">
+    
+    <div class="form-group mb-4">
       <%= f.label :image, class: "control-label col-sm-2" %>
       <div class="col-md-10">
         <% if @banner.image %>
           <% img_url = shrine_image_url(@banner, :image, :thumbnail) || shrine_image_url(@banner, :image) %>
           <% if img_url %>
-            <img class="img-responsive" src="<%= img_url %>" alt="<%= @banner.name %>">
+            <div class="mb-3">
+              <img class="img-responsive" src="<%= img_url %>" alt="<%= @banner.name %>">
+            </div>
           <% end %>
         <% end %>
         <div class="col-sm-10">
           <%= f.hidden_field :image, value: @banner.image_data %>
-          <%= f.file_field :image %>
-          <span class="help-block">Banner.</span>
+          <div class="mb-2">
+            <%= f.file_field :image, class: 'form-control' %>
+          </div>
+          <span class="help-block text-muted">Upload a new banner image if you want to replace the current one.</span>
         </div>
       </div>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mb-4">
       <%= f.label :name, class: "control-label col-sm-2" %>
       <div class="col-sm-10">
         <%= f.text_field :name, class: 'form-control', required: true %>
-        <span class="help-block">Banner name.</span>
+        <span class="help-block text-muted">Banner name.</span>
       </div>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mb-4">
       <%= f.label :title, class: "control-label col-sm-2" %>
       <div class="col-sm-10">
         <%= f.text_field :title, class: 'form-control', required: true %>
-        <span class="help-block">Text to show on banner.</span>
+        <span class="help-block text-muted">Text to show on banner.</span>
       </div>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mb-4">
       <%= f.label :page, class: "control-label col-sm-2" %>
       <div class="col-sm-10">
-        <%= f.select "page", [["Select page to display banner","none"],["Home","home"], ["Videos","videos"],["Music","music"],["Events","events"],["Artists","artists"]] %>
+        <%= f.select "page", 
+            [["Select page to display banner","none"],
+             ["Home","home"], 
+             ["Videos","videos"],
+             ["Music","music"],
+             ["Events","events"],
+             ["Artists","artists"]], 
+            {}, 
+            class: 'form-control' %>
+        <span class="help-block text-muted">Select the page where this banner should appear.</span>
       </div>
     </div>
+
+    <div class="form-group mb-4">
+      <%= f.label :ticket_promo, "Ticket & Promo Section", class: "control-label col-sm-2" %>
+      <div class="col-sm-10">
+        <div class="checkbox">
+          <label class="d-flex align-items-center">
+            <%= f.check_box :ticket_promo, class: 'me-2' %> 
+            <span>Enable ticket booking and promo video section</span>
+          </label>
+        </div>
+        <span class="help-block text-muted">When enabled, this banner will show the ticket booking and promo video section.</span>
+      </div>
+    </div>
+
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'btn btn-primary' %>
+        <%= f.submit 'Update Banner', class: 'btn btn-primary' %>
+        <%= link_to 'Back to Banners', main_banners_path, class: 'btn btn-secondary ms-2' %>
       </div>
     </div>
   <% end %>
-</div> 
+</div>
+
+<style>
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.help-block {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-control {
+  height: auto;
+  padding: 0.5rem 0.75rem;
+}
+
+.checkbox label {
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.img-responsive {
+  max-width: 300px;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+</style> 

@@ -36,7 +36,7 @@ class MainBannersController < ApplicationController
 
   def update
     @banner = MainBanner.find(params[:id])
-    if @banner.update_attributes(main_banner_params)
+    if @banner.update(main_banner_params)
       flash[:notice] = "Successfully updated banner."
       redirect_to '/banners_index'
     else
@@ -50,7 +50,7 @@ class MainBannersController < ApplicationController
 
   private
   def main_banner_params
-    params.require(:main_banner).permit(:name,:title,:image, :page)
+    params.require(:main_banner).permit(:name,:title,:image, :page, :ticket_promo)
   end
 
 end
