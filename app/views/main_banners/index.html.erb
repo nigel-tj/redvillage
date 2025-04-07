@@ -1,67 +1,210 @@
-<div id="services">
+<!-- Content Section -->
+<div class="content-wrapper">
   <div class="container">
-    <div class="row">
-    </div>
-  </div>
-</div>
-<!-- start gallery -->
-<div id="gallery" class="text-center">
-  <div class="container">
-    <div class="row text-center">
-      <div class="tabs tabs-style-linebox wow fadeInUp" data-wow-duration="2s">
-        <nav>
-          <ul class="filters">
-            <li class="hvr-sweep-to-top active filter" data-filter="all">
-              <span>All</span>
-            </li>
-            <li class="hvr-sweep-to-top filter" data-filter=".active">
-              <span>Currently Enabled</span>
-            </li>
-            <li class="hvr-sweep-to-top filter" data-filter=".disabled">
-              <span>Disabled</span>
-            </li>
-          </ul>
-        </nav>
+    <div class="row mb-4">
+      <div class="col-12 d-flex justify-content-between align-items-center">
+        <h2 class="admin-title mb-0">Banner Management</h2>
+        <%= link_to "Add New Banner", new_main_banner_path, class: "btn btn-primary" %>
       </div>
     </div>
-  </div>
-  <div class="container-fluid">
-    <div class="row gallery text-center">
-      <div class="col-md-12 noPadding">
-        <div class="gallery-photo-grid">
-          <div class="gallery-photos">
-            <div class="gallery-photos-thumb">
-              <% @banners.each do |banner| %>
-                <div class="col-md-4" style="height:300px">
-                  <h1>
-                    <%= banner.name %>
-                  </h1>
-                  <div class="col-md-12">
-                    <a href="#">
-                      <% if banner.image %>
-                        <% img_url = shrine_image_url(banner, :image, :thumbnail) || shrine_image_url(banner, :image) %>
-                        <% if img_url %>
-                          <img class="img-responsive" src="<%= img_url %>" alt="<%= banner.name %>">
-                        <% end %>
-                      <% end %>
-                    </a>
-                  </div>
-                  <div class="col-md-12">
-                    <p>
-                      <%= banner.title %>
-                    </p>
-                    <p>
-                      <%= link_to "edit", edit_main_banner_path(banner) %>
-                      |
-                      <%= button_to 'delete', banner, data: { confirm: 'Are you sure?' }, method: :delete %>
-                    </p>
-                  </div>
-                </div>
-              <% end %>
+
+    <!-- Filter Section -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="filter-wrapper">
+          <%= form_tag main_banners_path, method: :get, class: 'filter-form' do %>
+            <div class="filter-group">
+              <%= label_tag :page, "Filter by Page:" %>
+              <%= select_tag :page, 
+                  options_for_select([
+                    ['All Pages', ''],
+                    ['Home', 'home'],
+                    ['Events', 'events'],
+                    ['Artists', 'artists'],
+                    ['Gallery', 'gallery']
+                  ], params[:page]),
+                  class: 'form-control',
+                  onchange: 'this.form.submit();' %>
             </div>
-          </div>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
-</div> 
+
+  <div class="container">
+    <div class="row">
+      <% @banners.each do |banner| %>
+        <div class="col-md-4 mb-4">
+          <div class="banner-card">
+            <div class="banner-header">
+              <h4><%= banner.name %></h4>
+              <span class="page-badge"><%= banner.page&.titleize || 'No Page' %></span>
+            </div>
+            <div class="banner-image">
+              <% if banner.image_data? %>
+                <% if banner.image[:thumbnail] %>
+                  <%= image_tag banner.image[:thumbnail].url, class: "img-fluid", alt: banner.name %>
+                <% else %>
+                  <%= image_tag banner.image[:original].url, class: "img-fluid", alt: banner.name %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="banner-details">
+              <p class="banner-title"><%= banner.title %></p>
+              <div class="banner-actions">
+                <%= link_to "Edit", edit_main_banner_path(banner), style: "color: #0d6efd; text-decoration: none;" %>
+                <%= button_to 'Delete', banner, method: :delete, 
+                    data: { confirm: 'Are you sure?' },
+                    style: "background: none; border: 1px solid #ccc; padding: 1px 6px; border-radius: 2px;" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Footer -->
+<footer class="admin-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>&copy; <%= Time.current.year %> RedVillage Admin Panel</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<% content_for :styles do %>
+  <style>
+    .content-wrapper {
+      padding: 20px 0;
+      min-height: calc(100vh - 120px);
+      background-color: #f8f9fa;
+    }
+    .admin-title {
+      color: #333;
+      font-size: 24px;
+    }
+    .filter-wrapper {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .filter-form {
+      display: flex;
+      align-items: center;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .filter-group label {
+      margin: 0;
+      font-weight: 500;
+      color: #333;
+    }
+    .filter-group select {
+      min-width: 200px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 8px 12px;
+    }
+    .banner-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 15px;
+      height: 100%;
+      transition: transform 0.2s ease;
+    }
+    .banner-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .banner-header {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .banner-header h4 {
+      margin: 0;
+      color: #333;
+      font-size: 18px;
+    }
+    .page-badge {
+      background: #e9ecef;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #666;
+    }
+    .banner-image {
+      margin-bottom: 15px;
+      text-align: center;
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .banner-image img {
+      max-height: 200px;
+      width: auto;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    .banner-details {
+      padding: 10px 0;
+    }
+    .banner-title {
+      margin-bottom: 15px;
+      color: #666;
+      font-size: 16px;
+    }
+    .banner-actions {
+      margin-top: 5px;
+    }
+    .banner-actions form {
+      display: inline;
+    }
+    .admin-footer {
+      background: #fff;
+      padding: 20px 0;
+      border-top: 1px solid #dee2e6;
+      margin-top: 40px;
+    }
+    .mb-4 {
+      margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+    .btn-info {
+      background-color: #17a2b8;
+      border-color: #17a2b8;
+    }
+    .btn-info:hover {
+      background-color: #138496;
+      border-color: #117a8b;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+  </style>
+<% end %> 

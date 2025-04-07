@@ -6,6 +6,8 @@ Shrine.storages = {
   store: Shrine::Storage::FileSystem.new("public", prefix: "uploads/store"), # permanent
 }
 
-Shrine.plugin :activerecord    # for Active Record integration
+Shrine.plugin :activerecord           # for Active Record integration
 Shrine.plugin :cached_attachment_data # retain cached file across form redisplays
 Shrine.plugin :restore_cached_data    # refresh metadata for cached files
+Shrine.plugin :determine_mime_type    # determine MIME type from file content
+Shrine.plugin :store_dimensions       # store image dimensions

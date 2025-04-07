@@ -2,7 +2,11 @@ class MainBannersController < ApplicationController
   layout "admin", only: [:new, :create, :update, :edit, :index]
 
   def index
-    @banners = MainBanner.all
+    @banners = if params[:page].present?
+      MainBanner.where(page: params[:page])
+    else
+      MainBanner.all
+    end
   end
   
   def new

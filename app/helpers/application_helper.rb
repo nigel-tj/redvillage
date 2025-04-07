@@ -8,11 +8,9 @@ module ApplicationHelper
     return nil unless record && record.send(field)
     
     if version && record.send(field)[version]
-      "/uploads/store/#{record.send(field)[version]['id']}"
-    elsif record.send(field)['id']
-      "/uploads/store/#{record.send(field)['id']}" 
+      record.send(field)[version].url
     else
-      nil
+      record.send(field).url
     end
   end
 end
