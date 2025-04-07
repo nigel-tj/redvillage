@@ -16,7 +16,30 @@
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-6 d-xl-block d-lg-block d-md-none">
                                     <div class="part-img">
-                                        <img src="new_look/assets/img/banner-bottom-img.jpg" alt="">
+                                        <% if @banners.any? %>
+                                            <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <% @banners.each_with_index do |banner, index| %>
+                                                        <div class="carousel-item <%= 'active' if index == 0 %>">
+                                                            <img src="<%= banner.image_url %>" alt="<%= banner.name %>">
+                                                            <div class="carousel-caption">
+                                                                <h5><%= banner.title %></h5>
+                                                            </div>
+                                                        </div>
+                                                    <% end %>
+                                                </div>
+                                                <a class="carousel-control-prev" href="#bannerCarousel" role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a class="carousel-control-next" href="#bannerCarousel" role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </div>
+                                        <% else %>
+                                            <img src="new_look/assets/img/banner-bottom-img.jpg" alt="">
+                                        <% end %>
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-6 d-xl-flex d-lg-flex d-md-block align-items-center">
