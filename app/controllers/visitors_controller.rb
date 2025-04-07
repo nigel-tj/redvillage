@@ -2,7 +2,7 @@ require 'rqrcode_png'
 class VisitorsController < ApplicationController
   #before_action :authenticate_user! #, except: [:index,:show, :vidoes, :social, :news, :portfolio,:gallery]
   layout "team_layout", only: [:team]
-  layout "new_look_layout", only: [:index, :about_us, :event_new_look, :gallery, :top_dj, :schedule, :blog, :blog_details, :faq, :contact_us]
+  layout "new_look_layout", only: [:index, :about_us, :event_new_look, :events_list_new_look, :gallery, :top_dj, :schedule, :blog, :blog_details, :faq, :contact_us]
   def index
     @banners = MainBanner.where(:page => "home")
     @trends  = Feature.all
@@ -42,6 +42,20 @@ class VisitorsController < ApplicationController
     end
 
     def event_new_look
+      if params[:id]
+        @event = Event.find(params[:id])
+      else
+        # Show the first featured event if available, otherwise show the first upcoming event
+        @event = Event.where(featured: true).order('date ASC').first || Event.order('date ASC').first
+      end
+      # Load other events for the "More Upcoming Events" section
+      # Include at least one featured event if available
+      @featured_events = Event.where(featured: true).where.not(id: @event&.id).order('date ASC').limit(3)
+      @other_events = Event.where.not(id: @event&.id)
+                          .where.not(id: @featured_events.pluck(:id))
+                          .order('date ASC')
+                          .limit(3 - @featured_events.size)
+      @other_events = @featured_events + @other_events
     end
 
     def about_us
@@ -78,6 +92,15 @@ class VisitorsController < ApplicationController
     
     def gallery
       @galleries = Gallery.all
+    end
+
+    def events_list_new_look
+      @events = Event.order('date ASC')
+    end
+
+    def featured_events
+      @events = Event.where(featured: true).order('date ASC')
+      render :events_list_new_look
     end
 
 end

@@ -1,0 +1,199 @@
+    <!-- breadcrump begin -->
+    <div class="breadcrump">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="breadcrump-content">
+                        <span class="page-name"><%= link_to 'Home', root_path, style: "color: inherit; text-decoration: none;" %></span>
+                        <span class="icon"><i class="fas fa-chevron-right"></i></span>
+                        <span class="page-name">Events</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrump end -->
+
+    <!-- events grid begin -->
+    <div class="events-grid-section" style="background-color: #000B14; color: #fff; padding: 100px 0;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8">
+                    <div class="section-title text-center">
+                        <h2 style="color: #ff1493; font-size: 40px; margin-bottom: 50px;">Upcoming Events</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <% if @events.any? %>
+                    <% @events.each do |event| %>
+                        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+                            <div class="event-card" style="background-color: #1A1A2E; border-radius: 10px; overflow: hidden; height: 100%; transition: transform 0.3s; display: flex; flex-direction: column;">
+                                <div style="display: flex; flex-direction: row;">
+                                    <!-- Date Box -->
+                                    <% if event.date %>
+                                        <div style="background-color: #ff1493; color: #fff; text-align: center; width: 70px; display: flex; flex-direction: column; justify-content: center;">
+                                            <div style="font-size: 28px; font-weight: 700; line-height: 1;"><%= event.date.strftime('%d') %></div>
+                                            <div style="font-size: 16px; text-transform: uppercase;"><%= event.date.strftime('%^b') %></div>
+                                        </div>
+                                    <% end %>
+                                    
+                                    <!-- Event Image -->
+                                    <div class="part-img" style="position: relative; flex-grow: 1;">
+                                        <% if event.image %>
+                                            <% img_url = shrine_image_url(event, :image, :medium) || shrine_image_url(event, :image) %>
+                                            <% if img_url %>
+                                                <img src="<%= img_url %>" alt="<%= event.name %>" style="width: 100%; height: 220px; object-fit: cover;">
+                                            <% else %>
+                                                <img src="/new_look/assets/img/event-grid-1.jpg" alt="Event" style="width: 100%; height: 220px; object-fit: cover;">
+                                            <% end %>
+                                        <% else %>
+                                            <img src="/new_look/assets/img/event-grid-1.jpg" alt="Event" style="width: 100%; height: 220px; object-fit: cover;">
+                                        <% end %>
+                                        <% if event.featured? %>
+                                            <div style="position: absolute; top: 10px; right: 10px; background-color: #ff1493; color: white; padding: 5px 8px; border-radius: 3px; font-size: 12px; font-weight: bold; z-index: 10;">
+                                                <i class="fas fa-star" style="color: gold; margin-right: 3px;"></i> Featured
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                </div>
+                                
+                                <div class="part-text" style="padding: 25px; color: #fff; flex-grow: 1; display: flex; flex-direction: column;">
+                                    <h3 style="font-size: 22px; margin-bottom: 15px; color: #fff;"><%= event.name %></h3>
+                                    <p style="color: #ccc; margin-bottom: 20px;"><%= truncate(event.summary, length: 100) if event.summary %></p>
+                                    <div class="meta-info" style="margin-bottom: 20px;">
+                                        <span class="time" style="display: block; margin-bottom: 5px; color: #aaa;">
+                                            <i class="far fa-clock" style="color: #ff1493; margin-right: 10px;"></i> 
+                                            <%= event.formatted_start_time %>
+                                        </span>
+                                        <span class="location" style="display: block; margin-bottom: 5px; color: #aaa;">
+                                            <i class="fas fa-map-marker-alt" style="color: #ff1493; margin-right: 10px;"></i> 
+                                            <%= event.venue %>
+                                        </span>
+                                    </div>
+                                    <div class="part-button" style="margin-top: auto;">
+                                        <%= link_to "View Details", event_new_look_with_id_path(event.id), style: "display: inline-block; background: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; width: 100%; text-align: center;" %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                <% else %>
+                    <div class="col-12 text-center">
+                        <p style="color: #ccc; font-size: 18px;">No events scheduled at this time. Please check back later.</p>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- events grid end -->
+
+    <style>
+        .events-grid-section {
+            padding: 100px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .section-title {
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            color: #ff1493;
+            font-size: 36px;
+            font-weight: 700;
+        }
+        
+        .single-event-grid {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .single-event-grid:hover {
+            transform: translateY(-10px);
+        }
+        
+        .part-img {
+            position: relative;
+        }
+        
+        .part-img img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .date-holder {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: #ff1493;
+            color: #fff;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        
+        .date-holder .date {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .date-holder .month {
+            display: block;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        
+        .part-text {
+            padding: 25px;
+        }
+        
+        .part-text h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        
+        .part-text p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .meta-info {
+            margin-bottom: 20px;
+        }
+        
+        .meta-info span {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .meta-info span i {
+            color: #ff1493;
+            margin-right: 10px;
+        }
+        
+        .part-button a {
+            display: inline-block;
+            background: #ff1493;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .part-button a:hover {
+            background: #e60082;
+        }
+    </style> 

@@ -26,6 +26,61 @@
     <!-- responsive -->
     <%= stylesheet_link_tag 'new_look/responsive' %>
     <%= javascript_include_tag 'application' %>
+    <style>
+        /* Dropdown styles */
+        .dropdown-menu {
+            background-color: #1A1A2E;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            padding: 0;
+            min-width: 180px;
+            margin-top: 10px;
+        }
+        
+        .dropdown-item {
+            color: #fff;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
+            background-color: #ff1493;
+            color: #fff;
+        }
+        
+        .dropdown-toggle::after {
+            margin-left: 0.5em;
+            vertical-align: 0.1em;
+        }
+        
+        /* Mobile dropdown styles */
+        @media (max-width: 991px) {
+            .dropdown-menu {
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                padding-left: 20px;
+            }
+            
+            .dropdown-item {
+                color: #fff;
+                border-bottom: none;
+                padding: 8px 0;
+            }
+            
+            .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
+                background-color: transparent;
+                color: #ff1493;
+            }
+        }
+    </style>
 </head>
 
     <body>
@@ -68,8 +123,15 @@
         <li class="nav-item">
           <%= link_to 'About', about_us_path, class: "nav-link #{active_class(about_us_path)}" %>
         </li>
-        <li class="nav-item">
-          <%= link_to 'Event', event_new_look_path, class: "nav-link #{active_class(event_new_look_path)}" %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="eventDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Events
+          </a>
+          <div class="dropdown-menu" aria-labelledby="eventDropdown">
+            <%= link_to 'Featured Event', event_new_look_path, class: "dropdown-item #{active_class(event_new_look_path)}" %>
+            <%= link_to 'Featured Events', featured_events_path, class: "dropdown-item #{active_class(featured_events_path)}" %>
+            <%= link_to 'All Events', events_list_new_look_path, class: "dropdown-item #{active_class(events_list_new_look_path)}" %>
+          </div>
         </li>
         <li class="nav-item">
           <%= link_to 'Gallery', gallery_new_look_path, class: "nav-link #{active_class(gallery_new_look_path)}" %>
@@ -122,8 +184,15 @@
                                     <li class="nav-item">
                                         <%= link_to 'About', about_us_path, class: "nav-link" %>
                                     </li>
-                                    <li class="nav-item">
-                                        <%= link_to 'Event', event_new_look_path, class: "nav-link" %>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="footerEventDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Events
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="footerEventDropdown">
+                                            <%= link_to 'Featured Event', event_new_look_path, class: "dropdown-item" %>
+                                            <%= link_to 'Featured Events', featured_events_path, class: "dropdown-item" %>
+                                            <%= link_to 'All Events', events_list_new_look_path, class: "dropdown-item" %>
+                                        </div>
                                     </li>
                                     <li class="nav-item">
                                         <%= link_to 'Gallery', gallery_new_look_path, class: "nav-link" %>
@@ -166,6 +235,30 @@
         <%= javascript_include_tag 'new_look/wow.min' %>
         <!-- main -->
         <%= javascript_include_tag 'new_look/main' %>
+        <script>
+            // Initialize dropdowns
+            $(document).ready(function() {
+                // Make sure dropdown toggles work on click
+                $('.dropdown-toggle').dropdown();
+                
+                // Make dropdown items highlighted when their page is active
+                var currentUrl = window.location.pathname;
+                
+                // Highlight the current page in the menu
+                $('.dropdown-item').each(function() {
+                    var linkUrl = $(this).attr('href');
+                    if (linkUrl === currentUrl) {
+                        $(this).addClass('active');
+                        $(this).closest('.dropdown').find('.nav-link').addClass('active');
+                    }
+                });
+                
+                // Handle Events dropdown active state for both the featured and all events pages
+                if (currentUrl.includes('/event_new_look') || currentUrl.includes('/events_list_new_look') || currentUrl.includes('/featured_events')) {
+                    $('#eventDropdown, #footerEventDropdown').addClass('active');
+                }
+            });
+        </script>
     </body>
 
 </html>

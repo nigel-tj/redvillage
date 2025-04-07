@@ -4,9 +4,9 @@
             <div class="row">
                 <div class="col-xl-6 col-lg-6">
                     <div class="breadcrump-content">
-                        <span class="page-name">Home</span>
+                        <span class="page-name"><%= link_to 'Home', root_path, style: "color: inherit; text-decoration: none;" %></span>
                         <span class="icon"><i class="fas fa-chevron-right"></i></span>
-                        <span class="page-name">Event</span>
+                        <span class="page-name"><%= link_to 'Events', events_list_new_look_path, style: "color: inherit; text-decoration: none;" %></span>
                     </div>
                 </div>
             </div>
@@ -15,26 +15,35 @@
     <!-- breadcrump end -->
 
     <!-- single event begin -->
-    <div class="single-event">
+    <div class="single-event" style="background-color: #000B14; color: #fff; padding: 50px 0;">
         <div class="container">
             <div class="row">
                 <div class="col-xl-6 col-lg-6">
-                    <div class="part-img">
-                        <img src="new_look/assets/img/single-event.jpg" alt="">
+                    <div class="part-img" style="position: relative;">
+                        <% if @event && @event.image %>
+                            <% img_url = shrine_image_url(@event, :image, :large) || shrine_image_url(@event, :image) %>
+                            <% if img_url %>
+                                <img src="<%= img_url %>" alt="<%= @event.name %>" style="width: 100%; border-radius: 5px;">
+                            <% else %>
+                                <img src="/new_look/assets/img/single-event.jpg" alt="Event" style="width: 100%; border-radius: 5px;">
+                            <% end %>
+                        <% else %>
+                            <img src="/new_look/assets/img/single-event.jpg" alt="Event" style="width: 100%; border-radius: 5px;">
+                        <% end %>
+                        <% if @event && @event.featured? %>
+                            <div class="featured-badge" style="position: absolute; top: 15px; right: 15px; background-color: #ff1493; color: white; padding: 8px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; z-index: 10;">
+                                <i class="fas fa-star" style="color: gold; margin-right: 5px;"></i> Featured Event
+                            </div>
+                        <% end %>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex d-block align-items-center">
                     <div class="part-text">
-                        <h3>Dj Party Song</h3>
-                        <P>Garcia, a versatil web designer. Phasellus vehicula the justo eg diam
-                        in posuere phasellus eget sem just the consequat gestass facilisis
-                        eleifend tempor metus. Phasellus vehicula justo egeteddiames
-                        posuere sollicitu tincidunt nulla. A versatil web designer. Phasellus vehicula the justo eg diam
-                        in posuere phasellus eget sem just the consequat gestass facilisis
-                        eleifend tempor metus.</P>
-                        <div class="meta-info">
-                            <span class="eventor-name">Alison Burgass</span>
-                            <span class="location">Location: Hall 1, Golden Road, Sylhet.Vutan</span>
+                        <h3 style="color: #ff1493; font-size: 40px; margin-bottom: 20px;"><%= @event ? @event.name : "DJ Party Song" %></h3>
+                        <P><%= @event ? @event.summary : "Garcia, a versatil web designer. Phasellus vehicula the justo eg diam in posuere phasellus eget sem just the consequat gestass facilisis eleifend tempor metus. Phasellus vehicula justo egeteddiames posuere sollicitu tincidunt nulla." %></P>
+                        <div class="meta-info" style="margin-top: 30px;">
+                            <span class="eventor-name" style="color: #ff1493; font-size: 18px; display: block; margin-bottom: 5px;">Alison Burgass</span>
+                            <span class="location" style="color: #ccc; font-size: 16px;">Location: <%= @event && @event.venue.present? ? @event.venue : "Hall 1, Golden Road, Sylhet.Vutan" %></span>
                         </div>
                     </div>
                 </div>
@@ -44,108 +53,145 @@
     <!-- single event end -->
 
     <!-- ticket price begin -->
-    <div class="ticket-price">
+    <div class="ticket-price" style="background-color: #000B14; color: #fff; padding: 80px 0 60px;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-8">
                     <div class="section-title text-center">
-                        <h2>Event Tickets</h2>
+                        <h2 style="color: #ff1493; font-size: 40px; margin-bottom: 50px;">Event Tickets</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price">
+                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
                         <div class="part-feature">
-                            <span class="price">49</span>
-                            <h3>Basic Pass</h3>
-                            <ul>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular
-                                        Seating</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable
-                                        Seat</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee
-                                        Break</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One
-                                        Workshop</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span
-                                        class="text">Certificate</span></li>
+                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$49</span>
+                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Basic Pass</h3>
+                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Regular Seating</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Comfortable Seat</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Coffee Break</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">One Workshop</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Certificate</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="part-button">
-                            <a href="#">Buy Ticket</a>
+                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price">
+                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
                         <div class="part-feature">
-                            <span class="price">59</span>
-                            <h3>Stardard Pass</h3>
-                            <ul>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular
-                                        Seating</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable
-                                        Seat</span>
+                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$59</span>
+                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Standard Pass</h3>
+                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Regular Seating</span>
                                 </li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee
-                                        Break</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One
-                                        Workshop</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span
-                                        class="text">Certificate</span></li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Comfortable Seat</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Coffee Break</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">One Workshop</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Certificate</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="part-button">
-                            <a href="#">Buy Ticket</a>
+                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price">
+                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
                         <div class="part-feature">
-                            <span class="price">79</span>
-                            <h3>Premium Pass</h3>
-                            <ul>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular
-                                        Seating</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable
-                                        Seat</span>
+                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$79</span>
+                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Premium Pass</h3>
+                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Regular Seating</span>
                                 </li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee
-                                        Break</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One
-                                        Workshop</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span
-                                        class="text">Certificate</span></li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Comfortable Seat</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Coffee Break</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">One Workshop</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Certificate</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="part-button">
-                            <a href="#">Buy Ticket</a>
+                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price">
+                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
                         <div class="part-feature">
-                            <span class="price">99</span>
-                            <h3>Business Pass</h3>
-                            <ul>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular
-                                        Seating</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable
-                                        Seat</span>
+                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$99</span>
+                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Business Pass</h3>
+                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Regular Seating</span>
                                 </li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee
-                                        Break</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One
-                                        Workshop</span></li>
-                                <li><span class="icon"><i class="fas fa-check"></i></span><span
-                                        class="text">Certificate</span></li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Comfortable Seat</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Coffee Break</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">One Workshop</span>
+                                </li>
+                                <li style="margin-bottom: 10px;">
+                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                    <span class="text">Certificate</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="part-button">
-                            <a href="#">Buy Ticket</a>
+                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
                         </div>
                     </div>
                 </div>
@@ -155,72 +201,46 @@
     <!-- ticket price end -->
 
     <!-- testimonial begin -->
-    <div class="testimonial event-page">
+    <div class="testimonial event-page" style="background-color: #000B14; color: #fff; padding: 80px 0;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-8">
                     <div class="section-title text-center">
-                        <h2>Testimonials</h2>
+                        <h2 style="color: #ff1493; font-size: 40px; margin-bottom: 50px;">Testimonials</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-12 col-lg-12">
-                    <div class="testimonial-slider">
-                        <div class="single-testimonial">
-                            <div class="row no-gutters">
-                                <div class="col-xl-4 col-lg-4 col-sm-4 col-md-12 col-12">
-                                    <div class="part-img"></div>
-                                </div>
-                                <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
-                                    <div class="part-text">
-                                        <div class="bio">
-                                            <span class="name">Alison Burgas</span>
-                                            <span class="position">CEO @google</span>
-                                        </div>
-                                        <div class="social">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                            <a href="#"><i class="fab fa-youtube"></i></a>
-                                        </div>
-                                        <div class="text">
-                                            <p>Phasellus vehicula the justo egdiam
-                                                posu phase eget sem just the
-                                                consequat gesta facilisis eleifend
-                                                tempor metus. Phasellus vehicula is
-                                                diames posuere sollicitu.</p>
-                                        </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 mb-4">
+                    <div class="single-testimonial" style="background-color: #1A1A2E; border-radius: 5px; height: 100%;">
+                        <div class="row no-gutters">
+                            <div class="col-12">
+                                <div class="part-text" style="padding: 30px;">
+                                    <div class="bio text-center mb-4">
+                                        <span class="name" style="color: #ff1493; font-size: 24px; display: block;">Abu Ubaidah</span>
+                                        <span class="position" style="color: #ccc; font-size: 16px;">CEO @google</span>
+                                        <hr style="border-color: #ff1493; width: 50px; margin: 15px auto 20px;">
+                                    </div>
+                                    <div class="text">
+                                        <p>Phasellus vehicula the justo egdiam posu phase eget sem just the consequat gesta facilisis eleifend tempor metus. Phasellus vehicula is diames posuere sollicitu.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="single-testimonial">
-                            <div class="row no-gutters">
-                                <div class="col-xl-4 col-lg-4 col-sm-4 col-md-12 col-12">
-                                    <div class="part-img two"></div>
-                                </div>
-                                <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
-                                    <div class="part-text">
-                                        <div class="bio">
-                                            <span class="name">Abu Ubaidah</span>
-                                            <span class="position">CEO @google</span>
-                                        </div>
-                                        <div class="social">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                            <a href="#"><i class="fab fa-youtube"></i></a>
-                                        </div>
-                                        <div class="text">
-                                            <p>Phasellus vehicula the justo egdiam
-                                                posu phase eget sem just the
-                                                consequat gesta facilisis eleifend
-                                                tempor metus. Phasellus vehicula is
-                                                diames posuere sollicitu.</p>
-                                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 mb-4">
+                    <div class="single-testimonial" style="background-color: #1A1A2E; border-radius: 5px; height: 100%;">
+                        <div class="row no-gutters">
+                            <div class="col-12">
+                                <div class="part-text" style="padding: 30px;">
+                                    <div class="bio text-center mb-4">
+                                        <span class="name" style="color: #ff1493; font-size: 24px; display: block;">Alison Burgas</span>
+                                        <span class="position" style="color: #ccc; font-size: 16px;">CEO @google</span>
+                                        <hr style="border-color: #ff1493; width: 50px; margin: 15px auto 20px;">
+                                    </div>
+                                    <div class="text">
+                                        <p>Phasellus vehicula the justo egdiam posu phase eget sem just the consequat gesta facilisis eleifend tempor metus. Phasellus vehicula is diames posuere sollicitu.</p>
                                     </div>
                                 </div>
                             </div>
@@ -231,3 +251,78 @@
         </div>
     </div>
     <!-- testimonial end -->
+    
+    <!-- related events begin -->
+    <% if @other_events.present? %>
+    <div class="related-events" style="background-color: #000B14; color: #fff; padding: 80px 0;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8">
+                    <div class="section-title text-center">
+                        <h2 style="color: #ff1493; font-size: 40px; margin-bottom: 50px;">More Upcoming Events</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <% @other_events.each do |event| %>
+                    <div class="col-md-4 mb-4">
+                        <div class="event-card" style="background-color: #1A1A2E; border-radius: 5px; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
+                            <div style="display: flex; flex-direction: row;">
+                                <!-- Date Box -->
+                                <% if event.date %>
+                                    <div style="background-color: #ff1493; color: #fff; text-align: center; width: 70px; display: flex; flex-direction: column; justify-content: center;">
+                                        <div style="font-size: 28px; font-weight: 700; line-height: 1;"><%= event.date.strftime('%d') %></div>
+                                        <div style="font-size: 16px; text-transform: uppercase;"><%= event.date.strftime('%^b') %></div>
+                                    </div>
+                                <% end %>
+                                
+                                <!-- Event Image -->
+                                <div class="event-img" style="position: relative; flex-grow: 1;">
+                                    <% if event.image %>
+                                        <% img_url = shrine_image_url(event, :image, :medium) || shrine_image_url(event, :image) %>
+                                        <% if img_url %>
+                                            <img src="<%= img_url %>" alt="<%= event.name %>" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <% else %>
+                                            <img src="/new_look/assets/img/event-grid-1.jpg" alt="Event" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <% end %>
+                                    <% else %>
+                                        <img src="/new_look/assets/img/event-grid-1.jpg" alt="Event" style="width: 100%; height: 200px; object-fit: cover;">
+                                    <% end %>
+                                    <% if event.featured? %>
+                                        <div style="position: absolute; top: 10px; right: 10px; background-color: #ff1493; color: white; padding: 5px 8px; border-radius: 3px; font-size: 12px; font-weight: bold; z-index: 10;">
+                                            <i class="fas fa-star" style="color: gold; margin-right: 3px;"></i> Featured
+                                        </div>
+                                    <% end %>
+                                </div>
+                            </div>
+                            
+                            <div class="event-details" style="padding: 20px; color: #fff; flex-grow: 1; display: flex; flex-direction: column; background-color: #1A1A2E;">
+                                <h3 style="font-size: 18px; margin-bottom: 10px; color: #fff;"><%= event.name %></h3>
+                                <div style="font-size: 14px; color: #ccc; margin-bottom: 10px;">
+                                    <%= event.summary.truncate(80) if event.summary %>
+                                </div>
+                                <div style="font-size: 14px; color: #aaa; margin-bottom: 5px;">
+                                    <i class="far fa-clock" style="color: #ff1493;"></i> <%= event.formatted_start_time %>
+                                </div>
+                                <div style="font-size: 14px; color: #aaa; margin-bottom: 15px;">
+                                    <i class="fas fa-map-marker-alt" style="color: #ff1493;"></i> <%= event.venue %>
+                                </div>
+                                <div style="margin-top: auto;">
+                                    <%= link_to "View Details", event_new_look_with_id_path(event.id), style: "display: inline-block; background-color: #ff1493; color: #fff; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; width: 100%; text-align: center;" %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+            
+            <div class="row justify-content-center mt-4">
+                <div class="col-auto">
+                    <%= link_to "View All Events", events_list_new_look_path, style: "display: inline-block; background-color: #222; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600;" %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% end %>
+    <!-- related events end -->

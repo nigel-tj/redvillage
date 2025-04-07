@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   get '/news', to: 'features#index'
   get '/about_us', to: 'visitors#about_us'
   get '/event_new_look', to: 'visitors#event_new_look'
+  get '/event_new_look/:id', to: 'visitors#event_new_look', as: 'event_new_look_with_id'
+  get '/featured_events', to: 'visitors#event_new_look', as: 'featured_events'
   get '/social', to: 'visitors#social'
   get '/videos', to: 'videos#index'
   get '/top_dj', to: 'visitors#top_dj'
@@ -84,6 +86,7 @@ Rails.application.routes.draw do
   get '/new_album_upload', to: 'albums#new'
   get '/admins', to: 'galleries#new'
   get '/admin_all_events', to: 'events#admin_all_events', as: :admin_all_events
+  get '/events_list_new_look', to: 'visitors#events_list_new_look'
 
   # Spree engine (ensure Spree is properly installed)
   #mount Spree::Core::Engine, at: '/mall'

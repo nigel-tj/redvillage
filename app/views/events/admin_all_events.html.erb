@@ -21,6 +21,11 @@
                 <% else %>
                   <div class="bg-light text-center py-5">No Image</div>
                 <% end %>
+                <% if event.featured? %>
+                  <div class="featured-badge">
+                    <span><i class="fas fa-star"></i> Featured</span>
+                  </div>
+                <% end %>
                 <div class="card-body">
                   <h5 class="card-title"><%= event.name %></h5>
                   <p class="card-text text-muted">
@@ -40,6 +45,7 @@
                 </div>
                 <div class="card-footer bg-white border-top-0">
                   <div class="d-flex justify-content-between">
+                    <%= link_to "View", event_new_look_with_id_path(event.id), class: "btn btn-success", target: "_blank" %>
                     <%= link_to "Edit", edit_event_path(event), class: "btn btn-primary" %>
                     <%= button_to event_path(event),
                         method: :delete, 
@@ -77,6 +83,7 @@
   
   .event-card {
     transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
   }
   
   .event-card:hover {
@@ -118,5 +125,23 @@
   
   .card-footer .btn {
     min-width: 80px;
+  }
+  
+  .featured-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff1493;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10;
+  }
+  
+  .featured-badge i {
+    margin-right: 3px;
+    color: gold;
   }
 </style>
