@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   # Devise routes for user authentication
   devise_for :admin_users
   devise_for :users
-  devise_for :admins
+  devise_for :admins, controllers: {
+    sessions: 'admins/sessions',
+    passwords: 'admins/passwords',
+    registrations: 'admins/registrations'
+  }
 
   # Standard RESTful routes
   resources :lifestyles

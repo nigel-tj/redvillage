@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>The Red Cup Village</title>
+    <title>The Red Cup Village - Admin</title>
     <meta content="initial-scale=1.0, width=device-width" name="viewport" />
     <link href="/images/favicon.ico" rel="icon" type="image/x-icon" />
     <link href="/css/bootstrap-admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -12,25 +12,42 @@
     <%= csrf_meta_tags %>
     <%= javascript_include_tag 'application' %>
   </head>
-  <body id="wrapper" data-spy="scroll" data-target="#bs-example-navbar-collapse-1">
+  <body class="<%= devise_controller? ? 'auth-page' : '' %>" id="wrapper" data-spy="scroll" data-target="#bs-example-navbar-collapse-1">
     <div id="loader">
       <div class="loader"></div>
     </div>
-    <header>
-      <%= render 'admins/navbar' %>
-    </header>
     
-    <% flash.each do |type, message| %>
-      <div class="alert <%= type == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show m-3" role="alert">
-        <%= message %>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+    <% unless devise_controller? %>
+      <header>
+        <%= render 'admins/navbar' %>
+      </header>
     <% end %>
     
-    <%= yield %>
-    <%= render 'admins/footer_button' %>
+    <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) %>
+        <div class="alert <%= name == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show m-3" role="alert">
+          <%= msg %>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <% end %>
+    <% end %>
+    
+    <% if devise_controller? %>
+      <div class="auth-container">
+        <div class="auth-logo text-center mb-4">
+          <%= image_tag "logo.png", alt: "Red Cup Village", class: "img-fluid", style: "max-width: 200px;" %>
+        </div>
+        <%= yield %>
+      </div>
+    <% else %>
+      <%= yield %>
+    <% end %>
+    
+    <% unless devise_controller? %>
+      <%= render 'admins/footer_button' %>
+    <% end %>
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
