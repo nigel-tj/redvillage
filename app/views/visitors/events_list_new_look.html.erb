@@ -101,6 +101,17 @@
                                             <i class="fas fa-map-marker-alt" style="color: #ff1493; margin-right: 10px;"></i> 
                                             <%= event.venue %>
                                         </span>
+                                        <% if event.standard_ticket_price.present? || event.vip_ticket_price.present? %>
+                                            <span class="tickets" style="display: block; margin-bottom: 5px; color: #aaa;">
+                                                <i class="fas fa-ticket-alt" style="color: #ff1493; margin-right: 10px;"></i>
+                                                Tickets from 
+                                                <% if event.standard_ticket_price.present? %>
+                                                    <%= format_price(event.standard_ticket_price, event.currency) %>
+                                                <% elsif event.vip_ticket_price.present? %>
+                                                    <%= format_price(event.vip_ticket_price, event.currency) %>
+                                                <% end %>
+                                            </span>
+                                        <% end %>
                                     </div>
                                     <div class="part-button" style="margin-top: auto;">
                                         <%= link_to "View Details", event_new_look_with_id_path(event.id), style: "display: inline-block; background: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; width: 100%; text-align: center;" %>

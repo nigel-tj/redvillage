@@ -40,6 +40,18 @@
                       <br>
                       <i class="fas fa-map-marker-alt"></i> <%= event.venue %>
                     <% end %>
+                    <% if event.standard_ticket_price.present? || event.vip_ticket_price.present? %>
+                      <br>
+                      <i class="fas fa-ticket-alt"></i> Tickets:
+                      <% if event.standard_ticket_price.present? %>
+                        <br>
+                        <span class="ml-3">Standard: <%= format_price(event.standard_ticket_price, event.currency) %></span>
+                      <% end %>
+                      <% if event.vip_ticket_price.present? %>
+                        <br>
+                        <span class="ml-3">VIP: <%= format_price(event.vip_ticket_price, event.currency) %></span>
+                      <% end %>
+                    <% end %>
                   </p>
                   <p class="card-text"><%= truncate(event.summary, length: 100) if event.summary %></p>
                 </div>

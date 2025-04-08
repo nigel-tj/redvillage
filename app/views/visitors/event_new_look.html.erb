@@ -62,139 +62,78 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
-                        <div class="part-feature">
-                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$49</span>
-                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Basic Pass</h3>
-                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Regular Seating</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Comfortable Seat</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Coffee Break</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">One Workshop</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Certificate</span>
-                                </li>
-                            </ul>
+            <div class="row justify-content-center">
+                <% if @event && (@event.standard_ticket_price.present? || @event.vip_ticket_price.present?) %>
+                    <% if @event.standard_ticket_price.present? %>
+                        <div class="col-xl-4 col-lg-4 col-sm-6">
+                            <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
+                                <div class="part-feature">
+                                    <div style="position: absolute; top: -12px; right: 20px; background-color: #ff1493; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px;">
+                                        <i class="fas fa-crown" style="color: gold;"></i> VIP
+                                    </div>
+                                    <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;"><%= format_price(@event.standard_ticket_price, @event.currency) %></span>
+                                    <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Standard Pass</h3>
+                                    <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                                        <li style="margin-bottom: 10px;">
+                                            <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                            <span class="text">Regular Seating</span>
+                                        </li>
+                                        <li style="margin-bottom: 10px;">
+                                            <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                            <span class="text">Comfortable Seat</span>
+                                        </li>
+                                        <li style="margin-bottom: 10px;">
+                                            <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                            <span class="text">Basic Amenities</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="part-button">
+                                    <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Standard Ticket</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="part-button">
-                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
+                    <% end %>
+                    
+                    <% if @event.vip_ticket_price.present? %>
+                        <div class="col-xl-4 col-lg-4 col-sm-6">
+                            <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%; border: 2px solid #ff1493;">
+                                <div class="part-feature">
+                                    <div style="position: absolute; top: -12px; right: 20px; background-color: #ff1493; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px;">
+                                        <i class="fas fa-crown" style="color: gold;"></i> VIP
+                                    </div>
+                                    <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;"><%= format_price(@event.vip_ticket_price, @event.currency) %></span>
+                                    <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">VIP Pass</h3>
+                                    <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+                                        <li style="margin-bottom: 10px;">
+                                            <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                            <span class="text">Premium Seating</span>
+                                        </li>
+                                        <li style="margin-bottom: 10px;">
+                                            <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                            <span class="text">VIP Lounge Access</span>
+                                        </li>
+                                        <li style="margin-bottom: 10px;">
+                                            <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                            <span class="text">Complimentary Drinks</span>
+                                        </li>
+                                        <li style="margin-bottom: 10px;">
+                                            <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
+                                            <span class="text">Meet & Greet Access</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="part-button">
+                                    <a href="#" style="display: inline-block; background: linear-gradient(45deg, #ff1493, #ff69b4); color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy VIP Ticket</a>
+                                </div>
+                            </div>
                         </div>
+                    <% end %>
+                <% else %>
+                    <div class="col-12 text-center">
+                        <p style="color: #ccc; font-size: 18px;">Ticket information will be available soon.</p>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
-                        <div class="part-feature">
-                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$59</span>
-                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Standard Pass</h3>
-                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Regular Seating</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Comfortable Seat</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Coffee Break</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">One Workshop</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Certificate</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="part-button">
-                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
-                        <div class="part-feature">
-                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$79</span>
-                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Premium Pass</h3>
-                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Regular Seating</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Comfortable Seat</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Coffee Break</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">One Workshop</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Certificate</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="part-button">
-                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-sm-6">
-                    <div class="single-ticket-price" style="background-color: #1A1A2E; border-radius: 5px; padding: 30px 20px; height: 100%;">
-                        <div class="part-feature">
-                            <span class="price" style="color: #ff1493; font-size: 40px; display: block; margin-bottom: 10px;">$99</span>
-                            <h3 style="color: #fff; font-size: 24px; margin-bottom: 20px;">Business Pass</h3>
-                            <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Regular Seating</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Comfortable Seat</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Coffee Break</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">One Workshop</span>
-                                </li>
-                                <li style="margin-bottom: 10px;">
-                                    <span class="icon" style="color: #ff1493; margin-right: 10px;"><i class="fas fa-check"></i></span>
-                                    <span class="text">Certificate</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="part-button">
-                            <a href="#" style="display: inline-block; background-color: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; width: 100%; text-align: center;">Buy Ticket</a>
-                        </div>
-                    </div>
-                </div>
+                <% end %>
             </div>
         </div>
     </div>
