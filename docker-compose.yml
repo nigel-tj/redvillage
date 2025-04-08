@@ -1,0 +1,56 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: redvillage_development
+      MYSQL_USER: redvillage
+      MYSQL_PASSWORD: redvillage
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3307:3306"
+    volumes:
+      - type: volume
+        source: mysql_data
+        target: /var/lib/mysql
+      - type: bind
+        source: ./docker/mysql/init.sql
+        target: /docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+      - type: volume
+        source: bundle
+        target: /usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=development
+      - RACK_ENV=development
+      - DATABASE_USERNAME=redvillage
+      - DATABASE_PASSWORD=redvillage
+      - DATABASE_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+volumes:
+  bundle:
+    name: redvillage_bundle
+  mysql_data:
+    name: redvillage_mysql 

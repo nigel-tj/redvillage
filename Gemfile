@@ -23,7 +23,7 @@ gem 'coffee-script', '~> 2.4'
 
 # Development and Test gems
 group :development, :test do
-  gem 'sqlite3'
+  gem 'mysql2', '~> 0.5.5'  # Replace sqlite3 with mysql2
   gem 'byebug'
   gem 'web-console', '>= 4.0.0'
   gem 'spring'
