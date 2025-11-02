@@ -317,9 +317,9 @@ ul {
     top: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
     z-index: -1;
-    opacity: .95; }
+    opacity: .85; }
   .breadcrump .breadcrump-content {
     margin-top: 81px;
     padding: 27px 0 26px;
@@ -340,14 +340,21 @@ ul {
       text-transform: capitalize;
       font-weight: 500;
       margin-right: 10px; }
-      .breadcrump .breadcrump-content span.icon {
-        color: #667eea;
-        margin: 0 15px;
-        font-size: 16px;
-        opacity: 0.8; }
-      .breadcrump .breadcrump-content span.page-name:last-child {
-        color: #667eea;
-        font-weight: 600; }
+
+.breadcrump .breadcrump-content span.icon {
+  color: #667eea !important;
+  margin: 0 15px;
+  font-size: 16px;
+  opacity: 0.8; }
+
+.breadcrump .breadcrump-content span.page-name:last-child {
+  color: #667eea !important;
+  font-weight: 600; }
+
+/* Hide breadcrumbs completely */
+.breadcrump {
+  display: none !important;
+}
 
 /*==========================================
     banner
