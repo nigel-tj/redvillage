@@ -1,45 +1,449 @@
 <% content_for :title, "Create Account | The Red Cup Village" %>
 
-<div class="card auth-card">
-  <div class="card-header text-center">
-    <h2 class="mb-2">
-      <i class="fas fa-user-plus mr-2"></i>
-      Join The Red Cup Village
-    </h2>
-    <p class="auth-subtext mb-0">Create your account to get started</p>
+<div class="onboarding-container">
+  <!-- Progress Indicator -->
+  <div class="onboarding-progress mb-4">
+    <div class="progress-wrapper">
+      <div class="progress-step <%= 'active' if @step >= 1 %> <%= 'completed' if @step > 1 %>">
+        <div class="step-circle">
+          <span class="step-number">1</span>
+          <i class="fas fa-check step-check" style="display: <%= @step > 1 ? 'block' : 'none' %>;"></i>
+        </div>
+        <span class="step-label">Account</span>
+      </div>
+      <div class="progress-line <%= 'completed' if @step > 1 %>"></div>
+      <div class="progress-step <%= 'active' if @step >= 2 %> <%= 'completed' if @step > 2 %>">
+        <div class="step-circle">
+          <span class="step-number">2</span>
+          <i class="fas fa-check step-check" style="display: <%= @step > 2 ? 'block' : 'none' %>;"></i>
+        </div>
+        <span class="step-label">Role</span>
+      </div>
+      <div class="progress-line <%= 'completed' if @step > 2 %>"></div>
+      <div class="progress-step <%= 'active' if @step >= 3 %>">
+        <div class="step-circle">
+          <span class="step-number">3</span>
+          <i class="fas fa-check step-check" style="display: <%= @step > 3 ? 'block' : 'none' %>;"></i>
+        </div>
+        <span class="step-label">Complete</span>
+      </div>
+    </div>
   </div>
 
-  <div class="card-body">
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'auth-form' }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
+  <div class="card auth-card">
+    <div class="card-header text-center">
+      <h2 class="mb-2">
+        <i class="fas fa-user-plus mr-2"></i>
+        <%= @step == 1 ? 'Join The Red Cup Village' : (@step == 2 ? 'Select Your Role' : 'Welcome!') %>
+      </h2>
+      <p class="auth-subtext mb-0">
+        <%= @step == 1 ? 'Create your account to get started' : (@step == 2 ? 'Choose how you want to participate' : 'Complete your registration') %>
+      </p>
+    </div>
 
-      <div class="mb-3">
-        <%= f.label :name, class: 'form-label' %>
-        <%= f.text_field :name, autofocus: true, autocomplete: 'name', class: 'form-control form-control-lg', placeholder: 'Enter your full name' %>
+    <div class="card-body">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'auth-form' }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <!-- Step 1: Account Creation -->
+        <% if @step == 1 %>
+          <div class="onboarding-step active">
+            <div class="mb-3">
+              <%= f.label :name, "Full Name", class: 'form-label' %>
+              <%= f.text_field :name, autofocus: true, autocomplete: 'name', class: 'form-control form-control-lg', placeholder: 'Enter your full name', required: true %>
+              <small class="form-text text-muted">
+                <i class="fas fa-info-circle"></i> This will be displayed on your profile
+              </small>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :email, class: 'form-label' %>
+              <%= f.email_field :email, autocomplete: 'email', class: 'form-control form-control-lg', placeholder: 'Enter your email address', required: true %>
+              <small class="form-text text-muted">
+                <i class="fas fa-envelope"></i> We'll never share your email
+              </small>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :password, class: 'form-label' %>
+              <%= f.password_field :password, autocomplete: 'new-password', class: 'form-control form-control-lg', placeholder: 'Create a password (minimum 8 characters)', required: true, minlength: 8, id: 'user_password' %>
+              <div class="password-strength mt-2">
+                <div class="strength-bar">
+                  <div class="strength-fill" id="strength-fill"></div>
+                </div>
+                <small class="form-text" id="strength-text">Password strength</small>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :password_confirmation, "Confirm Password", class: 'form-label' %>
+              <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control form-control-lg', placeholder: 'Confirm your password', required: true %>
+            </div>
+
+            <%= f.submit 'Continue to Role Selection', class: 'btn btn-auth-primary w-100' %>
+          </div>
+        <% end %>
+
+        <!-- Step 2: Role Selection -->
+        <% if @step == 2 %>
+          <div class="onboarding-step active">
+            <%= hidden_field_tag :step, 2 %>
+            <%= hidden_field_tag 'user[name]', @step1_data&.dig(:name) || params.dig(:user, :name) %>
+            <%= hidden_field_tag 'user[email]', @step1_data&.dig(:email) || params.dig(:user, :email) %>
+            <%= hidden_field_tag 'user[password]', @step1_data&.dig(:password) || params.dig(:user, :password) %>
+            <%= hidden_field_tag 'user[password_confirmation]', @step1_data&.dig(:password_confirmation) || params.dig(:user, :password_confirmation) %>
+            
+            <div class="mb-4">
+              <label class="form-label mb-3">I'm joining as a:</label>
+              <div class="role-selection">
+                <div class="role-option">
+                  <input type="radio" name="user[role]" id="role_member" value="0" <%= 'checked' if params.dig(:user, :role) != '1' %> class="role-radio">
+                  <label for="role_member" class="role-card">
+                    <div class="role-icon">
+                      <i class="fas fa-users"></i>
+                    </div>
+                    <h5>Member</h5>
+                    <p>Join events, buy tickets, and enjoy the community</p>
+                  </label>
+                </div>
+                <div class="role-option">
+                  <input type="radio" name="user[role]" id="role_admin" value="1" <%= 'checked' if params.dig(:user, :role) == '1' %> class="role-radio">
+                  <label for="role_admin" class="role-card">
+                    <div class="role-icon admin">
+                      <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h5>Admin</h5>
+                    <p>Manage events, content, and community</p>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label mb-3">What interests you most? <small class="text-muted">(Optional)</small></label>
+              <div class="interest-tags">
+                <label class="interest-tag">
+                  <input type="checkbox" name="interests[]" value="events" class="interest-checkbox">
+                  <span><i class="fas fa-calendar-alt"></i> Events</span>
+                </label>
+                <label class="interest-tag">
+                  <input type="checkbox" name="interests[]" value="music" class="interest-checkbox">
+                  <span><i class="fas fa-music"></i> Music</span>
+                </label>
+                <label class="interest-tag">
+                  <input type="checkbox" name="interests[]" value="artists" class="interest-checkbox">
+                  <span><i class="fas fa-microphone"></i> Artists</span>
+                </label>
+                <label class="interest-tag">
+                  <input type="checkbox" name="interests[]" value="gallery" class="interest-checkbox">
+                  <span><i class="fas fa-images"></i> Gallery</span>
+                </label>
+                <label class="interest-tag">
+                  <input type="checkbox" name="interests[]" value="social" class="interest-checkbox">
+                  <span><i class="fas fa-heart"></i> Social</span>
+                </label>
+              </div>
+            </div>
+
+            <%= f.submit 'Create My Account', class: 'btn btn-auth-primary w-100' %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="card-footer">
+      <div class="auth-links text-center">
+        <%= render "devise/shared/links" %>
       </div>
-
-      <div class="mb-3">
-        <%= f.label :email, class: 'form-label' %>
-        <%= f.email_field :email, autocomplete: 'email', class: 'form-control form-control-lg', placeholder: 'Enter your email address' %>
-      </div>
-
-      <div class="mb-3">
-        <%= f.label :password, class: 'form-label' %>
-        <%= f.password_field :password, autocomplete: 'new-password', class: 'form-control form-control-lg', placeholder: 'Create a password (minimum 8 characters)' %>
-      </div>
-
-      <div class="mb-4">
-        <%= f.label :password_confirmation, class: 'form-label' %>
-        <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control form-control-lg', placeholder: 'Confirm your password' %>
-      </div>
-
-      <%= f.submit 'Create Account', class: 'btn btn-auth-primary w-100' %>
-    <% end %>
-  </div>
-
-  <div class="card-footer">
-    <div class="auth-links">
-      <%= render "devise/shared/links" %>
     </div>
   </div>
 </div>
+
+<style>
+.onboarding-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.onboarding-progress {
+  margin-bottom: 2rem;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.progress-line {
+  position: absolute;
+  top: 25px;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: #e0e0e0;
+  z-index: 1;
+}
+
+.progress-line.completed {
+  background: linear-gradient(90deg, #dc3545, #ffc107);
+}
+
+.step-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 3px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-circle {
+  background: linear-gradient(135deg, #dc3545, #ffc107);
+  border-color: #dc3545;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.progress-step.completed .step-circle {
+  background: #28a745;
+  border-color: #28a745;
+}
+
+.step-number, .step-check {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-number {
+  color: white;
+}
+
+.progress-step.completed .step-check {
+  color: white;
+}
+
+.step-label {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.progress-step.active .step-label,
+.progress-step.completed .step-label {
+  color: #dc3545;
+}
+
+.role-selection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.role-option {
+  cursor: pointer;
+}
+
+.role-card {
+  padding: 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: white;
+  cursor: pointer;
+  display: block;
+}
+
+.role-card:hover {
+  border-color: #dc3545;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.1);
+}
+
+.role-radio {
+  display: none;
+}
+
+.role-radio:checked + .role-card {
+  border-color: #dc3545;
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.05), rgba(255, 193, 7, 0.05));
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
+}
+
+.role-icon {
+  font-size: 2.5rem;
+  color: #dc3545;
+  margin-bottom: 0.5rem;
+}
+
+.role-icon.admin {
+  color: #ffc107;
+}
+
+.role-card h5 {
+  margin: 0.5rem 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.role-card p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.interest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.interest-tag {
+  cursor: pointer;
+}
+
+.interest-checkbox {
+  display: none;
+}
+
+.interest-checkbox:checked + span {
+  background: linear-gradient(135deg, #dc3545, #ffc107);
+  color: white;
+  border-color: #dc3545;
+}
+
+.interest-tag span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.interest-tag span:hover {
+  border-color: #dc3545;
+  transform: translateY(-2px);
+}
+
+.password-strength {
+  margin-top: 0.5rem;
+}
+
+.strength-bar {
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+#strength-text {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.onboarding-step {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 576px) {
+  .role-selection {
+    grid-template-columns: 1fr;
+  }
+  
+  .progress-wrapper {
+    font-size: 0.8rem;
+  }
+  
+  .step-circle {
+    width: 40px;
+    height: 40px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Password strength indicator
+  const passwordField = document.querySelector('#user_password');
+  const strengthFill = document.getElementById('strength-fill');
+  const strengthText = document.getElementById('strength-text');
+  
+  if (passwordField && strengthFill && strengthText) {
+    passwordField.addEventListener('input', function() {
+      const password = this.value;
+      const strength = calculatePasswordStrength(password);
+      
+      strengthFill.style.width = strength.percentage + '%';
+      strengthFill.style.background = strength.color;
+      strengthText.textContent = strength.text;
+      strengthText.style.color = strength.color;
+    });
+  }
+  
+  function calculatePasswordStrength(password) {
+    let score = 0;
+    
+    if (password.length >= 8) score += 20;
+    if (password.length >= 12) score += 20;
+    if (/[a-z]/.test(password)) score += 20;
+    if (/[A-Z]/.test(password)) score += 20;
+    if (/[0-9]/.test(password)) score += 10;
+    if (/[^a-zA-Z0-9]/.test(password)) score += 10;
+    
+    if (score < 40) {
+      return { percentage: score, color: '#dc3545', text: 'Weak' };
+    } else if (score < 70) {
+      return { percentage: score, color: '#ffc107', text: 'Fair' };
+    } else if (score < 90) {
+      return { percentage: score, color: '#17a2b8', text: 'Good' };
+    } else {
+      return { percentage: score, color: '#28a745', text: 'Strong' };
+    }
+  }
+  
+  // Role selection interaction
+  const roleRadios = document.querySelectorAll('.role-radio');
+  roleRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      document.querySelectorAll('.role-radio').forEach(r => {
+        r.closest('.role-option').classList.remove('selected');
+      });
+      this.closest('.role-option').classList.add('selected');
+    });
+  });
+});
+</script>
