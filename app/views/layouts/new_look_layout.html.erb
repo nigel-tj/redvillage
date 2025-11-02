@@ -27,6 +27,43 @@
     <%= stylesheet_link_tag 'new_look/responsive' %>
     <%= javascript_include_tag 'application' %>
     <style>
+        /* Navigation flex layout */
+        #navbarSupportedContent {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+        
+        #navbarSupportedContent > .navbar-nav:first-child {
+            flex: 1;
+            margin-right: auto;
+        }
+        
+        #navbarSupportedContent > .navbar-nav:last-child {
+            margin-left: auto;
+            min-width: fit-content;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        /* Fix navbar alignment */
+        .navbar-nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        
+        .dropdown-toggle::after {
+            vertical-align: middle;
+        }
+        
         /* Dropdown styles */
         .dropdown-menu {
             background-color: #1A1A2E;
@@ -108,7 +145,7 @@
                         <div class="mainmenu">
   <nav class="navbar navbar-expand-lg">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav">
         <li class="nav-item">
           <%= link_to 'About', about_us_path, class: "nav-link #{active_class(about_us_path)}" %>
         </li>
