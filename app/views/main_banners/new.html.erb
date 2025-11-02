@@ -1,38 +1,56 @@
-<div class="container">
-  <h1>Upload New Banner</h1>
-  <%= form_for @banner, html: { class: "form-horizontal", multipart: true } do |f| %>
-    <%= render 'shared/errors', object: @banner %>
-    <div class="form-group">
-      <%= f.label :name, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.text_field :name, class: 'form-control', required: true %>
-        <span class="help-block">Banner name.</span>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">
+            <i class="fas fa-image me-2"></i>
+            Upload New Banner
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_for @banner, html: { multipart: true } do |f| %>
+            <%= render 'shared/errors', object: @banner %>
+            
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Banner name' %>
+              <small class="form-text text-muted">Banner name</small>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :title, class: "form-label" %>
+              <%= f.text_field :title, class: 'form-control', required: true, placeholder: 'Text to show on banner' %>
+              <small class="form-text text-muted">Text to show on banner</small>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :page, class: "form-label" %>
+              <%= f.select "page", 
+                  [["Select page to display banner","none"],
+                   ["Home","home"], 
+                   ["Videos","videos"],
+                   ["Music","music"],
+                   ["Events","events"],
+                   ["Artists","artists"]], 
+                  {}, 
+                  { class: 'form-select' } %>
+              <small class="form-text text-muted">Select the page where this banner should appear</small>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :image, class: "form-label" %>
+              <%= f.file_field :image, class: 'form-control', required: true, accept: 'image/*' %>
+              <small class="form-text text-muted">Banner image</small>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Cancel', main_banners_path, class: 'btn btn-secondary' %>
+              <%= f.submit 'Create Banner', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
-    <div class="form-group">
-      <%= f.label :title, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.text_field :title, class: 'form-control', required: true %>
-        <span class="help-block">Text to show on banner.</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <%= f.label :page, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.select "page", [["Select page to display banner","none"],["Home","home"], ["Videos","videos"],["Music","music"],["Events","events"],["Artists","artists"]] %>
-      </div>
-    </div>
-    <div class="form-group">
-      <%= f.label :image, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.file_field :image, required: true %>
-        <span class="help-block">Banner.</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'btn btn-primary' %>
-      </div>
-    </div>
-  <% end %>
+  </div>
 </div> 

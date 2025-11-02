@@ -1,36 +1,37 @@
-#services
-  .container
-    .row
-.container
-  %h1 New Feture
-  = form_for @feature, html: { class: "form-horizontal"} do |f|
-    = render 'shared/errors', object: @feature
-    .form-group
-      = f.label :heading, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.text_field :heading, class: 'form-control', required: true, id: 'word_count'
-        Total word count: 
-        %span#display_count 0 words. Words left: 
-        %span#word_left 20
-        %span.help-block Article Heading NB maximum of 20 words.
-    .form-group
-      = f.label :image, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.file_field :image, required: true
-        %span.help-block A link to article.
-    .form-group
-      = f.label :intro, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.text_area :intro, class: 'form-control', required: true
-        %span.help-block Article Introduction.
-    .form-group
-      = f.label :link, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.text_field :link, class: 'form-control', required: true
-        %span.help-block A link to article.
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        = f.submit class: 'btn btn-primary'
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-10
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-newspaper.me-2
+            New Feature
+        .card-body
+          = form_for @feature, html: { multipart: true } do |f|
+            = render 'shared/errors', object: @feature
+            .mb-3
+              = f.label :heading, class: "form-label"
+              = f.text_field :heading, class: 'form-control', required: true, id: 'word_count', placeholder: 'Article heading'
+              .mt-2
+                Total word count: 
+                %span#display_count 0 words. Words left: 
+                %span#word_left 20
+              %small.form-text.text-muted Article heading - maximum of 20 words
+            .mb-3
+              = f.label :image, class: "form-label"
+              = f.file_field :image, class: 'form-control', required: true, accept: 'image/*'
+              %small.form-text.text-muted Feature image
+            .mb-3
+              = f.label :intro, class: "form-label"
+              = f.text_area :intro, class: 'form-control', required: true, rows: 4, placeholder: 'Article introduction'
+              %small.form-text.text-muted Article introduction
+            .mb-3
+              = f.label :link, class: "form-label"
+              = f.text_field :link, class: 'form-control', required: true, placeholder: 'Link to article'
+              %small.form-text.text-muted Link to the full article
+            .d-flex.justify-content-between.mt-4
+              = link_to 'Cancel', features_path, class: 'btn btn-secondary'
+              = f.submit 'Create Feature', class: 'btn btn-primary'
 
 %script{:src => "/scripts/jquery.js", :type => "text/javascript"}
 :javascript

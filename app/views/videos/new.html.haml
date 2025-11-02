@@ -1,16 +1,22 @@
-#services
-  .container
-    .row
-.container
-  %h1 New video
-  = form_for @video do |f|
-    = render 'shared/errors', object: @video
-    .form-group
-      = f.label :link, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.text_field :link, class: 'form-control', required: true
-        %span.help-block A link to the video on YouTube.
-    .form-group
-      = f.label :category, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.submit class: 'btn btn-primary'
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-8
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-video.me-2
+            New Video
+        .card-body
+          = form_for @video do |f|
+            = render 'shared/errors', object: @video
+            .mb-3
+              = f.label :link, class: "form-label"
+              = f.text_field :link, class: 'form-control', required: true, placeholder: 'https://www.youtube.com/watch?v=...'
+              %small.form-text.text-muted A link to the video on YouTube
+            .mb-3
+              = f.label :category, class: "form-label"
+              = f.text_field :category, class: 'form-control', placeholder: 'Video category'
+              %small.form-text.text-muted Video category
+            .d-flex.justify-content-between.mt-4
+              = link_to 'Cancel', videos_path, class: 'btn btn-secondary'
+              = f.submit 'Create Video', class: 'btn btn-primary'

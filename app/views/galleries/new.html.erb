@@ -1,30 +1,35 @@
-<div id="services">
-  <div class="container">
-    <div class="row">
-      <div class="container">
-        <h1>New Gallery</h1>
-        <%= form_for @gallery, html: { class: "form-horizontal" } do |f| %>
-          <%= render 'shared/errors', object: @gallery %>
-          <div class="form-group">
-            <%= f.label :name, class: "control-label col-sm-2" %>
-            <div class="col-sm-10">
-              <%= f.text_field :name, class: 'form-control', required: true %>
-              <span class="help-block">Gallery name</span>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">
+            <i class="fas fa-images me-2"></i>
+            New Gallery
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_for @gallery, html: { multipart: true } do |f| %>
+            <%= render 'shared/errors', object: @gallery %>
+            
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Gallery name' %>
+              <small class="form-text text-muted">Gallery name</small>
             </div>
-          </div>
-          <div class="form-group">
-            <%= f.label :image, class: "control-label col-sm-2" %>
-            <div class="col-sm-10">
-              <%= f.file_field :image, required: true %>
-              <span class="help-block">Gallery Cover.</span>
+            
+            <div class="mb-3">
+              <%= f.label :image, class: "form-label" %>
+              <%= f.file_field :image, class: 'form-control', required: true, accept: 'image/*' %>
+              <small class="form-text text-muted">Gallery cover image</small>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <%= f.submit class: 'btn btn-primary' %>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Cancel', galleries_path, class: 'btn btn-secondary' %>
+              <%= f.submit 'Create Gallery', class: 'btn btn-primary' %>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

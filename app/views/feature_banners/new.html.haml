@@ -1,5 +1,10 @@
-%h1 New feature_banner
-
-= render 'form'
-
-= link_to 'Back', feature_banners_path
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-10
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-image.me-2
+            New Feature Banner
+        .card-body
+          = render 'form'

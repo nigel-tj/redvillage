@@ -1,30 +1,38 @@
-.container
-  %h1 Upload New Track
-  = form_for @track, html: { class: "form-horizontal"} do |f|
-    = render 'shared/errors', object: @track
-    .form-group
-      = f.label :title, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.text_field :title, :value => @track.title, class: 'form-control', required: true
-        %span.help-block Track name .
-    .form-group
-      = f.label :category, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.select "category", [["Select category","none"],["RCV Playlist","rcv_playlist"], ["Albums / Mixtapes","albums_mixtapes"]] ,:value => @track.category
-    .form-group
-      = f.label :image, :class => "control-label col-sm-2"
-      .col-sm-10
-        = image_tag(@track.image_url) if @track.image?
-        = f.file_field :image, value: @track.image, required: true
-        = f.hidden_field :image_cache
-        %span.help-block Track Cover.
-    .form-group
-      = f.label :track, :class => "control-label col-sm-2"
-      .col-sm-10
-        = @track.title if @track.track?
-        = f.file_field :track, required: true if @track.track?
-        %span.help-block Music Track .
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        = f.submit class: 'btn btn-primary'
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-10
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-edit.me-2
+            Edit Track
+        .card-body
+          = form_for @track, html: { multipart: true } do |f|
+            = render 'shared/errors', object: @track
+            .mb-3
+              = f.label :title, class: "form-label"
+              = f.text_field :title, value: @track.title, class: 'form-control', required: true, placeholder: 'Track name'
+              %small.form-text.text-muted Track name
+            .mb-3
+              = f.label :category, class: "form-label"
+              = f.select "category", [["Select category","none"],["RCV Playlist","rcv_playlist"], ["Albums / Mixtapes","albums_mixtapes"]], { selected: @track.category }, { class: 'form-select' }
+              %small.form-text.text-muted Select track category
+            .mb-3
+              = f.label :image, class: "form-label"
+              - if @track.image?
+                .mb-2
+                  = image_tag(@track.image_url, class: 'img-thumbnail', style: 'max-width: 200px;')
+              = f.hidden_field :image_cache
+              = f.file_field :image, class: 'form-control', accept: 'image/*'
+              %small.form-text.text-muted Track cover image
+            .mb-3
+              = f.label :track, class: "form-label"
+              - if @track.track?
+                .mb-2
+                  %small.text-muted Current track: #{@track.title}
+              = f.file_field :track, class: 'form-control', accept: 'audio/*'
+              %small.form-text.text-muted Music track file
+            .d-flex.justify-content-between.mt-4
+              = link_to 'Cancel', tracks_path, class: 'btn btn-secondary'
+              = f.submit 'Update Track', class: 'btn btn-primary'
 

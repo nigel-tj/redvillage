@@ -1,18 +1,31 @@
-.container
-  %h1 Upload video
-  - if current_user
-    = form_for @video_upload do |f|
-      = render 'shared/errors', object: @video_upload
-      .form-group
-        = f.label :file
-        = f.file_field :file, class: 'form-control', required: true
-      .form-group
-        = f.label :title
-        = f.text_field :title, class: 'form-control', required: true
-      .form-group
-        = f.label :description
-        = f.text_area :description, class: 'form-control', cols: 3
-      = f.submit 'Upload', class: 'btn btn-primary'
-  - else
-    %p
-      Please #{link_to 'sign in', '/auth/google_oauth2'}.
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-8
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-upload.me-2
+            Upload Video
+        .card-body
+          - if current_user
+            = form_for @video_upload, html: { multipart: true } do |f|
+              = render 'shared/errors', object: @video_upload
+              .mb-3
+                = f.label :file, class: "form-label"
+                = f.file_field :file, class: 'form-control', required: true, accept: 'video/*'
+                %small.form-text.text-muted Select video file to upload
+              .mb-3
+                = f.label :title, class: "form-label"
+                = f.text_field :title, class: 'form-control', required: true, placeholder: 'Video title'
+                %small.form-text.text-muted Video title
+              .mb-3
+                = f.label :description, class: "form-label"
+                = f.text_area :description, class: 'form-control', rows: 4, placeholder: 'Video description'
+                %small.form-text.text-muted Video description
+              .d-flex.justify-content-between.mt-4
+                = link_to 'Cancel', video_uploads_path, class: 'btn btn-secondary'
+                = f.submit 'Upload Video', class: 'btn btn-primary'
+          - else
+            .alert.alert-warning
+              %p.mb-0
+                Please #{link_to 'sign in', '/auth/google_oauth2'} to upload videos.

@@ -1,16 +1,29 @@
-<%= form_for @image, :html => {:multipart => true} do |f| %>
-
+<%= form_for @image, html: { multipart: true } do |f| %>
   <%= f.hidden_field :gallery_id %>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.file_field :images, multiple: true %>
-  </p>
-  <p>
-    <%= f.label :remote_image_url, "or image URL" %><br />
-    <%= f.text_field :remote_image_url %>
-  </p>
-  <p><%= f.submit %></p>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3">
+        <%= f.label :name, class: "form-label" %>
+        <%= f.text_field :name, class: 'form-control', placeholder: 'Image name' %>
+      </div>
+      
+      <div class="mb-3">
+        <%= f.label :images, "Upload Images", class: "form-label" %>
+        <%= f.file_field :images, multiple: true, class: 'form-control', accept: 'image/*' %>
+        <small class="form-text text-muted">You can select multiple images to upload</small>
+      </div>
+      
+      <div class="mb-3">
+        <%= f.label :remote_image_url, "Or Image URL", class: "form-label" %>
+        <%= f.text_field :remote_image_url, class: 'form-control', placeholder: 'https://example.com/image.jpg' %>
+        <small class="form-text text-muted">Enter a URL to upload an image from the web</small>
+      </div>
+      
+      <div class="d-flex justify-content-between mt-4">
+        <%= link_to 'Cancel', @image.gallery, class: 'btn btn-secondary' %>
+        <%= f.submit 'Save Images', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
 <% end %>

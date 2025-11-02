@@ -1,43 +1,45 @@
-.container
-  %h1 Edit Artist
-  = form_for @artist, html: { class: "form-horizontal"} do |f|
-    = render 'shared/errors', object: @artist
-    .form-group
-      = f.label :name, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_field :name, class: 'form-control', required: true
-        %span.help-block Artst Name.
-    .form-group
-      = f.label :cover, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.file_field :cover
-        %span.help-block Cover.
-    .form-group
-      = f.label :profile_picture, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.file_field :profile_picture
-        %span.help-block Profile Picture.
-    .form-group
-      = f.label :category, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.select "category", [["Select category","none"],["Model","model"], ["Label","label"], ["Management","management"]]
-
-    .form-group
-      = f.label :email, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_field :email, class: 'form-control', required: true
-        %span.help-block Artist Email.
-    .form-group
-      = f.label :cell_number, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_field :cell_number, class: 'form-control'
-        %span.help-block Cellphone Number.
-    .form-group
-      = f.label :bio, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_area :bio, class: 'form-control', required: true
-        %span.help-block Artist Bio.
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        = f.submit class: 'btn btn-primary'
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-10
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-edit.me-2
+            Edit Artist
+        .card-body
+          = form_for @artist, html: { multipart: true } do |f|
+            = render 'shared/errors', object: @artist
+            .row
+              .col-md-6.mb-3
+                = f.label :name, class: "form-label"
+                = f.text_field :name, class: 'form-control', required: true, placeholder: 'Artist name'
+                %small.form-text.text-muted Artist name
+              .col-md-6.mb-3
+                = f.label :email, class: "form-label"
+                = f.email_field :email, class: 'form-control', required: true, placeholder: 'artist@example.com'
+                %small.form-text.text-muted Artist email
+            .row
+              .col-md-6.mb-3
+                = f.label :cover, class: "form-label"
+                = f.file_field :cover, class: 'form-control', accept: 'image/*'
+                %small.form-text.text-muted Cover image
+              .col-md-6.mb-3
+                = f.label :profile_picture, class: "form-label"
+                = f.file_field :profile_picture, class: 'form-control', accept: 'image/*'
+                %small.form-text.text-muted Profile picture
+            .mb-3
+              = f.label :category, class: "form-label"
+              = f.select "category", [["Select category","none"],["Model","model"], ["Label","label"], ["Management","management"]], {}, { class: 'form-select' }
+              %small.form-text.text-muted Artist category
+            .mb-3
+              = f.label :cell_number, class: "form-label"
+              = f.text_field :cell_number, class: 'form-control', placeholder: 'Cellphone number'
+              %small.form-text.text-muted Contact number
+            .mb-3
+              = f.label :bio, class: "form-label"
+              = f.text_area :bio, class: 'form-control', required: true, rows: 4, placeholder: 'Artist biography'
+              %small.form-text.text-muted Artist biography
+            .d-flex.justify-content-between.mt-4
+              = link_to 'Cancel', artists_path, class: 'btn btn-secondary'
+              = f.submit 'Update Artist', class: 'btn btn-primary'
 

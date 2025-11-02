@@ -1,32 +1,34 @@
-.container
-  %h1 Add New Store
-  = form_for @store, html: { class: "form-horizontal"} do |f|
-    = render 'shared/errors', object: @artist
-    .form-group
-      = f.label :name, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_field :name, class: 'form-control', required: true
-        %span.help-block Store Name.
-    .form-group
-      = f.label :cover, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.file_field :cover
-        %span.help-block Cover.
-    .form-group
-      = f.label :email, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_field :email, class: 'form-control', required: true
-        %span.help-block Store Email.
-    .form-group
-      = f.label :contact_number, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_field :contact_number, class: 'form-control'
-        %span.help-block Contact Number.
-    .form-group
-      = f.label :description, :class => "control-label col-sm-2"
-      .col-sm-10 
-        = f.text_area :descriptionfg, class: 'form-control', required: true
-        %span.help-block Store description.
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        = f.submit class: 'btn btn-primary'
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-10
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-store.me-2
+            Add New Store
+        .card-body
+          = form_for @store, html: { multipart: true } do |f|
+            = render 'shared/errors', object: @store
+            .mb-3
+              = f.label :name, class: "form-label"
+              = f.text_field :name, class: 'form-control', required: true, placeholder: 'Store name'
+              %small.form-text.text-muted Store name
+            .mb-3
+              = f.label :cover, class: "form-label"
+              = f.file_field :cover, class: 'form-control', accept: 'image/*'
+              %small.form-text.text-muted Store cover image
+            .mb-3
+              = f.label :email, class: "form-label"
+              = f.email_field :email, class: 'form-control', required: true, placeholder: 'store@example.com'
+              %small.form-text.text-muted Store email
+            .mb-3
+              = f.label :contact_number, class: "form-label"
+              = f.text_field :contact_number, class: 'form-control', placeholder: 'Contact number'
+              %small.form-text.text-muted Contact number
+            .mb-3
+              = f.label :description, class: "form-label"
+              = f.text_area :description, class: 'form-control', required: true, rows: 4, placeholder: 'Store description'
+              %small.form-text.text-muted Store description
+            .d-flex.justify-content-between.mt-4
+              = link_to 'Cancel', stores_path, class: 'btn btn-secondary'
+              = f.submit 'Create Store', class: 'btn btn-primary'

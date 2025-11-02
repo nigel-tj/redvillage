@@ -1,167 +1,138 @@
-<%= form_for @profile, html: { class: "form-horizontal", multipart: true } do |f| %>
+<%= form_for @profile, html: { multipart: true } do |f| %>
   <%= render 'shared/errors', object: @profile if defined?(render) %>
   
-  <div class="form-group">
-    <%= f.label :bio, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.text_area :bio, class: 'form-control', rows: 6, placeholder: "Tell us about yourself, your work, and your passion..." %>
-      <span class="help-block">Your biography. This will be displayed on your public profile.</span>
-    </div>
+  <div class="mb-3">
+    <%= f.label :bio, class: "form-label" %>
+    <%= f.text_area :bio, class: 'form-control', rows: 6, placeholder: "Tell us about yourself, your work, and your passion..." %>
+    <small class="form-text text-muted">Your biography. This will be displayed on your public profile.</small>
   </div>
 
-  <div class="form-group">
-    <%= f.label :profile_picture, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.file_field :profile_picture %>
-      <% if @profile.profile_picture.present? %>
-        <div class="mt-2">
-          <%= image_tag @profile.profile_picture_url(:thumb), class: "img-thumbnail", style: "max-width: 150px;" if @profile.profile_picture_url.present? %>
-        </div>
-      <% end %>
-      <span class="help-block">Upload your profile picture.</span>
-    </div>
+  <div class="mb-3">
+    <%= f.label :profile_picture, class: "form-label" %>
+    <%= f.file_field :profile_picture, class: 'form-control', accept: 'image/*' %>
+    <% if @profile.profile_picture.present? %>
+      <div class="mt-2">
+        <%= image_tag @profile.profile_picture_url(:thumb), class: "img-thumbnail", style: "max-width: 150px;" if @profile.profile_picture_url.present? %>
+      </div>
+    <% end %>
+    <small class="form-text text-muted">Upload your profile picture.</small>
   </div>
 
-  <div class="form-group">
-    <%= f.label :cover_image, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.file_field :cover_image %>
-      <% if @profile.cover_image.present? %>
-        <div class="mt-2">
-          <%= image_tag @profile.cover_image_url(:thumb), class: "img-thumbnail", style: "max-width: 300px;" if @profile.cover_image_url.present? %>
-        </div>
-      <% end %>
-      <span class="help-block">Upload a cover image for your profile.</span>
-    </div>
+  <div class="mb-3">
+    <%= f.label :cover_image, class: "form-label" %>
+    <%= f.file_field :cover_image, class: 'form-control', accept: 'image/*' %>
+    <% if @profile.cover_image.present? %>
+      <div class="mt-2">
+        <%= image_tag @profile.cover_image_url(:thumb), class: "img-thumbnail", style: "max-width: 300px;" if @profile.cover_image_url.present? %>
+      </div>
+    <% end %>
+    <small class="form-text text-muted">Upload a cover image for your profile.</small>
   </div>
 
-  <div class="form-group">
-    <%= f.label :phone, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :phone, class: "form-label" %>
       <%= f.text_field :phone, class: 'form-control', placeholder: "+1 (555) 123-4567" %>
-      <span class="help-block">Contact phone number.</span>
+      <small class="form-text text-muted">Contact phone number.</small>
     </div>
-  </div>
 
-  <div class="form-group">
-    <%= f.label :website, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
+    <div class="col-md-6 mb-3">
+      <%= f.label :website, class: "form-label" %>
       <%= f.text_field :website, class: 'form-control', placeholder: "https://yourwebsite.com" %>
-      <span class="help-block">Your personal or professional website.</span>
+      <small class="form-text text-muted">Your personal or professional website.</small>
     </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :location, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.text_field :location, class: 'form-control', placeholder: "City, Country" %>
-      <span class="help-block">Your location.</span>
-    </div>
+  <div class="mb-3">
+    <%= f.label :location, class: "form-label" %>
+    <%= f.text_field :location, class: 'form-control', placeholder: "City, Country" %>
+    <small class="form-text text-muted">Your location.</small>
   </div>
 
   <% if ['dj', 'artist', 'photographer', 'videographer', 'designer'].include?(@profile.user.role) %>
-    <div class="form-group">
-      <%= f.label :specialization, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.text_area :specialization, class: 'form-control', rows: 3, placeholder: "Your areas of expertise or specialization..." %>
-        <span class="help-block">What are you specialized in?</span>
-      </div>
+    <div class="mb-3">
+      <%= f.label :specialization, class: "form-label" %>
+      <%= f.text_area :specialization, class: 'form-control', rows: 3, placeholder: "Your areas of expertise or specialization..." %>
+      <small class="form-text text-muted">What are you specialized in?</small>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :experience, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.text_area :experience, class: 'form-control', rows: 4, placeholder: "Describe your professional experience..." %>
-      <span class="help-block">Your professional experience and background.</span>
-    </div>
+  <div class="mb-3">
+    <%= f.label :experience, class: "form-label" %>
+    <%= f.text_area :experience, class: 'form-control', rows: 4, placeholder: "Describe your professional experience..." %>
+    <small class="form-text text-muted">Your professional experience and background.</small>
   </div>
 
-  <hr>
-  <h4>Social Media Links</h4>
+  <hr class="my-4">
+  <h5 class="mb-3">Social Media Links</h5>
 
-  <div class="form-group">
-    <%= f.label :facebook_url, "Facebook", class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :facebook_url, "Facebook", class: "form-label" %>
       <%= f.text_field :facebook_url, class: 'form-control', placeholder: "https://facebook.com/yourprofile" %>
     </div>
-  </div>
 
-  <div class="form-group">
-    <%= f.label :twitter_url, "Twitter", class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
+    <div class="col-md-6 mb-3">
+      <%= f.label :twitter_url, "Twitter", class: "form-label" %>
       <%= f.text_field :twitter_url, class: 'form-control', placeholder: "https://twitter.com/yourhandle" %>
     </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :instagram_url, "Instagram", class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.text_field :instagram_url, class: 'form-control', placeholder: "https://instagram.com/yourprofile" %>
-    </div>
+  <div class="mb-3">
+    <%= f.label :instagram_url, "Instagram", class: "form-label" %>
+    <%= f.text_field :instagram_url, class: 'form-control', placeholder: "https://instagram.com/yourprofile" %>
   </div>
 
   <% if ['dj', 'artist'].include?(@profile.user.role) %>
-    <div class="form-group">
-      <%= f.label :spotify_url, "Spotify", class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <%= f.label :spotify_url, "Spotify", class: "form-label" %>
         <%= f.text_field :spotify_url, class: 'form-control', placeholder: "https://open.spotify.com/artist/..." %>
       </div>
-    </div>
 
-    <div class="form-group">
-      <%= f.label :soundcloud_url, "SoundCloud", class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
+      <div class="col-md-6 mb-3">
+        <%= f.label :soundcloud_url, "SoundCloud", class: "form-label" %>
         <%= f.text_field :soundcloud_url, class: 'form-control', placeholder: "https://soundcloud.com/yourprofile" %>
       </div>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :youtube_url, "YouTube", class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :youtube_url, "YouTube", class: "form-label" %>
       <%= f.text_field :youtube_url, class: 'form-control', placeholder: "https://youtube.com/yourchannel" %>
     </div>
-  </div>
 
-  <div class="form-group">
-    <%= f.label :linkedin_url, "LinkedIn", class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
+    <div class="col-md-6 mb-3">
+      <%= f.label :linkedin_url, "LinkedIn", class: "form-label" %>
       <%= f.text_field :linkedin_url, class: 'form-control', placeholder: "https://linkedin.com/in/yourprofile" %>
     </div>
   </div>
 
   <% if ['photographer', 'designer', 'videographer'].include?(@profile.user.role) %>
-    <div class="form-group">
-      <%= f.label :pinterest_url, "Pinterest", class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.text_field :pinterest_url, class: 'form-control', placeholder: "https://pinterest.com/yourprofile" %>
-      </div>
+    <div class="mb-3">
+      <%= f.label :pinterest_url, "Pinterest", class: "form-label" %>
+      <%= f.text_field :pinterest_url, class: 'form-control', placeholder: "https://pinterest.com/yourprofile" %>
     </div>
   <% end %>
 
   <% if ['dj', 'artist', 'videographer'].include?(@profile.user.role) %>
-    <div class="form-group">
-      <%= f.label :tiktok_url, "TikTok", class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.text_field :tiktok_url, class: 'form-control', placeholder: "https://tiktok.com/@yourhandle" %>
-      </div>
+    <div class="mb-3">
+      <%= f.label :tiktok_url, "TikTok", class: "form-label" %>
+      <%= f.text_field :tiktok_url, class: 'form-control', placeholder: "https://tiktok.com/@yourhandle" %>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :public_profile, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
+  <div class="mb-3">
+    <div class="form-check">
       <%= f.check_box :public_profile, class: 'form-check-input' %>
-      <span class="help-block">Allow your profile to be visible to the public.</span>
+      <%= f.label :public_profile, "Allow your profile to be visible to the public", class: 'form-check-label' %>
     </div>
   </div>
 
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= f.submit "Update Profile", class: 'btn btn-primary' %>
-      <%= link_to "Cancel", profile_path(@profile), class: 'btn btn-secondary' %>
-    </div>
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to "Cancel", profile_path(@profile), class: 'btn btn-secondary' %>
+    <%= f.submit "Update Profile", class: 'btn btn-primary' %>
   </div>
 <% end %>
 

@@ -1,25 +1,27 @@
-#services
-  .container
-    .row
-.container
-  %h1 New Album
-  = form_for @album do |f|
-    = render 'shared/errors', object: @album
-    .form-group
-      = f.label :name, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.text_field :name, class: 'form-control', required: true
-        %span.help-block Album Name.
-    .form-group
-      = f.label :artist_name, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.text_field :artist_name, class: 'form-control', required: true
-        %span.help-block Artist Name.
-
-    .form-group
-      = f.label :cover, :class => "control-label col-sm-2"
-      .col-sm-10
-        = f.file_field :cover, required: true
-        %span.help-block Album Cover.
-    = f.hidden_field :artist_id, class: 'form-control', required: true, value: @artist_id
-    = f.submit class: 'btn btn-primary'
+.container.mt-4
+  .row.justify-content-center
+    .col-lg-8
+      .card
+        .card-header
+          %h2.mb-0
+            %i.fas.fa-compact-disc.me-2
+            New Album
+        .card-body
+          = form_for @album, html: { multipart: true } do |f|
+            = render 'shared/errors', object: @album
+            .mb-3
+              = f.label :name, class: "form-label"
+              = f.text_field :name, class: 'form-control', required: true, placeholder: 'Album name'
+              %small.form-text.text-muted Album name
+            .mb-3
+              = f.label :artist_name, class: "form-label"
+              = f.text_field :artist_name, class: 'form-control', required: true, placeholder: 'Artist name'
+              %small.form-text.text-muted Artist name
+            .mb-3
+              = f.label :cover, class: "form-label"
+              = f.file_field :cover, class: 'form-control', required: true, accept: 'image/*'
+              %small.form-text.text-muted Album cover image
+            = f.hidden_field :artist_id, value: @artist_id
+            .d-flex.justify-content-between.mt-4
+              = link_to 'Cancel', albums_path, class: 'btn btn-secondary'
+              = f.submit 'Create Album', class: 'btn btn-primary'

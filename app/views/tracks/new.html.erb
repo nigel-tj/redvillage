@@ -1,58 +1,63 @@
-<div class="container">
-  <h1><%= @page_heading %></h1>
-  <%= form_for @track, html: { class: "form-horizontal" } do |f| %>
-    <%= render 'shared/errors', object: @track %>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">
+            <i class="fas fa-music me-2"></i>
+            <%= @page_heading %>
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_for @track, html: { multipart: true } do |f| %>
+            <%= render 'shared/errors', object: @track %>
 
-    <div class="form-group">
-      <%= f.label :title, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.text_field :title, class: 'form-control', required: true %>
-        <span class="help-block">Track name.</span>
-      </div>
-    </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :title, class: "form-label" %>
+                <%= f.text_field :title, class: 'form-control', required: true, placeholder: 'Track name' %>
+                <small class="form-text text-muted">Track name</small>
+              </div>
 
-    <div class="form-group">
-      <%= f.label :artist_name, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.text_field :artist_name, class: 'form-control', required: true %>
-        <span class="help-block">Artist name.</span>
-      </div>
-    </div>
+              <div class="col-md-6 mb-3">
+                <%= f.label :artist_name, class: "form-label" %>
+                <%= f.text_field :artist_name, class: 'form-control', required: true, placeholder: 'Artist name' %>
+                <small class="form-text text-muted">Artist name</small>
+              </div>
+            </div>
 
-    <div class="form-group">
-      <%= f.label :category, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <%= f.select :category, [["Select category", "none"], ["RCV Playlist", "rcv_playlist"], ["Albums / Mixtapes", "albums_mixtapes"]] %>
-      </div>
-    </div>
+            <div class="mb-3">
+              <%= f.label :category, class: "form-label" %>
+              <%= f.select :category, [["Select category", "none"], ["RCV Playlist", "rcv_playlist"], ["Albums / Mixtapes", "albums_mixtapes"]], {}, { class: 'form-select' } %>
+              <small class="form-text text-muted">Select track category</small>
+            </div>
 
-    <% if @number_of_tracks == "single" %>
-      <div class="form-group">
-        <%= f.label :image, class: "control-label col-sm-2" %>
-        <div class="col-sm-10">
-          <%= f.file_field :image, required: true %>
-          <span class="help-block">Track Cover.</span>
+            <% if @number_of_tracks == "single" %>
+              <div class="mb-3">
+                <%= f.label :image, class: "form-label" %>
+                <%= f.file_field :image, class: 'form-control', required: true, accept: 'image/*' %>
+                <small class="form-text text-muted">Track cover image</small>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= f.label :track, class: "form-label" %>
+              <% if @number_of_tracks == "single" %>
+                <%= f.file_field :track, class: 'form-control', required: true, accept: 'audio/*' %>
+              <% else %>
+                <%= f.hidden_field :album_id %>
+                <%= f.file_field :tracks, class: 'form-control', required: true, multiple: true, accept: 'audio/*' %>
+                <small class="form-text text-muted">You can select multiple tracks to upload</small>
+              <% end %>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Cancel', tracks_path, class: 'btn btn-secondary' %>
+              <%= f.submit 'Save Track', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
         </div>
       </div>
-    <% end %>
-
-    <div class="form-group">
-      <%= f.label :track, class: "control-label col-sm-2" %>
-      <div class="col-sm-10">
-        <% if @number_of_tracks == "single" %>
-          <%= f.file_field :track, required: true %>
-        <% else %>
-          <%= f.hidden_field :album_id %>
-          <%= f.file_field :tracks, required: true, multiple: true %>
-          <span class="help-block">Music Track.</span>
-        <% end %>
-      </div>
     </div>
-
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'btn btn-primary' %>
-      </div>
-    </div>
-  <% end %>
+  </div>
 </div>

@@ -1,71 +1,114 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="text-center mb-0">Edit Admin Account</h3>
+<div class="admin-registration-container">
+  <div class="card auth-card">
+    <div class="card-header text-center">
+      <h2 class="mb-2">
+        <i class="fas fa-user-edit mr-2"></i>
+        Edit Admin Account
+      </h2>
+      <p class="auth-subtext mb-0">Update your admin account settings</p>
+    </div>
+
+    <div class="card-body">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'auth-form admin-registration-form' }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="mb-3">
+          <%= f.label :email, class: 'form-label' %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control form-control-lg', placeholder: 'Enter admin email address' %>
+          </div>
         </div>
-        <div class="card-body">
-          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-            <%= render "devise/shared/error_messages", resource: resource %>
 
-            <div class="form-group">
-              <%= f.label :email, class: "form-label" %>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
-            </div>
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <i class="fas fa-info-circle mr-2"></i>
+            Currently waiting confirmation for: <%= resource.unconfirmed_email %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
 
-            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-              <div class="alert alert-info">
-                Currently waiting confirmation for: <%= resource.unconfirmed_email %>
-              </div>
+        <div class="mb-3">
+          <%= f.label :password, "New password", class: 'form-label' %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <%= f.password_field :password, autocomplete: "new-password", class: 'form-control form-control-lg', placeholder: 'Leave blank if you don\'t want to change it' %>
+          </div>
+          <small class="form-text text-muted">
+            <i class="fas fa-info-circle"></i> Leave blank if you don't want to change it
+            <% if @minimum_password_length %>
+              <br/>
+              <i class="fas fa-shield-alt"></i> <%= @minimum_password_length %> characters minimum
             <% end %>
+          </small>
+        </div>
 
-            <div class="form-group">
-              <%= f.label :password, "New password", class: "form-label" %>
-              <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-              <small class="form-text text-muted">
-                Leave blank if you don't want to change it
-                <% if @minimum_password_length %>
-                  <br/>
-                  <%= @minimum_password_length %> characters minimum
-                <% end %>
-              </small>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :password_confirmation, "Confirm new password", class: "form-label" %>
-              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :current_password, class: "form-label" %>
-              <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
-              <small class="form-text text-muted">
-                We need your current password to confirm your changes
-              </small>
-            </div>
-
-            <div class="form-group text-center">
-              <%= f.submit "Update", class: "btn btn-primary" %>
-            </div>
-          <% end %>
-
-          <hr class="my-4">
-
-          <div class="text-center">
-            <h4 class="mb-3">Cancel Account</h4>
-            <p class="text-muted mb-3">Permanently delete your account and all associated data.</p>
-            <%= button_to "Delete Account", registration_path(resource_name), 
-                data: { confirm: "Are you sure you want to delete your account? This action cannot be undone." },
-                method: :delete, 
-                class: "btn btn-danger" %>
-          </div>
-
-          <div class="text-center mt-3">
-            <%= link_to "Back", :back, class: "text-muted" %>
+        <div class="mb-3">
+          <%= f.label :password_confirmation, "Confirm new password", class: 'form-label' %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control form-control-lg', placeholder: 'Confirm your new password' %>
           </div>
         </div>
+
+        <div class="mb-4">
+          <%= f.label :current_password, class: 'form-label' %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-key"></i></span>
+            <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control form-control-lg', placeholder: 'Enter current password to confirm changes', required: true %>
+          </div>
+          <small class="form-text text-muted">
+            <i class="fas fa-info-circle"></i> We need your current password to confirm your changes
+          </small>
+        </div>
+
+        <%= f.submit 'Update Account', class: 'btn btn-auth-primary w-100' %>
+      <% end %>
+
+      <hr class="my-4">
+
+      <div class="text-center">
+        <h5 class="mb-3">Cancel Account</h5>
+        <p class="text-muted mb-3">Permanently delete your account and all associated data.</p>
+        <%= button_to "Delete Account", registration_path(resource_name), 
+            data: { confirm: "Are you sure you want to delete your account? This action cannot be undone." },
+            method: :delete, 
+            class: "btn btn-danger" %>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="auth-links">
+        <%= link_to "Back", :back, class: 'auth-subtext' %>
+        <span class="auth-divider"></span>
+        <%= link_to "Back to Site", root_path, class: 'auth-subtext' %>
       </div>
     </div>
   </div>
-</div> 
+</div>
+
+<style>
+.admin-registration-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.admin-registration-form .input-group-text {
+  background: #f8f9fa;
+  border-right: none;
+  color: #dc3545;
+}
+
+.admin-registration-form .form-control {
+  border-left: none;
+}
+
+.admin-registration-form .form-control:focus {
+  border-left: 1px solid #dc3545;
+  box-shadow: none;
+}
+
+.admin-registration-form .input-group .form-control:focus ~ .input-group-text {
+  border-color: #dc3545;
+}
+</style> 
