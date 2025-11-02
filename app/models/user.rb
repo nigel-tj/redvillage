@@ -22,6 +22,11 @@ class User < ActiveRecord::Base
   validates :role, presence: true
 
   before_validation :set_default_role, on: :create
+  
+  # Ticket associations
+  has_many :ticket_listings, dependent: :destroy
+  has_many :standard_tickets
+  has_many :vip_tickets
 
   # Scopes for role-based queries
   scope :djs, -> { where(role: :dj) }

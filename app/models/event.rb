@@ -2,6 +2,7 @@ class Event < ActiveRecord::Base
   has_many :standard_tickets
   has_many :vip_tickets
   has_many :users
+  has_many :ticket_listings, dependent: :destroy
   include ImageUploader::Attachment(:image)
 
   def formatted_start_time

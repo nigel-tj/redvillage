@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_02_140006) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_02_155824) do
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -257,6 +257,26 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_140006) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ticket_listings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "event_id", null: false
+    t.string "ticket_type", default: "standard", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.integer "quantity", default: 1, null: false
+    t.integer "sold_quantity", default: 0, null: false
+    t.text "description"
+    t.string "status", default: "available", null: false
+    t.decimal "original_price", precision: 10, scale: 2
+    t.string "currency", default: "USD", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id", "status"], name: "index_ticket_listings_on_event_id_and_status"
+    t.index ["event_id"], name: "index_ticket_listings_on_event_id"
+    t.index ["ticket_type"], name: "index_ticket_listings_on_ticket_type"
+    t.index ["user_id", "status"], name: "index_ticket_listings_on_user_id_and_status"
+    t.index ["user_id"], name: "index_ticket_listings_on_user_id"
+  end
+
   create_table "tracks", force: :cascade do |t|
     t.string "title"
     t.integer "artist_id"
@@ -320,6 +340,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_140006) do
   add_foreign_key "profiles", "users"
   add_foreign_key "standard_tickets", "events"
   add_foreign_key "standard_tickets", "users"
+  add_foreign_key "ticket_listings", "events"
+  add_foreign_key "ticket_listings", "users"
   add_foreign_key "vip_tickets", "events"
   add_foreign_key "vip_tickets", "users"
 end

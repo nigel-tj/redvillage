@@ -157,7 +157,12 @@
             <%= link_to 'Featured Event', event_new_look_path, class: "dropdown-item #{active_class(event_new_look_path)}" %>
             <%= link_to 'Featured Events', featured_events_path, class: "dropdown-item #{active_class(featured_events_path)}" %>
             <%= link_to 'All Events', events_list_new_look_path, class: "dropdown-item #{active_class(events_list_new_look_path)}" %>
+            <div class="dropdown-divider"></div>
+            <%= link_to '<i class="fas fa-ticket-alt"></i> Buy Tickets'.html_safe, ticket_listings_path, class: "dropdown-item #{active_class(ticket_listings_path)}" %>
           </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to '<i class="fas fa-ticket-alt"></i> Tickets'.html_safe, ticket_listings_path, class: "nav-link #{active_class(ticket_listings_path)}" %>
         </li>
         <li class="nav-item">
           <%= link_to 'Gallery', gallery_new_look_path, class: "nav-link #{active_class(gallery_new_look_path)}" %>
@@ -262,7 +267,12 @@
                                             <%= link_to 'Featured Event', event_new_look_path, class: "dropdown-item" %>
                                             <%= link_to 'Featured Events', featured_events_path, class: "dropdown-item" %>
                                             <%= link_to 'All Events', events_list_new_look_path, class: "dropdown-item" %>
+                                            <div class="dropdown-divider"></div>
+                                            <%= link_to '<i class="fas fa-ticket-alt"></i> Buy Tickets'.html_safe, ticket_listings_path, class: "dropdown-item" %>
                                         </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <%= link_to 'Tickets', ticket_listings_path, class: "nav-link" %>
                                     </li>
                                     <li class="nav-item">
                                         <%= link_to 'Gallery', gallery_new_look_path, class: "nav-link" %>
@@ -326,6 +336,12 @@
                 // Handle Events dropdown active state for both the featured and all events pages
                 if (currentUrl.includes('/event_new_look') || currentUrl.includes('/events_list_new_look') || currentUrl.includes('/featured_events')) {
                     $('#eventDropdown, #footerEventDropdown').addClass('active');
+                }
+                
+                // Handle Tickets navigation active state
+                if (currentUrl.includes('/ticket_listings')) {
+                    $('a[href="<%= ticket_listings_path %>"]').addClass('active');
+                    $('#eventDropdown').find('a[href="<%= ticket_listings_path %>"]').parent().parent().prev('a').addClass('active');
                 }
             });
         </script>

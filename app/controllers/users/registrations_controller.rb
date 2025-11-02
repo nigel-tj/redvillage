@@ -87,9 +87,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
       designer_dashboard_path
     when 'editor'
       editor_dashboard_path
+    when 'member'
+      # Members go to their dashboard with ticket marketplace
+      member_dashboard_path
     else
       # Regular members go to public site
-      root_path
+      ticket_listings_path
     end
   end
 end

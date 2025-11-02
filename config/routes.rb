@@ -24,7 +24,17 @@ Rails.application.routes.draw do
   resources :features
   resources :videos
   resources :artists
-  resources :events
+  resources :events do
+    resources :ticket_listings, only: [:index, :new]
+  end
+  resources :ticket_listings do
+    collection do
+      get 'my_tickets', to: 'ticket_listings#my_tickets', as: :my_tickets
+    end
+  end
+  
+  # Simple alias for my tickets - cleaner URL
+  get 'my_tickets', to: 'ticket_listings#my_tickets', as: :my_tickets
   
   # Profile routes
   resources :profiles, only: [:show, :edit, :update]
@@ -113,6 +123,7 @@ Rails.application.routes.draw do
   # Role-based dashboards
   get '/dashboard', to: 'dashboards#show', as: :dashboard
   get '/admin/dashboard', to: 'dashboards#admin', as: :admin_dashboard
+  get '/member/dashboard', to: 'dashboards#member', as: :member_dashboard
   get '/dj/dashboard', to: 'dashboards#dj', as: :dj_dashboard
   get '/artist/dashboard', to: 'dashboards#artist', as: :artist_dashboard
   get '/photographer/dashboard', to: 'dashboards#photographer', as: :photographer_dashboard

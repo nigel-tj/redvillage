@@ -1,0 +1,148 @@
+<% content_for :title, "Edit Ticket Listing | The Red Cup Village" %>
+
+<div class="container mt-4 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold mb-3">
+          <i class="fas fa-edit text-primary"></i> Edit Your Listing
+        </h1>
+        <p class="lead text-muted">
+          Update your ticket listing details
+        </p>
+      </div>
+
+      <div class="card shadow-lg">
+        <div class="card-body p-4">
+          <%= form_with model: @ticket_listing, local: true do |f| %>
+            <%= render 'shared/errors', object: @ticket_listing %>
+
+            <div class="mb-4">
+              <%= f.label :event_id, "Event", class: "form-label fw-bold" %>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">
+                  <i class="fas fa-calendar-alt"></i>
+                </span>
+                <%= f.collection_select :event_id, 
+                    @events, :id, :name, 
+                    {}, 
+                    { class: "form-select", disabled: true } %>
+              </div>
+              <small class="form-text text-muted">
+                Event cannot be changed once listing is created
+              </small>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :ticket_type, "Ticket Type", class: "form-label fw-bold" %>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="form-check ticket-type-card">
+                    <%= f.radio_button :ticket_type, "standard", 
+                        class: "form-check-input",
+                        checked: @ticket_listing.ticket_type == 'standard' %>
+                    <label class="form-check-label w-100 text-center p-3 border rounded" for="ticket_listing_ticket_type_standard">
+                      <i class="fas fa-ticket-alt fa-2x mb-2 text-primary"></i>
+                      <h5>Standard</h5>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check ticket-type-card">
+                    <%= f.radio_button :ticket_type, "vip", 
+                        class: "form-check-input",
+                        checked: @ticket_listing.ticket_type == 'vip' %>
+                    <label class="form-check-label w-100 text-center p-3 border rounded" for="ticket_listing_ticket_type_vip">
+                      <i class="fas fa-star fa-2x mb-2 text-warning"></i>
+                      <h5>VIP</h5>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <%= f.label :price, "Your Price", class: "form-label fw-bold" %>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">$</span>
+                  <%= f.number_field :price, 
+                      step: 0.01, 
+                      min: 0.01,
+                      class: "form-control", 
+                      required: true %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <%= f.label :original_price, "Original Price", class: "form-label fw-bold" %>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">$</span>
+                  <%= f.number_field :original_price, 
+                      step: 0.01, 
+                      min: 0.01,
+                      class: "form-control" %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <%= f.label :quantity, "Total Tickets", class: "form-label fw-bold" %>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">
+                    <i class="fas fa-ticket-alt"></i>
+                  </span>
+                  <%= f.number_field :quantity, 
+                      min: 1, 
+                      max: 100,
+                      class: "form-control", 
+                      required: true %>
+                </div>
+                <small class="form-text text-muted">
+                  Cannot be less than <%= @ticket_listing.sold_quantity %> (already sold)
+                </small>
+              </div>
+              <div class="col-md-6">
+                <%= f.label :currency, "Currency", class: "form-label fw-bold" %>
+                <%= f.select :currency, 
+                    [["USD ($)", "USD"], ["EUR (€)", "EUR"], ["GBP (£)", "GBP"]], 
+                    {}, 
+                    { class: "form-select form-select-lg" } %>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :status, "Status", class: "form-label fw-bold" %>
+              <%= f.select :status, 
+                  [["Available", "available"], ["Pending", "pending"], ["Sold", "sold"], ["Expired", "expired"]], 
+                  {}, 
+                  { class: "form-select form-select-lg" } %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :description, "Description", class: "form-label fw-bold" %>
+              <%= f.text_area :description, 
+                  rows: 5,
+                  class: "form-control" %>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <%= link_to ticket_listing_path(@ticket_listing), class: "btn btn-outline-secondary btn-lg" do %>
+                <i class="fas fa-times"></i> Cancel
+              <% end %>
+              <%= f.submit "Update Listing", class: "btn btn-primary btn-lg px-5" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.ticket-type-card .form-check-input:checked + .form-check-label {
+  border-color: #0d6efd !important;
+  background-color: #f0f7ff;
+}
+</style>
+

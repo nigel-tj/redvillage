@@ -1,0 +1,439 @@
+<!-- ticket marketplace begin -->
+<section class="ticket-marketplace-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-8">
+                <div class="section-title text-center">
+                    <span class="sub-title">Ticket Marketplace</span>
+                    <h2>Buy & Sell Event Tickets</h2>
+                    <p class="text-center">
+                        Find amazing deals on tickets or sell your extra tickets to fellow party-goers
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="row mb-5">
+            <div class="col-xl-12">
+                <div class="filter-box">
+                    <%= form_with url: ticket_listings_path, method: :get, local: true, class: "filter-form" do |f| %>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <%= f.text_field :search, value: params[:search], 
+                                    placeholder: "Search events...", 
+                                    class: "form-control" %>
+                            </div>
+                            <div class="col-md-3">
+                                <%= f.select :event_id, 
+                                    options_from_collection_for_select(@events || Event.order(:date), :id, :name, params[:event_id]), 
+                                    { prompt: "All Events" }, 
+                                    { class: "form-control" } %>
+                            </div>
+                            <div class="col-md-2">
+                                <%= f.select :ticket_type, 
+                                    [["All Types", ""], ["Standard", "standard"], ["VIP", "vip"]], 
+                                    { selected: params[:ticket_type] }, 
+                                    { class: "form-control" } %>
+                            </div>
+                            <div class="col-md-2">
+                                <%= f.select :sort, 
+                                    [["Newest", "newest"], ["Price: Low to High", "price_asc"], ["Price: High to Low", "price_desc"]], 
+                                    { selected: params[:sort] || "newest" }, 
+                                    { class: "form-control" } %>
+                            </div>
+                            <div class="col-md-1">
+                                <%= f.submit "Search", class: "btn btn-primary w-100" %>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <% if user_signed_in? %>
+            <div class="row mb-4">
+                <div class="col-xl-12 text-center">
+                    <%= link_to new_ticket_listing_path, class: "btn btn-primary btn-lg" do %>
+                        <i class="fas fa-plus-circle"></i> Sell Your Tickets
+                    <% end %>
+                    <%= link_to my_tickets_path, class: "btn btn-outline-primary btn-lg" do %>
+                        <i class="fas fa-list"></i> My Listings
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+
+        <!-- Event Context Banner -->
+        <% if @event %>
+            <div class="row mb-4">
+                <div class="col-xl-12">
+                    <div class="event-banner-alert">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h5>
+                                    <i class="fas fa-calendar-alt"></i> <%= @event.name %>
+                                </h5>
+                                <p class="mb-0">
+                                    <% if @event.date %>
+                                        <%= @event.date.strftime("%B %d, %Y") %>
+                                    <% end %>
+                                    <% if @event.venue %>
+                                        • <i class="fas fa-map-marker-alt"></i> <%= @event.venue %>
+                                    <% end %>
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <%= link_to "View All Events", ticket_listings_path, class: "btn btn-outline-light" %>
+                                <% if user_signed_in? %>
+                                    <%= link_to "Sell Tickets", new_event_ticket_listing_path(@event), class: "btn btn-light" %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+
+        <!-- Ticket Listings Grid -->
+        <% if @ticket_listings.any? %>
+            <div class="row">
+                <% @ticket_listings.each do |listing| %>
+                    <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+                        <div class="single-ticket-card">
+                            <% if listing.event&.image %>
+                                <div class="ticket-image">
+                                    <%= image_tag shrine_image_url(listing.event, :image, :medium) || shrine_image_url(listing.event, :image), alt: listing.event.name %>
+                                    <div class="ticket-badge">
+                                        <% if listing.ticket_type == 'vip' %>
+                                            <span class="vip-badge">
+                                                <i class="fas fa-star"></i> VIP
+                                            </span>
+                                        <% else %>
+                                            <span class="standard-badge">Standard</span>
+                                        <% end %>
+                                        <% if listing.has_discount? %>
+                                            <span class="discount-badge">
+                                                -<%= listing.discount_percentage %>% OFF
+                                            </span>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            <% else %>
+                                <div class="ticket-image-placeholder">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <h5><%= listing.event&.name || "Event" %></h5>
+                                </div>
+                            <% end %>
+
+                            <div class="ticket-content">
+                                <h4>
+                                    <%= link_to listing.event.name, ticket_listing_path(listing), class: "ticket-link" %>
+                                </h4>
+                                <p class="seller-info">
+                                    <i class="fas fa-user"></i> Sold by <%= listing.user.name %>
+                                </p>
+                                
+                                <% if listing.description.present? %>
+                                    <p class="ticket-description">
+                                        <%= truncate(listing.description, length: 100) %>
+                                    </p>
+                                <% end %>
+
+                                <div class="ticket-details">
+                                    <div class="ticket-price-info">
+                                        <span class="price-main"><%= listing.formatted_price %></span>
+                                        <% if listing.has_discount? %>
+                                            <span class="price-original"><%= listing.formatted_original_price %></span>
+                                        <% end %>
+                                        <small>per ticket</small>
+                                    </div>
+                                    <div class="ticket-availability">
+                                        <span class="available-count <%= listing.is_available? ? 'available' : 'sold-out' %>">
+                                            <%= listing.available_quantity %>/<%= listing.quantity %>
+                                        </span>
+                                        <small>Available</small>
+                                    </div>
+                                </div>
+
+                                <div class="ticket-action">
+                                    <% if listing.is_available? %>
+                                        <%= link_to "View Details", ticket_listing_path(listing), class: "btn btn-primary w-100" %>
+                                    <% else %>
+                                        <button class="btn btn-secondary w-100" disabled>Sold Out</button>
+                                    <% end %>
+                                </div>
+
+                                <div class="ticket-footer">
+                                    <small>
+                                        <i class="fas fa-clock"></i> Listed <%= time_ago_in_words(listing.created_at) %> ago
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        <% else %>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="empty-state text-center py-5">
+                        <i class="fas fa-ticket-alt fa-4x mb-3"></i>
+                        <h3>No tickets found</h3>
+                        <p class="mb-4">
+                            <% if params[:search] || params[:event_id] || params[:ticket_type] %>
+                                Try adjusting your search filters or
+                            <% end %>
+                            <% if user_signed_in? %>
+                                <%= link_to "be the first to list tickets", new_ticket_listing_path, class: "btn btn-primary" %>
+                            <% else %>
+                                <%= link_to "create an account", new_user_registration_path, class: "btn btn-primary" %> to start selling
+                            <% end %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</section>
+<!-- ticket marketplace end -->
+
+<style>
+.ticket-marketplace-section {
+    padding: 100px 0;
+}
+
+.filter-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+
+.filter-form .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 12px 20px;
+}
+
+.filter-form .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-form .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ff1493;
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 20, 147, 0.25);
+}
+
+.single-ticket-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.single-ticket-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 20, 147, 0.3);
+}
+
+.ticket-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.ticket-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.single-ticket-card:hover .ticket-image img {
+    transform: scale(1.1);
+}
+
+.ticket-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vip-badge, .standard-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.vip-badge {
+    background: #ffc107;
+    color: #000;
+}
+
+.standard-badge {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.discount-badge {
+    background: #dc3545;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ticket-image-placeholder {
+    height: 250px;
+    background: linear-gradient(135deg, #ff1493 0%, #ffc107 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.ticket-image-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.ticket-content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ticket-content h4 {
+    margin-bottom: 10px;
+}
+
+.ticket-link {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.ticket-link:hover {
+    color: #ff1493;
+}
+
+.seller-info {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.ticket-description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.ticket-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ticket-price-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-main {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff1493;
+}
+
+.price-original {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+}
+
+.ticket-price-info small {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+}
+
+.ticket-availability {
+    text-align: right;
+}
+
+.available-count {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.available-count.available {
+    color: #28a745;
+}
+
+.available-count.sold-out {
+    color: #dc3545;
+}
+
+.ticket-action {
+    margin-bottom: 15px;
+}
+
+.ticket-footer {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    text-align: center;
+}
+
+.event-banner-alert {
+    background: linear-gradient(135deg, #ff1493 0%, #ffc107 100%);
+    padding: 20px 30px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.event-banner-alert h5 {
+    margin-bottom: 5px;
+}
+
+.empty-state {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-state i {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .ticket-marketplace-section {
+        padding: 50px 0;
+    }
+    
+    .filter-box {
+        padding: 20px;
+    }
+    
+    .filter-form .row > div {
+        margin-bottom: 10px;
+    }
+}
+</style>

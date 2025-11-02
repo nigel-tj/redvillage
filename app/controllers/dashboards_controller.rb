@@ -26,13 +26,18 @@ class DashboardsController < ApplicationController
       artists_count: Artist.count,
       lifestyles_count: Lifestyle.count,
       events_count: Event.count,
-      banners_count: MainBanner.count
+      banners_count: MainBanner.count,
+      ticket_listings_count: TicketListing.count,
+      available_tickets_count: TicketListing.available.count,
+      sold_tickets_count: TicketListing.where(status: 'sold').count,
+      total_revenue: TicketListing.where(status: 'sold').sum { |t| t.price * t.sold_quantity }
     }
     
     @recent_galleries = Gallery.order(created_at: :desc).limit(5)
     @recent_features = Feature.order(created_at: :desc).limit(5)
     @recent_tracks = Track.order(created_at: :desc).limit(5)
     @recent_events = Event.order(created_at: :desc).limit(5)
+    @recent_ticket_listings = TicketListing.includes(:user, :event).order(created_at: :desc).limit(5)
     
     render :admin, layout: 'admin'
   end
@@ -166,6 +171,20 @@ class DashboardsController < ApplicationController
     render :editor, layout: 'admin'
   end
 
+  # Member dashboard - ticket marketplace focused
+  def member
+    @user = current_user
+    @ticket_listings = current_user.ticket_listings.includes(:event).order(created_at: :desc).limit(5)
+    @available_count = current_user.ticket_listings.available.count
+    @sold_count = current_user.ticket_listings.where(status: 'sold').count
+    @total_revenue = current_user.ticket_listings.where(status: 'sold')
+                                   .sum { |t| t.price * t.sold_quantity }
+    @upcoming_events = Event.where("date >= ?", Date.today).order(date: :asc).limit(5)
+    @marketplace_tickets = TicketListing.available.includes(:event, :user).order(created_at: :desc).limit(6)
+    
+    render :member, layout: 'admin'
+  end
+
   # Generic dashboard route that redirects based on role
   def show
     redirect_to dashboard_path_for(current_user)
@@ -191,6 +210,8 @@ class DashboardsController < ApplicationController
       designer_dashboard_path
     when 'editor'
       editor_dashboard_path
+    when 'member'
+      member_dashboard_path
     else
       root_path
     end

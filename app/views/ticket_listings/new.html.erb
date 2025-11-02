@@ -1,0 +1,242 @@
+<% content_for :title, "List Your Tickets | The Red Cup Village" %>
+
+<div class="container mt-4 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Header -->
+      <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold mb-3">
+          <i class="fas fa-ticket-alt text-primary"></i> List Your Tickets
+        </h1>
+        <p class="lead text-muted">
+          Turn your extra tickets into cash! Create a listing and start selling today.
+        </p>
+      </div>
+
+      <!-- Info Banner -->
+      <div class="alert alert-info mb-4">
+        <h5 class="alert-heading">
+          <i class="fas fa-lightbulb"></i> Quick Tips
+        </h5>
+        <ul class="mb-0">
+          <li>Set competitive prices to sell faster</li>
+          <li>Add a detailed description to attract buyers</li>
+          <li>Be honest about ticket condition and availability</li>
+          <li>Respond quickly to buyer inquiries</li>
+        </ul>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card shadow-lg">
+        <div class="card-body p-4">
+          <%= form_with model: @ticket_listing, local: true, class: "ticket-listing-form" do |f| %>
+            <%= render 'shared/errors', object: @ticket_listing %>
+
+            <!-- Event Selection -->
+            <div class="mb-4">
+              <%= f.label :event_id, "Select Event", class: "form-label fw-bold" %>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">
+                  <i class="fas fa-calendar-alt"></i>
+                </span>
+                <%= f.collection_select :event_id, 
+                    @events, :id, :name, 
+                    { prompt: "Choose an event..." }, 
+                    { class: "form-select", required: true } %>
+              </div>
+              <small class="form-text text-muted">
+                Select the event these tickets are for
+              </small>
+            </div>
+
+            <!-- Ticket Type -->
+            <div class="mb-4">
+              <%= f.label :ticket_type, "Ticket Type", class: "form-label fw-bold" %>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="form-check ticket-type-card">
+                    <%= f.radio_button :ticket_type, "standard", 
+                        class: "form-check-input", 
+                        checked: @ticket_listing.ticket_type == 'standard' || @ticket_listing.ticket_type.blank?,
+                        required: true %>
+                    <label class="form-check-label w-100 text-center p-3 border rounded" for="ticket_listing_ticket_type_standard">
+                      <i class="fas fa-ticket-alt fa-2x mb-2 text-primary"></i>
+                      <h5>Standard</h5>
+                      <small class="text-muted">Regular admission tickets</small>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check ticket-type-card">
+                    <%= f.radio_button :ticket_type, "vip", 
+                        class: "form-check-input",
+                        checked: @ticket_listing.ticket_type == 'vip',
+                        required: true %>
+                    <label class="form-check-label w-100 text-center p-3 border rounded" for="ticket_listing_ticket_type_vip">
+                      <i class="fas fa-star fa-2x mb-2 text-warning"></i>
+                      <h5>VIP</h5>
+                      <small class="text-muted">Premium access tickets</small>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Information -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <%= f.label :price, "Your Price", class: "form-label fw-bold" %>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">$</span>
+                  <%= f.number_field :price, 
+                      step: 0.01, 
+                      min: 0.01,
+                      class: "form-control", 
+                      placeholder: "0.00",
+                      required: true,
+                      id: "ticket-price" %>
+                </div>
+                <small class="form-text text-muted">
+                  Price per ticket (in USD)
+                </small>
+              </div>
+              <div class="col-md-6">
+                <%= f.label :original_price, "Original Price (Optional)", class: "form-label fw-bold" %>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">$</span>
+                  <%= f.number_field :original_price, 
+                      step: 0.01, 
+                      min: 0.01,
+                      class: "form-control", 
+                      placeholder: "0.00",
+                      id: "ticket-original-price" %>
+                </div>
+                <small class="form-text text-muted">
+                  Original price to show discount
+                </small>
+              </div>
+            </div>
+
+            <!-- Quantity -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <%= f.label :quantity, "Total Tickets", class: "form-label fw-bold" %>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">
+                    <i class="fas fa-ticket-alt"></i>
+                  </span>
+                  <%= f.number_field :quantity, 
+                      min: 1, 
+                      max: 100,
+                      class: "form-control", 
+                      placeholder: "1",
+                      required: true %>
+                </div>
+                <small class="form-text text-muted">
+                  How many tickets are you selling?
+                </small>
+              </div>
+              <div class="col-md-6">
+                <%= f.label :currency, "Currency", class: "form-label fw-bold" %>
+                <%= f.select :currency, 
+                    [["USD ($)", "USD"], ["EUR (€)", "EUR"], ["GBP (£)", "GBP"]], 
+                    {}, 
+                    { class: "form-select form-select-lg" } %>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4">
+              <%= f.label :description, "Description", class: "form-label fw-bold" %>
+              <%= f.text_area :description, 
+                  rows: 5,
+                  class: "form-control", 
+                  placeholder: "Tell buyers about your tickets... (e.g., seat location, any special conditions, why you're selling, etc.)" %>
+              <small class="form-text text-muted">
+                Help buyers make an informed decision. Be detailed and honest!
+              </small>
+            </div>
+
+            <!-- Preview Box -->
+            <div class="card bg-light mb-4" id="preview-box" style="display: none;">
+              <div class="card-body">
+                <h5 class="card-title">Preview</h5>
+                <div id="preview-content"></div>
+              </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <%= link_to ticket_listings_path, class: "btn btn-outline-secondary btn-lg" do %>
+                <i class="fas fa-times"></i> Cancel
+              <% end %>
+              <%= f.submit "Create Listing", class: "btn btn-primary btn-lg px-5" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.ticket-type-card .form-check-input:checked + .form-check-label {
+  border-color: #0d6efd !important;
+  background-color: #f0f7ff;
+}
+
+.ticket-type-card label {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ticket-type-card label:hover {
+  border-color: #0d6efd !important;
+  transform: translateY(-2px);
+}
+
+.form-label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Auto-fill price from event if available
+  const eventSelect = document.querySelector('#ticket_listing_event_id');
+  const priceField = document.querySelector('#ticket-price');
+  const ticketTypeRadios = document.querySelectorAll('input[name="ticket_listing[ticket_type]"]');
+  
+  function updatePriceFromEvent() {
+    if (eventSelect && eventSelect.value) {
+      // This would need to fetch event data via AJAX in a real scenario
+      // For now, we'll rely on server-side pre-filling
+    }
+  }
+  
+  if (eventSelect) {
+    eventSelect.addEventListener('change', updatePriceFromEvent);
+  }
+  
+  // Show discount calculation
+  const originalPriceField = document.querySelector('#ticket-original-price');
+  const priceInput = document.querySelector('#ticket-price');
+  
+  function calculateDiscount() {
+    const original = parseFloat(originalPriceField.value) || 0;
+    const current = parseFloat(priceInput.value) || 0;
+    
+    if (original > 0 && current > 0 && original > current) {
+      const discount = ((original - current) / original * 100).toFixed(0);
+      // Show discount badge or indicator
+    }
+  }
+  
+  if (originalPriceField && priceInput) {
+    originalPriceField.addEventListener('input', calculateDiscount);
+    priceInput.addEventListener('input', calculateDiscount);
+  }
+});
+</script>
+
