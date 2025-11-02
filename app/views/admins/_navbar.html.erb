@@ -8,20 +8,21 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">RED VILLAGE</a>
+      <a class="navbar-brand" href="/admin">RED VILLAGE ADMIN</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-left">
+        <li><a href="/admin">Dashboard</a></li>
         <li class="hvr-underline-from-center dropdown">
           <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
             Gallery
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_gallery_upload">Create gallery</a></li>
-            <li><a href="/galleries">All galleries</a></li>
+            <li><%= link_to "Create gallery", new_gallery_path %></li>
+            <li><%= link_to "All galleries", galleries_path %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -30,8 +31,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_feature_upload">New news article</a></li>
-            <li><a href="/admin_index">All news articles</a></li>
+            <li><%= link_to "New news article", new_feature_path %></li>
+            <li><%= link_to "All news articles", '/admin_index' %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -40,8 +41,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_video_upload">Upload video</a></li>
-            <li><a href="/all_videos">All videos</a></li>
+            <li><%= link_to "Upload video", new_video_upload_path %></li>
+            <li><%= link_to "All videos", all_videos_path %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -50,8 +51,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_music_upload">Upload new track</a></li>
-            <li><a href="/tracks">All music</a></li>
+            <li><%= link_to "Upload new track", new_track_path %></li>
+            <li><%= link_to "All music", '/admin_all_music' %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -60,8 +61,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_album_upload">Upload new album</a></li>
-            <li><a href="/admin_album_index">All albums</a></li>
+            <li><%= link_to "Upload new album", new_album_path %></li>
+            <li><%= link_to "All albums", '/admin_album_index' %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -70,8 +71,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_artist_upload">Add new artist</a></li>
-            <li><a href="/admin_artist_index">All artists</a></li>
+            <li><%= link_to "Add new artist", new_artist_upload_path %></li>
+            <li><%= link_to "All artists", '/admin_artist_index' %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -80,8 +81,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_lifestyle_upload">New lifestyle article</a></li>
-            <li><a href="/lifestyle_admin_index">All lifestyle articles</a></li>
+            <li><%= link_to "New lifestyle article", new_lifestyle_upload_path %></li>
+            <li><%= link_to "All lifestyle articles", '/lifestyle_admin_index' %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -90,8 +91,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_banner_upload">Upload new banner</a></li>
-            <li><a href="/banners_index">All banners</a></li>
+            <li><%= link_to "Upload new banner", new_banner_upload_path %></li>
+            <li><%= link_to "All banners", banners_index_path %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -100,8 +101,8 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_event_upload">New event</a></li>
-            <li><a href="/admin_all_events">All events</a></li>
+            <li><%= link_to "New event", new_event_upload_path %></li>
+            <li><%= link_to "All events", admin_all_events_path %></li>
           </ul>
         </li>
         <li class="hvr-underline-from-center dropdown">
@@ -110,10 +111,12 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/new_store_upload">New store</a></li>
-            <li><a href="#">All stores</a></li>
+            <li><%= link_to "New store", new_store_upload_path %></li>
+            <li><%= link_to "All stores", stores_path %></li>
           </ul>
-        <li><a href="/">Goto Front-End</a></li>
+        </li>
+        <li><%= link_to "Front-End", root_path %></li>
+        <li><%= link_to "Logout", destroy_admin_session_path, method: :delete %></li>
       </ul>
     </div>
   </div>

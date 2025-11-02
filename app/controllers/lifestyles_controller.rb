@@ -4,8 +4,10 @@ class LifestylesController < ApplicationController
   def index
     @lifestyle = Lifestyle.order('created_at DESC')
   end
+
   def lifestyle_admin_index
     @lifestyle = Lifestyle.order('created_at DESC')
+    render :index
   end
   def new
     @lifestyle = Lifestyle.new
@@ -14,14 +16,11 @@ class LifestylesController < ApplicationController
   def create
     @lifestyle = Lifestyle.new(lifestyle_params)
     if @lifestyle.save
-      flash[:notice] = "Successfully created article."
-      redirect_to "/lifestyle_admin_index"
+      flash[:notice] = "Successfully created lifestyle article."
+      redirect_to '/lifestyle_admin_index'
     else
-      render :action => 'new'
+      render :new
     end
-  end
-
-  def update
   end
 
   

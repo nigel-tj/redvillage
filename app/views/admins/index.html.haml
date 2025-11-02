@@ -1,18 +1,97 @@
-<%= javascript_include_tag "/scripts/jquery.panorama_viewer.js" %>
-<%= stylesheet_link_tag "/css/panorama_viewer.css" %>
+.container-fluid.mt-4
+  .row
+    .col-md-12
+      %h1.mb-4 Admin Dashboard
+      %p Welcome to the Red Cup Village Admin Panel
 
-<div class="panorama">
-  <img src="/images/demo_photo.jpg" />
-</div>
+  .row.mb-4
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Galleries
+          %h2= @galleries_count
+          %a.btn.btn-primary.btn-sm{href: galleries_path} Manage
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title News Articles
+          %h2= @features_count
+          %a.btn.btn-primary.btn-sm{href: '/admin_index'} Manage
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Videos
+          %h2= @videos_count
+          %a.btn.btn-primary.btn-sm{href: all_videos_path} Manage
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Music Tracks
+          %h2= @tracks_count
+          %a.btn.btn-primary.btn-sm{href: '/admin_all_music'} Manage
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $(".panorama").panorama_viewer({
-      repeat: true,              // The image will repeat when the user scroll reach the bounding box. The default value is false.
-      direction: "horizontal",    // Let you define the direction of the scroll. Acceptable values are "horizontal" and "vertical". The default value is horizontal.
-      animationTime: 700,         // This allows you to set the easing time when the image is being dragged. Set this to 0 to make it instant. The default value is 700.
-      easing: "ease-out",         // You can define the easing options here. This option accepts CSS easing options. Available options are "ease", "linear", "ease-in", "ease-out", "ease-in-out", and "cubic-bezier(...))". The default value is "ease-out".
-      overlay: true               // Toggle this to false to hide the initial instruction overlay
-    });
-  });
-</script>
+  .row.mb-4
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Albums
+          %h2= @albums_count
+          %a.btn.btn-primary.btn-sm{href: '/admin_album_index'} Manage
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Artists
+          %h2= @artists_count
+          %a.btn.btn-primary.btn-sm{href: '/admin_artist_index'} Manage
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Lifestyle
+          %h2= @lifestyles_count
+          %a.btn.btn-primary.btn-sm{href: '/lifestyle_admin_index'} Manage
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Events
+          %h2= @events_count
+          %a.btn.btn-primary.btn-sm{href: admin_all_events_path} Manage
+
+  .row
+    .col-md-4
+      .card
+        .card-header Recent Galleries
+        .card-body
+          - if @recent_galleries.any?
+            %ul.list-group.list-group-flush
+              - @recent_galleries.each do |gallery|
+                %li.list-group-item
+                  = link_to gallery.name, gallery_path(gallery)
+                  %small.text-muted= time_ago_in_words(gallery.created_at)
+          - else
+            %p.text-muted No galleries yet.
+
+    .col-md-4
+      .card
+        .card-header Recent News
+        .card-body
+          - if @recent_features.any?
+            %ul.list-group.list-group-flush
+              - @recent_features.each do |feature|
+                %li.list-group-item
+                  = link_to feature.heading, feature_path(feature)
+                  %small.text-muted= time_ago_in_words(feature.created_at)
+          - else
+            %p.text-muted No news articles yet.
+
+    .col-md-4
+      .card
+        .card-header Recent Tracks
+        .card-body
+          - if @recent_tracks.any?
+            %ul.list-group.list-group-flush
+              - @recent_tracks.each do |track|
+                %li.list-group-item
+                  = link_to track.title, track_path(track)
+                  %small.text-muted= time_ago_in_words(track.created_at)
+          - else
+            %p.text-muted No tracks yet.

@@ -36,27 +36,31 @@ class TracksController < ApplicationController
   end
 
   def create
-    if(params[:track].include? "album_id")
-      
-      @tracks = params[:track][:tracks]
-      @album_id = params[:track][:album_id]
-      @title = params[:track][:title]
-      @artist_name = params[:track][:artist_name]
-      @tracks.each do |track|
-        @track =Track.new
-        @track.album_id = @album_id
-        @track.title = @title
-        @track.artist_name = @artist_name
-        @track.save
+    track_params_data = track_params
+    if track_params_data[:album_id].present?
+      tracks = track_params_data[:tracks]
+      album_id = track_params_data[:album_id]
+      title = track_params_data[:title]
+      artist_name = track_params_data[:artist_name]
+
+      if tracks.present?
+        tracks.each do |track|
+          @track = Track.new
+          @track.album_id = album_id
+          @track.title = title
+          @track.artist_name = artist_name
+          @track.track = track
+          @track.save
+        end
       end
       redirect_to '/admin_album_index'
     else
-      @track = Track.new(track_params)
+      @track = Track.new(track_params_data)
       if @track.save
         flash[:notice] = "Successfully uploaded track."
         redirect_to '/admin_all_music'
       else
-        render :action => 'new'
+        render :new
       end
     end
   end
@@ -73,9 +77,9 @@ class TracksController < ApplicationController
     @track = Track.find(params[:id])
     if @track.update_attributes(track_params)
       flash[:notice] = "Successfully updated track."
-      redirect_to '/tracks'
+      redirect_to tracks_path
     else
-      render :action => 'edit'
+      render :edit
     end
   end
 

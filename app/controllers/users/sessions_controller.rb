@@ -1,27 +1,11 @@
 class Users::SessionsController < Devise::SessionsController
-  before_filter :configure_sign_in_params, only: [:create]
+  layout "authentication"
 
-  # GET /resource/sign_in
-  def new
-    super
+  before_action :configure_sign_in_params, only: [:create]
+
+  private
+
+  def configure_sign_in_params
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :password, :remember_me])
   end
-
-  # POST /resource/sign_in
-  def create
-    user_password = params[:session][:password]
-    user_email = params[:session][:email]
-    user = user_email.present? && User.find_by(email: user_email)
-    
-    if user.valid_password? user_password
-      sign_in user, store: false
-      user.save
-    end
-
-  end
-
-  # DELETE /resource/sign_out
-  def destroy
-    super
-  end
-
 end

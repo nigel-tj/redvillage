@@ -41,13 +41,12 @@ class GalleriesController < ApplicationController
 
   def update
     @gallery = Gallery.find(params[:id])
-    if @gallery.update_attributes(params[:gallery])
+    if @gallery.update_attributes(gallery_params)
       flash[:notice] = "Successfully updated gallery."
-      redirect_to gallery_url
+      redirect_to @gallery
     else
-      render :action => 'edit'
+      render :edit
     end
-    render :layout => 'admin'
   end
 
   def destroy

@@ -265,7 +265,7 @@ end
 
 # Configure Devise layouts
 Rails.application.config.to_prepare do
-  Devise::SessionsController.layout "new_look_layout"
-  Devise::RegistrationsController.layout "new_look_layout"
-  Devise::PasswordsController.layout "new_look_layout"
+  Devise::SessionsController.layout "authentication"
+  Devise::RegistrationsController.layout "authentication"
+  Devise::PasswordsController.layout "authentication"
 end

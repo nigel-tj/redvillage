@@ -1,74 +1,40 @@
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card shadow-lg border-0 rounded-lg">
-        <div class="card-header bg-gradient-primary text-white text-center py-4">
-          <h2 class="mb-0">
-            <i class="fas fa-sign-in-alt mr-2"></i>
-            Welcome Back
-          </h2>
-          <p class="mb-0 mt-2">Sign in to your account</p>
-        </div>
-        <div class="card-body p-4">
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'user' }) do |f| %>
-            <div class="form-group mb-4">
-              <%= f.label :email, class: 'form-label text-dark font-weight-bold' %>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control form-control-lg', placeholder: 'Enter your email address' %>
-            </div>
+<% content_for :title, "Sign In | The Red Cup Village" %>
 
-            <div class="form-group mb-4">
-              <%= f.label :password, class: 'form-label text-dark font-weight-bold' %>
-              <%= f.password_field :password, autocomplete: "current-password", class: 'form-control form-control-lg', placeholder: 'Enter your password' %>
-            </div>
+<div class="card auth-card">
+  <div class="card-header text-center">
+    <h2 class="mb-2">
+      <i class="fas fa-sign-in-alt mr-2"></i>
+      Welcome Back
+    </h2>
+    <p class="auth-subtext mb-0">Sign in to your account</p>
+  </div>
 
-            <% if devise_mapping.rememberable? %>
-              <div class="form-check mb-4">
-                <%= f.check_box :remember_me, class: 'form-check-input' %>
-                <%= f.label :remember_me, class: 'form-check-label text-muted' do %>
-                  Remember me
-                <% end %>
-              </div>
-            <% end %>
-
-            <div class="form-group mb-4">
-              <%= f.submit "Sign In", class: 'btn btn-primary btn-lg btn-block font-weight-bold' %>
-            </div>
-          <% end %>
-
-          <hr class="my-4">
-
-          <div class="text-center">
-            <%= render "devise/shared/links" %>
-          </div>
-        </div>
+  <div class="card-body">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'auth-form' }) do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, class: 'form-label' %>
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control form-control-lg', placeholder: 'Enter your email address' %>
       </div>
+
+      <div class="mb-3">
+        <%= f.label :password, class: 'form-label' %>
+        <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control form-control-lg', placeholder: 'Enter your password' %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check mb-4 d-flex align-items-center">
+          <%= f.check_box :remember_me, class: 'form-check-input me-2' %>
+          <%= f.label :remember_me, class: 'form-check-label mb-0 auth-subtext' %>
+        </div>
+      <% end %>
+
+      <%= f.submit 'Sign In', class: 'btn btn-auth-primary w-100' %>
+    <% end %>
+  </div>
+
+  <div class="card-footer">
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
     </div>
   </div>
 </div>
-
-<style>
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.card {
-  border-radius: 15px;
-  overflow: hidden;
-}
-
-.form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-</style>

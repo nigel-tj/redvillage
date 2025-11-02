@@ -5,9 +5,10 @@ class FeaturesController < ApplicationController
   def index
     @features = Feature.order('created_at DESC')
   end
-  
+
   def admin_index
     @features = Feature.order('created_at DESC')
+    render :index
   end
   
   def new
@@ -17,10 +18,10 @@ class FeaturesController < ApplicationController
   def create
     @feature = Feature.new(feature_params)
     if @feature.save
-      flash[:notice] = "Successfully created gallery."
-      redirect_to "/admin_index"
+      flash[:notice] = "Successfully created feature."
+      redirect_to '/admin_index'
     else
-      render :action => 'new'
+      render :new
     end
   end
 

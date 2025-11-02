@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title><%= content_for?(:title) ? yield(:title) : "The Red Cup Village" %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= favicon_link_tag "favicon.ico" %>
+    <%= stylesheet_link_tag "new_look/bootstrap.min", media: "all" %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+  </head>
+  <body class="auth-body">
+    <div class="auth-wrapper <%= content_for?(:auth_wrapper_class) ? yield(:auth_wrapper_class) : "" %>">
+      <div class="auth-brand text-center mb-4">
+        <%= link_to root_path, class: "auth-logo d-inline-flex align-items-center justify-content-center" do %>
+          <%= image_tag "new_look/logo.png", alt: "Red Cup Village", class: "auth-logo-img" %>
+        <% end %>
+      </div>
+
+      <% if flash.any? %>
+        <div class="auth-messages mb-3">
+          <%= render "layouts/messages" %>
+        </div>
+      <% end %>
+
+      <main class="auth-content">
+        <%= yield %>
+      </main>
+    </div>
+
+    <%= javascript_include_tag "new_look/jquery" %>
+    <%= javascript_include_tag "new_look/bootstrap.min" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+  </body>
+</html>
+

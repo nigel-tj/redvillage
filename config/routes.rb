@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   # Devise routes for user authentication
-  devise_for :admin_users
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
   devise_for :admins, controllers: {
     sessions: 'admins/sessions',
     passwords: 'admins/passwords',
@@ -88,6 +90,7 @@ Rails.application.routes.draw do
   get '/admin_all_music', to: 'tracks#admin_all_music'
   get '/admin_artist_index', to: 'artists#admin_artist_index'
   get '/new_album_upload', to: 'albums#new'
+  get '/admin', to: 'admins#index'
   get '/admins', to: 'galleries#new'
   get '/admin_all_events', to: 'events#admin_all_events', as: :admin_all_events
   get '/events_list_new_look', to: 'visitors#events_list_new_look'

@@ -26,8 +26,11 @@ gem 'coffee-script', '~> 2.4'
 group :development, :test do
   gem 'sqlite3', '~> 1.4'
   gem 'byebug'
-  gem 'web-console', '>= 4.0.0'
   gem 'spring'
+end
+
+group :development do
+  gem 'web-console', '>= 4.0.0'
 end
 
 # For JavaScript Asset Management

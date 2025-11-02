@@ -13,12 +13,13 @@ class AlbumsController < ApplicationController
 
   def show
     @album = Album.find(params[:id])
-    @album.tracks = Track.where(:album_id => params[:id])    
+    @album_tracks = Track.where(album_id: params[:id])
   end
 
   def admin_show_album
     @album = Album.find(params[:id])
-    @album.tracks = Track.where(:album_id => params[:id])
+    @album_tracks = Track.where(album_id: params[:id])
+    render :show
   end
 
   def new
@@ -29,9 +30,9 @@ class AlbumsController < ApplicationController
     @album = Album.new(album_params)
     if @album.save
       flash[:notice] = "Successfully created album."
-      render :action => '/admin_show_album'
+      redirect_to admin_show_album_path(@album)
     else
-      render :action => 'new'
+      render :new
     end
   end
 
@@ -41,20 +42,19 @@ class AlbumsController < ApplicationController
 
   def update
     @album = Album.find(params[:id])
-    if @album.update_attributes(params[:album])
+    if @album.update_attributes(album_params)
       flash[:notice] = "Successfully updated album."
-      redirect_to album_url
+      redirect_to @album
     else
-      render :action => 'edit'
+      render :edit
     end
-    render :layout => 'admin'
   end
 
   def destroy
     @album = Album.find(params[:id])
     @album.destroy
     flash[:notice] = "Successfully destroyed album."
-    redirect_to galleries_url
+    redirect_to albums_path
   end
 
   private
