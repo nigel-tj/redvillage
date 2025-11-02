@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Red Cup Village - Admin</title>
-    <meta content="initial-scale=1.0, width=device-width" name="viewport" />
-    <link href="/images/favicon.ico" rel="icon" type="image/x-icon" />
-    <link href="/css/bootstrap-admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/css/admin-styles.css" rel="stylesheet" type="text/css" />
-    <link href="/css/font-awesome.css" rel="stylesheet" type="text/css" />
-    <link href="/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
+
+    <!-- favicon -->
+    <%= favicon_link_tag 'favicon.ico' %>
+
+    <!-- Admin Styles -->
+    <%= stylesheet_link_tag 'admin/admin-styles', media: 'all' %>
+    <%= stylesheet_link_tag 'font-awesome-sass', media: 'all' %>
+
     <%= csrf_meta_tags %>
     <%= javascript_include_tag 'application' %>
-  </head>
+</head>
   <body class="<%= devise_controller? ? 'auth-page' : '' %>" id="wrapper" data-spy="scroll" data-target="#bs-example-navbar-collapse-1">
     <div id="loader">
       <div class="loader"></div>
@@ -48,9 +53,9 @@
     <% unless devise_controller? %>
       <%= render 'admins/footer_button' %>
     <% end %>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <!-- Admin JavaScripts -->
+    <%= javascript_include_tag 'jquery-rails' %>
+    <%= javascript_include_tag 'bootstrap' %>
   </body>
 </html> 

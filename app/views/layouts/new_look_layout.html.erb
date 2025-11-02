@@ -37,7 +37,7 @@
             min-width: 180px;
             margin-top: 10px;
         }
-        
+
         .dropdown-item {
             color: #fff;
             padding: 12px 20px;
@@ -45,19 +45,14 @@
             font-size: 14px;
             transition: all 0.3s;
         }
-        
+
         .dropdown-item:last-child {
             border-bottom: none;
         }
-        
+
         .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
             background-color: #ff1493;
             color: #fff;
-        }
-        
-        .dropdown-toggle::after {
-            margin-left: 0.5em;
-            vertical-align: 0.1em;
         }
         
         /* Mobile dropdown styles */
@@ -107,12 +102,6 @@
                                     <% end %>
                                 </div>
                             </div>
-                            <div class="d-xl-none d-lg-none d-block col-6">
-                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <i class="fas fa-bars"></i>
-                                </button>
-                            </div>
                         </div>
                     </div>
                     <div class="col-xl-8 col-lg-8">
@@ -151,6 +140,28 @@
         <li class="nav-item">
           <%= link_to 'Contact', contact_us_path, class: "nav-link #{active_class(contact_us_path)}" %>
         </li>
+      </ul>
+
+      <!-- Authentication Links -->
+      <ul class="navbar-nav">
+        <% if user_signed_in? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-user"></i> Account
+            </a>
+            <div class="dropdown-menu" aria-labelledby="userDropdown">
+              <%= link_to 'Profile', edit_user_registration_path, class: "dropdown-item" %>
+              <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+            </div>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Login', new_user_session_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Register', new_user_registration_path, class: "nav-link" %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </nav>

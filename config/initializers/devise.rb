@@ -15,6 +15,9 @@ Devise.setup do |config|
   # Configure the class responsible to send e-mails.
    config.mailer = 'Devise::Mailer'
 
+  # Configure the parent mailer.
+  config.parent_mailer = 'ActionMailer::Base'
+
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
@@ -258,4 +261,11 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.secret_key = '482eff324eec43b437b51e0be229c90dcc915dbff12e9644b704dee7f85f3788412c38010154fcb33e94ff0e1e70b7c4765d312d0827384b761a4ac16eb19359'
+end
+
+# Configure Devise layouts
+Rails.application.config.to_prepare do
+  Devise::SessionsController.layout "new_look_layout"
+  Devise::RegistrationsController.layout "new_look_layout"
+  Devise::PasswordsController.layout "new_look_layout"
 end

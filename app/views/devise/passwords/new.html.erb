@@ -1,0 +1,62 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-gradient-primary text-white text-center py-4">
+          <h2 class="mb-0">
+            <i class="fas fa-key mr-2"></i>
+            Forgot Your Password?
+          </h2>
+          <p class="mb-0 mt-2">We'll send you reset instructions</p>
+        </div>
+        <div class="card-body p-4">
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'user' }) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
+
+            <div class="form-group mb-4">
+              <%= f.label :email, class: 'form-label text-dark font-weight-bold' %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control form-control-lg', placeholder: 'Enter your email address' %>
+            </div>
+
+            <div class="form-group mb-4">
+              <%= f.submit "Send Reset Instructions", class: 'btn btn-primary btn-lg btn-block font-weight-bold' %>
+            </div>
+          <% end %>
+
+          <hr class="my-4">
+
+          <div class="text-center">
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+</style>
