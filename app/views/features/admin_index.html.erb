@@ -4,22 +4,111 @@
     </div>
   </div>
 </div>
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <h1>Features</h1>
-      <p><%= link_to "New Feature", new_feature_path %></p>
-      <% if @features.any? %>
-        <% for feature in @features %>
-          <div class="col-md-4" style="height:250px">
-            <h4><%= feature.heading %></h4>
-            <%= image_tag feature.image_url(:thumb) if feature.image? %>
-            <p><%= feature.intro %></p>
-            <p><%= feature.link %></p>
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <div class="row mb-4">
+        <div class="col-sm-8">
+          <h1 class="card-title">FEATURES</h1>
+        </div>
+        <div class="col-sm-4 text-right">
+          <%= link_to "Add New Feature", new_feature_path, class: "btn btn-success" %>
+        </div>
+      </div>
+      
+      <div class="row">
+        <% if @features.any? %>
+          <% @features.each do |feature| %>
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <% if feature.image? %>
+                  <%= image_tag feature.image_url(:thumb), class: "card-img-top", alt: feature.heading %>
+                <% else %>
+                  <div class="bg-light text-center py-5">No Image</div>
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= feature.heading %></h5>
+                  <p class="card-text"><%= truncate(feature.intro, length: 100) %></p>
+                  <p class="card-text">
+                    <small class="text-muted">
+                      <%= link_to "View Article", feature.link, target: "_blank" %>
+                    </small>
+                  </p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                  <div class="d-flex justify-content-between">
+                    <%= link_to "View", feature_path(feature), class: "btn btn-success" %>
+                    <%= link_to "Edit", edit_feature_path(feature), class: "btn btn-primary" %>
+                    <%= button_to feature_path(feature),
+                        method: :delete, 
+                        form: { 
+                          data: { turbo_confirm: "Are you sure you want to delete this feature?" },
+                          class: "d-inline-block m-0" 
+                        },
+                        class: "btn btn-danger" do %>
+                      Delete
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="row">
+            <div class="col-12 text-center py-5">
+              <p class="text-muted">No features found. Click "Add New Feature" to create your first feature.</p>
+            </div>
           </div>
         <% end %>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  .card {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .card-footer {
+    padding: 1rem 1.5rem 1.5rem;
+  }
+  
+  .card-title {
+    margin-bottom: 1rem;
+  }
+  
+  form.d-inline-block {
+    display: inline-block !important;
+  }
+  
+  .card-footer .btn {
+    min-width: 80px;
+  }
+</style>
 

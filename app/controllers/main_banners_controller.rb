@@ -4,15 +4,6 @@ class MainBannersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_designer_or_admin, only: [:new, :create, :update, :edit, :destroy, :index]
   layout "admin", only: [:new, :create, :update, :edit, :index]
-  
-  private
-  
-  def require_designer_or_admin
-    unless current_user&.designer? || current_user&.admin? || current_user&.curator? || current_user&.editor?
-      flash[:alert] = "You need designer, curator, editor, or admin access to perform this action."
-      redirect_to root_path
-    end
-  end
 
   def index
     @banners = if params[:page].present?
@@ -62,6 +53,14 @@ class MainBannersController < ApplicationController
   end
 
   private
+  
+  def require_designer_or_admin
+    unless current_user&.designer? || current_user&.admin? || current_user&.curator? || current_user&.editor?
+      flash[:alert] = "You need designer, curator, editor, or admin access to perform this action."
+      redirect_to root_path
+    end
+  end
+  
   def main_banner_params
     params.require(:main_banner).permit(:name,:title,:image, :page, :ticket_promo)
   end

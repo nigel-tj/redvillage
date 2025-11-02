@@ -5,14 +5,6 @@ class EventsController < ApplicationController
   before_action :require_admin_or_dj, only: [:new, :create, :update, :edit, :destroy]
   layout "admin", only: [:new, :create, :update,  :admin_all_events, :admin_show_event, :edit]
   
-  private
-  
-  def require_admin_or_dj
-    unless current_user&.admin? || current_user&.dj?
-      flash[:alert] = "You need to be an admin or DJ to perform this action."
-      redirect_to root_path
-    end
-  end
   def index
     @events = Event.order('created_at DESC')  
   end
@@ -73,6 +65,14 @@ class EventsController < ApplicationController
   end
 
   private
+  
+  def require_admin_or_dj
+    unless current_user&.admin? || current_user&.dj?
+      flash[:alert] = "You need to be an admin or DJ to perform this action."
+      redirect_to root_path
+    end
+  end
+  
   def event_params
     params.require(:event).permit(:name, :image, :summary, :date, :start_time, :venue, :featured, :standard_ticket_price, :vip_ticket_price, :currency)  
   end

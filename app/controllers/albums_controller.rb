@@ -4,15 +4,6 @@ class AlbumsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_admin_or_artist, only: [:new, :create, :update, :edit, :destroy]
   layout "admin", only: [:new, :create, :update, :admin_show_album, :admin_album_index]
-  
-  private
-  
-  def require_admin_or_artist
-    unless current_user&.admin? || current_user&.artist?
-      flash[:alert] = "You need to be an admin or artist to perform this action."
-      redirect_to root_path
-    end
-  end
 
   def index
     @albums = Album.all
@@ -69,6 +60,14 @@ class AlbumsController < ApplicationController
   end
 
   private
+  
+  def require_admin_or_artist
+    unless current_user&.admin? || current_user&.artist?
+      flash[:alert] = "You need to be an admin or artist to perform this action."
+      redirect_to root_path
+    end
+  end
+  
   def album_params
     params.require(:album).permit(:name,:cover, :artist_name, :artist_id)
   end

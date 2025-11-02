@@ -5,15 +5,6 @@ class TracksController < ApplicationController
   before_action :require_admin_or_artist, only: [:new, :create, :update, :edit, :destroy]
   layout "admin", only: [:new, :create, :update, :admin_all_music, :index, :edit]
   
-  private
-  
-  def require_admin_or_artist
-    unless current_user&.admin? || current_user&.artist?
-      flash[:alert] = "You need to be an admin or artist to perform this action."
-      redirect_to root_path
-    end
-  end
-  
   def index
     @tracks = Track.order('created_at DESC')
     @artists = Artist.order('created_at DESC')
@@ -95,8 +86,22 @@ class TracksController < ApplicationController
     end
   end
 
+  def destroy
+    @track = Track.find(params[:id])
+    @track.destroy
+    flash[:notice] = "Successfully deleted track."
+    redirect_to '/admin_all_music'
+  end
 
   private
+  
+  def require_admin_or_artist
+    unless current_user&.admin? || current_user&.artist?
+      flash[:alert] = "You need to be an admin or artist to perform this action."
+      redirect_to root_path
+    end
+  end
+  
   def track_params
     params.require(:track).permit(:title,:intro,:thumb,:track,:image,:category,:album_id, :artist_name, :tracks)
   end
