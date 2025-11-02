@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_02_181649) do
   create_table "ad_spots", force: :cascade do |t|
     t.string "name", null: false
     t.string "page", null: false
@@ -83,6 +83,29 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
 #   Unknown type 'category' for column 'string'
 
 
+  create_table "cart_items", force: :cascade do |t|
+    t.integer "cart_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id", "product_id"], name: "index_cart_items_on_cart_id_and_product_id", unique: true
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "store_id", null: false
+    t.string "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_carts_on_session_id"
+    t.index ["store_id"], name: "index_carts_on_store_id"
+    t.index ["user_id", "store_id"], name: "index_carts_on_user_id_and_store_id"
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
   create_table "dowload_logs", force: :cascade do |t|
     t.integer "download_id"
     t.datetime "download_date", precision: nil
@@ -134,6 +157,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "heading"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "galleries", force: :cascade do |t|
@@ -194,6 +228,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
     t.boolean "ticket_promo"
   end
 
+  create_table "malls", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "address"
+    t.string "contact_email"
+    t.string "contact_phone"
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "music_banners", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -202,6 +247,82 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity", null: false
+    t.decimal "unit_price", precision: 10, scale: 2, null: false
+    t.decimal "total_price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "store_id", null: false
+    t.integer "user_id", null: false
+    t.string "status", default: "pending", null: false
+    t.decimal "total_amount", precision: 10, scale: 2, null: false
+    t.string "currency", default: "USD", null: false
+    t.text "shipping_address"
+    t.text "billing_address"
+    t.string "shipping_name"
+    t.string "shipping_phone"
+    t.string "stripe_payment_intent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_orders_on_status"
+    t.index ["store_id"], name: "index_orders_on_store_id"
+    t.index ["stripe_payment_intent_id"], name: "index_orders_on_stripe_payment_intent_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.string "currency", default: "USD", null: false
+    t.string "status", default: "pending", null: false
+    t.string "stripe_charge_id"
+    t.string "stripe_payment_intent_id"
+    t.string "payment_method"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id"
+    t.index ["status"], name: "index_payments_on_status"
+    t.index ["stripe_payment_intent_id"], name: "index_payments_on_stripe_payment_intent_id"
+  end
+
+  create_table "product_images", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.string "image"
+    t.string "alt_text"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["position"], name: "index_product_images_on_position"
+    t.index ["product_id"], name: "index_product_images_on_product_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.integer "store_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.string "sku"
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.decimal "compare_at_price", precision: 10, scale: 2
+    t.integer "inventory_quantity", default: 0, null: false
+    t.decimal "weight", precision: 8, scale: 2
+    t.string "status", default: "active", null: false
+    t.boolean "featured", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["featured"], name: "index_products_on_featured"
+    t.index ["sku"], name: "index_products_on_sku", unique: true
+    t.index ["status"], name: "index_products_on_status"
+    t.index ["store_id"], name: "index_products_on_store_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -287,6 +408,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
     t.index ["user_id"], name: "index_standard_tickets_on_user_id"
   end
 
+  create_table "storefront_settings", force: :cascade do |t|
+    t.integer "store_id", null: false
+    t.string "primary_color", default: "#007bff"
+    t.string "secondary_color", default: "#6c757d"
+    t.string "accent_color", default: "#28a745"
+    t.string "logo"
+    t.string "banner_image"
+    t.text "custom_css"
+    t.string "font_family", default: "Arial, sans-serif"
+    t.string "theme", default: "default", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["store_id"], name: "index_storefront_settings_on_store_id", unique: true
+  end
+
   create_table "stores", force: :cascade do |t|
     t.string "name"
     t.string "cover"
@@ -295,6 +431,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.integer "mall_id"
+    t.string "slug"
+    t.boolean "active", default: true, null: false
+    t.string "currency", default: "USD", null: false
+    t.index ["mall_id"], name: "index_stores_on_mall_id"
+    t.index ["slug"], name: "index_stores_on_slug", unique: true
+    t.index ["user_id"], name: "index_stores_on_user_id"
   end
 
   create_table "ticket_listings", force: :cascade do |t|
@@ -378,9 +522,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
   end
 
   add_foreign_key "ads", "ad_spots", on_delete: :restrict
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products"
+  add_foreign_key "carts", "stores"
+  add_foreign_key "carts", "users"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "stores"
+  add_foreign_key "orders", "users"
+  add_foreign_key "payments", "orders"
+  add_foreign_key "product_images", "products"
+  add_foreign_key "products", "stores"
   add_foreign_key "profiles", "users"
   add_foreign_key "standard_tickets", "events"
   add_foreign_key "standard_tickets", "users"
+  add_foreign_key "storefront_settings", "stores"
+  add_foreign_key "stores", "malls"
+  add_foreign_key "stores", "users"
   add_foreign_key "ticket_listings", "events"
   add_foreign_key "ticket_listings", "users"
   add_foreign_key "vip_tickets", "events"

@@ -1,0 +1,122 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">
+            <i class="fas fa-edit me-2"></i>
+            Edit Product
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_for [@store, @product], html: { multipart: true } do |f| %>
+            <%= render 'shared/errors', object: @product %>
+            
+            <div class="row">
+              <div class="col-md-8 mb-3">
+                <%= f.label :name, class: "form-label" %>
+                <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Product name' %>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <%= f.label :sku, "SKU (Optional)", class: "form-label" %>
+                <%= f.text_field :sku, class: 'form-control', placeholder: 'Product SKU' %>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :description, class: "form-label" %>
+              <%= f.text_area :description, class: 'form-control', rows: 4, placeholder: 'Product description' %>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <%= f.label :price, class: "form-label" %>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <%= f.number_field :price, class: 'form-control', step: 0.01, min: 0, required: true, placeholder: '0.00' %>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <%= f.label :compare_at_price, "Compare at Price (Optional)", class: "form-label" %>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <%= f.number_field :compare_at_price, class: 'form-control', step: 0.01, min: 0, placeholder: '0.00' %>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <%= f.label :inventory_quantity, class: "form-label" %>
+                <%= f.number_field :inventory_quantity, class: 'form-control', min: 0, required: true %>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :weight, "Weight (Optional)", class: "form-label" %>
+                <div class="input-group">
+                  <%= f.number_field :weight, class: 'form-control', step: 0.01, min: 0, placeholder: '0.00' %>
+                  <span class="input-group-text">lbs</span>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <%= f.label :status, class: "form-label" %>
+                <%= f.select :status, options_for_select([['Active', 'active'], ['Inactive', 'inactive'], ['Out of Stock', 'out_of_stock']], @product.status), {}, { class: 'form-select' } %>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="form-check">
+                <%= f.check_box :featured, class: 'form-check-input' %>
+                <%= f.label :featured, "Feature this product", class: 'form-check-label' %>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <h5>Product Images</h5>
+              <% if @product.product_images.any? %>
+                <div class="row mb-3">
+                  <% @product.product_images.ordered.each do |img| %>
+                    <div class="col-md-3 mb-2">
+                      <div class="card">
+                        <%= image_tag img.image_url(:thumbnail) || img.image, class: "card-img-top", style: "height: 150px; object-fit: cover;" %>
+                        <div class="card-body p-2">
+                          <small class="text-muted">Position: <%= img.position %></small>
+                          <%= link_to store_product_product_image_path(@store, @product, img), method: :delete, 
+                              class: "btn btn-sm btn-danger w-100 mt-1", 
+                              confirm: "Remove this image?" do %>
+                            <i class="fas fa-trash"></i> Remove
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+              
+              <%= form_with url: store_product_product_images_path(@store, @product), method: :post, local: true, html: { multipart: true } do |f| %>
+                <div class="mb-3">
+                  <%= f.label :image, "Add Image", class: "form-label" %>
+                  <%= f.file_field :image, class: 'form-control', accept: 'image/*', name: 'product_image[image]' %>
+                </div>
+                <div class="mb-3">
+                  <%= f.label :alt_text, "Alt Text (Optional)", class: "form-label" %>
+                  <%= f.text_field :alt_text, class: 'form-control', placeholder: 'Image description', name: 'product_image[alt_text]' %>
+                </div>
+                <%= f.submit 'Add Image', class: 'btn btn-outline-primary' %>
+              <% end %>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Cancel', store_product_path(@store, @product), class: 'btn btn-secondary' %>
+              <%= f.submit 'Update Product', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

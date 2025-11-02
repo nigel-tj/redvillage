@@ -1,0 +1,68 @@
+<%= storefront_css(@store) %>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h3 class="mb-0"><i class="fas fa-shipping-fast me-2"></i>Shipping Information</h3>
+        </div>
+        <div class="card-body">
+          <%= form_for [@store, @order], local: true do |f| %>
+            <%= render 'shared/errors', object: @order %>
+            
+            <div class="mb-3">
+              <%= f.label :shipping_name, "Full Name", class: "form-label" %>
+              <%= f.text_field :shipping_name, class: 'form-control', required: true, placeholder: 'John Doe' %>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :shipping_phone, "Phone Number", class: "form-label" %>
+              <%= f.text_field :shipping_phone, class: 'form-control', required: true, placeholder: '+1 234 567 8900' %>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :shipping_address, "Shipping Address", class: "form-label" %>
+              <%= f.text_area :shipping_address, class: 'form-control', rows: 3, required: true, placeholder: 'Street address, City, State, ZIP Code' %>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :billing_address, "Billing Address (if different)", class: "form-label" %>
+              <%= f.text_area :billing_address, class: 'form-control', rows: 3, placeholder: 'Leave blank to use shipping address' %>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Back to Cart', store_cart_path(@store), class: 'btn btn-secondary' %>
+              <%= f.submit 'Continue to Payment', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Order Summary</h5>
+        </div>
+        <div class="card-body">
+          <% @order.order_items.each do |item| %>
+            <div class="d-flex justify-content-between mb-3">
+              <div>
+                <strong><%= item.product.name %></strong>
+                <br>
+                <small class="text-muted">Qty: <%= item.quantity %> × $<%= sprintf('%.2f', item.product.price) %></small>
+              </div>
+              <strong>$<%= sprintf('%.2f', item.total_price || (item.quantity * item.product.price)) %></strong>
+            </div>
+          <% end %>
+          <hr>
+          <div class="d-flex justify-content-between mb-3">
+            <strong>Total</strong>
+            <strong class="h5 text-primary">$<%= sprintf('%.2f', @order.total_amount || @order.order_items.sum { |item| item.total_price || (item.quantity * item.product.price) }) %></strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

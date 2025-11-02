@@ -172,6 +172,35 @@
       </li>
       <div class="collapse show" id="marketplaceSection">
       
+      <!-- Stores -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#storesMenu" aria-expanded="false">
+          <i class="fas fa-store"></i>
+          <span>Stores</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="storesMenu">
+          <li><%= link_to "All Stores", stores_path, class: 'nav-link' %></li>
+          <li><%= link_to "Create Store", new_store_path, class: 'nav-link' %></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><span class="nav-link-text"><small class="text-muted">Admin Tools</small></span></li>
+          <li><%= link_to "Manage All Stores", stores_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Malls -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#mallsMenu" aria-expanded="false">
+          <i class="fas fa-building"></i>
+          <span>Malls</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="mallsMenu">
+          <li><%= link_to "All Malls", malls_path, class: 'nav-link' %></li>
+          <li><%= link_to "Create Mall", new_mall_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+      
       <!-- Tickets -->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-toggle="collapse" href="#ticketsMenu" aria-expanded="false">
@@ -199,19 +228,6 @@
       </li>
       <div class="collapse show" id="adminSection">
       
-      <!-- Stores -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#storesMenu" aria-expanded="false">
-          <i class="fas fa-store"></i>
-          <span>Stores</span>
-          <i class="fas fa-chevron-down ms-auto"></i>
-        </a>
-        <ul class="nav collapse" id="storesMenu">
-          <li><%= link_to "New store", new_store_upload_path, class: 'nav-link' %></li>
-          <li><%= link_to "All stores", stores_path, class: 'nav-link' %></li>
-        </ul>
-      </li>
-
       <!-- Advertising -->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-toggle="collapse" href="#adsMenu" aria-expanded="false">

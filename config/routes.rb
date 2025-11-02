@@ -16,7 +16,55 @@ Rails.application.routes.draw do
   # Standard RESTful routes
   resources :lifestyles
   resources :albums
-  resources :stores
+  resources :stores do
+    collection do
+      get 'my_stores', to: 'stores#my_stores', as: :my_stores
+    end
+    member do
+      patch 'activate', to: 'stores#activate', as: :activate
+      patch 'deactivate', to: 'stores#deactivate', as: :deactivate
+    end
+    
+    # E-commerce nested routes
+    resources :products, except: [:index] do
+      collection do
+        get '', to: 'products#index', as: ''
+      end
+      resources :product_images, only: [:create, :destroy] do
+        member do
+          patch 'update_position', to: 'product_images#update_position'
+        end
+      end
+    end
+    
+    resource :cart, only: [:show] do
+      collection do
+        post 'add_item', to: 'carts#add_item'
+        patch 'update_item', to: 'carts#update_item'
+        delete 'remove_item', to: 'carts#remove_item'
+        delete 'clear', to: 'carts#clear'
+        get 'checkout', to: 'carts#checkout'
+      end
+    end
+    
+    resources :orders, except: [:edit] do
+      resources :payments, only: [:new, :create, :show] do
+        member do
+          get 'confirm', to: 'payments#confirm'
+        end
+      end
+    end
+    
+    resource :storefront_settings, only: [:show, :edit, :update] do
+      member do
+        get 'preview', to: 'storefront_settings#preview'
+      end
+    end
+    
+    # Store Dashboard
+    get 'dashboard', to: 'store_dashboards#show', as: :dashboard
+  end
+  resources :malls
   resources :tracks
   resources :main_banners
   resources :galleries
@@ -41,6 +89,9 @@ Rails.application.routes.draw do
   
   # Simple alias for my tickets - cleaner URL
   get 'my_tickets', to: 'ticket_listings#my_tickets', as: :my_tickets
+  
+  # Simple alias for my stores - cleaner URL
+  get 'my_stores', to: 'stores#my_stores', as: :my_stores
   
   # Profile routes
   resources :profiles, only: [:show, :edit, :update]
@@ -146,6 +197,9 @@ Rails.application.routes.draw do
   # Spree engine (ensure Spree is properly installed)
   #mount Spree::Core::Engine, at: '/mall'
 
+  # Stripe webhooks
+  post '/webhooks/stripe', to: 'webhooks#stripe'
+  
   # Root path
   root 'visitors#index'
 end

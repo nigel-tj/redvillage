@@ -45,5 +45,12 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem "puma"
 gem 'rqrcode_png'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+# Store management gems
+gem 'friendly_id', '~> 5.5' # For SEO-friendly URLs (store slugs)
+
+# E-commerce gems
+gem 'stripe', '~> 10.0' # Payment processing
+gem 'activemerchant', '~> 1.130' # Payment gateway abstraction
+gem 'money-rails', '~> 1.15' # Money handling and currency conversion
 
 

@@ -1,0 +1,509 @@
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="mb-0"><i class="fas fa-store me-2"></i><%= @store.name %> Dashboard</h1>
+          <p class="text-muted mb-0">Store Performance & Analytics</p>
+        </div>
+        <div>
+          <%= link_to "View Store", store_path(@store), class: "btn btn-outline-primary", target: "_blank" %>
+          <%= link_to "Manage Products", store_products_path(@store), class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-subtitle mb-2 text-white-50">Total Revenue</h6>
+              <h3 class="mb-0">$<%= number_with_delimiter(@stats[:total_revenue].round(2)) %></h3>
+            </div>
+            <i class="fas fa-dollar-sign fa-3x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-subtitle mb-2 text-white-50">Total Orders</h6>
+              <h3 class="mb-0"><%= @stats[:total_orders] %></h3>
+            </div>
+            <i class="fas fa-shopping-bag fa-3x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-subtitle mb-2 text-white-50">Products</h6>
+              <h3 class="mb-0"><%= @stats[:total_products] %></h3>
+              <small class="text-white-50"><%= @stats[:active_products] %> active</small>
+            </div>
+            <i class="fas fa-box fa-3x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-dark">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-subtitle mb-2 text-dark-50">Avg Order Value</h6>
+              <h3 class="mb-0">$<%= number_with_delimiter(@stats[:average_order_value].round(2)) %></h3>
+            </div>
+            <i class="fas fa-chart-line fa-3x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue Breakdown -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Revenue Overview</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="text-center">
+                <h6 class="text-muted">Today</h6>
+                <h4 class="text-primary">$<%= number_with_delimiter(@revenue_stats[:today].round(2)) %></h4>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="text-center">
+                <h6 class="text-muted">This Week</h6>
+                <h4 class="text-primary">$<%= number_with_delimiter(@revenue_stats[:this_week].round(2)) %></h4>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="text-center">
+                <h6 class="text-muted">This Month</h6>
+                <h4 class="text-primary">$<%= number_with_delimiter(@revenue_stats[:this_month].round(2)) %></h4>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="text-center">
+                <h6 class="text-muted">Last Month</h6>
+                <h4 class="text-primary">$<%= number_with_delimiter(@revenue_stats[:last_month].round(2)) %></h4>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="text-center">
+                <h6 class="text-muted">All Time</h6>
+                <h4 class="text-success">$<%= number_with_delimiter(@revenue_stats[:all_time].round(2)) %></h4>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="text-center">
+                <h6 class="text-muted">Customers</h6>
+                <h4 class="text-info"><%= @customer_stats[:total_customers] %></h4>
+                <small class="text-muted"><%= @customer_stats[:repeat_customers] %> repeat</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Revenue & Orders Trend (Last 30 Days)</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="revenueTrendsChart" height="80"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Orders by Status</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="ordersByStatusChart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Performance & Low Stock Alerts -->
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><i class="fas fa-star me-2"></i>Top Performing Products</h5>
+          <%= link_to "View All Products", store_products_path(@store), class: "btn btn-sm btn-outline-primary" %>
+        </div>
+        <div class="card-body">
+          <% if @top_products.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Sold</th>
+                    <th>Revenue</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @top_products.each do |product| %>
+                    <tr>
+                      <td>
+                        <strong><%= product.name %></strong>
+                        <% if product.featured? %>
+                          <span class="badge bg-warning text-dark ms-2">Featured</span>
+                        <% end %>
+                      </td>
+                      <td><%= product.total_sold || 0 %></td>
+                      <td><strong>$<%= number_with_delimiter((product.total_revenue || 0).round(2)) %></strong></td>
+                      <td>
+                        <% if product.in_stock? %>
+                          <span class="badge bg-success">In Stock</span>
+                        <% else %>
+                          <span class="badge bg-danger">Out of Stock</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <%= link_to store_product_path(@store, product), class: "btn btn-sm btn-outline-primary" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted text-center py-4">No products sold yet. Start adding products to see performance metrics!</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card border-warning">
+        <div class="card-header bg-warning">
+          <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Low Stock Alert</h5>
+        </div>
+        <div class="card-body">
+          <% if @low_stock_products.any? %>
+            <div class="list-group">
+              <% @low_stock_products.each do |product| %>
+                <%= link_to store_product_path(@store, product), class: "list-group-item list-group-item-action" do %>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <strong><%= product.name %></strong>
+                      <br>
+                      <small class="text-muted">Only <%= product.inventory_quantity %> left</small>
+                    </div>
+                    <span class="badge bg-danger"><%= product.inventory_quantity %></span>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+            <%= link_to "View All Products", store_products_path(@store), class: "btn btn-warning w-100 mt-3" %>
+          <% else %>
+            <p class="text-muted text-center py-4">
+              <i class="fas fa-check-circle fa-2x text-success mb-2"></i><br>
+              All products have adequate stock!
+            </p>
+          <% end %>
+        </div>
+      </div>
+      
+      <% if @stats[:out_of_stock] > 0 %>
+        <div class="card border-danger mt-3">
+          <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="fas fa-ban me-2"></i>Out of Stock (<%= @stats[:out_of_stock] %>)</h5>
+          </div>
+          <div class="card-body">
+            <p class="text-muted">You have <%= @stats[:out_of_stock] %> products out of stock.</p>
+            <%= link_to "Manage Inventory", store_products_path(@store, status: 'out_of_stock'), class: "btn btn-danger w-100" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Recent Orders & Quick Actions -->
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Recent Orders</h5>
+          <%= link_to "View All Orders", store_orders_path(@store), class: "btn btn-sm btn-outline-primary" %>
+        </div>
+        <div class="card-body">
+          <% if @recent_orders.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Order #</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @recent_orders.each do |order| %>
+                    <tr>
+                      <td><strong>#<%= order.id %></strong></td>
+                      <td><%= order.user.name %></td>
+                      <td><%= order.order_items.sum(:quantity) %> items</td>
+                      <td><strong>$<%= number_with_delimiter(order.total_amount.round(2)) %></strong></td>
+                      <td>
+                        <span class="badge bg-<%= 
+                          case order.status
+                          when 'delivered' then 'success'
+                          when 'shipped' then 'info'
+                          when 'processing' then 'primary'
+                          when 'cancelled' then 'danger'
+                          else 'warning'
+                          end
+                        %>">
+                          <%= order.status.titleize %>
+                        </span>
+                      </td>
+                      <td><%= order.created_at.strftime("%b %d, %Y") %></td>
+                      <td>
+                        <%= link_to store_order_path(@store, order), class: "btn btn-sm btn-outline-primary" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted text-center py-4">No orders yet. Orders will appear here once customers start purchasing!</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Quick Stats</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Conversion Rate</span>
+              <strong><%= @stats[:conversion_rate] %>%</strong>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar" role="progressbar" style="width: <%= [@stats[:conversion_rate], 100].min %>%"></div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Pending Orders</span>
+              <strong class="text-warning"><%= @stats[:pending_orders] %></strong>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Completed Orders</span>
+              <strong class="text-success"><%= @stats[:completed_orders] %></strong>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Total Customers</span>
+              <strong class="text-info"><%= @customer_stats[:total_customers] %></strong>
+            </div>
+          </div>
+          
+          <hr>
+          
+          <div class="d-grid gap-2">
+            <%= link_to "Add New Product", new_store_product_path(@store), class: "btn btn-primary" %>
+            <%= link_to "Customize Storefront", edit_store_storefront_settings_path(@store), class: "btn btn-outline-secondary" %>
+            <%= link_to "View Store Analytics", "#", class: "btn btn-outline-info", onclick: "alert('Advanced analytics coming soon!'); return false;" %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mt-3">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Notifications</h5>
+        </div>
+        <div class="card-body">
+          <% alerts = [] %>
+          <% alerts << { type: 'danger', message: "#{@stats[:out_of_stock]} products out of stock", action: store_products_path(@store) } if @stats[:out_of_stock] > 0 %>
+          <% alerts << { type: 'warning', message: "#{@stats[:low_stock]} products low on stock", action: store_products_path(@store) } if @stats[:low_stock] > 0 %>
+          <% alerts << { type: 'info', message: "#{@stats[:pending_orders]} pending orders", action: store_orders_path(@store) } if @stats[:pending_orders] > 0 %>
+          
+          <% if alerts.any? %>
+            <% alerts.each do |alert| %>
+              <div class="alert alert-<%= alert[:type] %> alert-dismissible fade show" role="alert">
+                <%= alert[:message] %>
+                <%= link_to "View", alert[:action], class: "btn btn-sm btn-<%= alert[:type] %> ms-2" %>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-muted text-center py-2">
+              <i class="fas fa-check-circle text-success"></i><br>
+              All systems operational!
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Revenue Trends Chart
+  const revenueTrendsCtx = document.getElementById('revenueTrendsChart');
+  if (revenueTrendsCtx) {
+    const trendsData = <%= @revenue_trends.to_json.html_safe %>;
+    
+    new Chart(revenueTrendsCtx, {
+      type: 'line',
+      data: {
+        labels: trendsData.map(d => d.date),
+        datasets: [
+          {
+            label: 'Revenue ($)',
+            data: trendsData.map(d => d.revenue),
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+            tension: 0.4,
+            yAxisID: 'y'
+          },
+          {
+            label: 'Orders',
+            data: trendsData.map(d => d.orders),
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            tension: 0.4,
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Revenue ($)'
+            }
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Orders'
+            },
+            grid: {
+              drawOnChartArea: false,
+            },
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                if (context.datasetIndex === 0) {
+                  return 'Revenue: $' + context.parsed.y.toFixed(2);
+                } else {
+                  return 'Orders: ' + context.parsed.y;
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Orders by Status Pie Chart
+  const ordersByStatusCtx = document.getElementById('ordersByStatusChart');
+  if (ordersByStatusCtx) {
+    const statusData = <%= @order_stats_by_status.to_json.html_safe %>;
+    const colors = {
+      pending: 'rgb(255, 206, 86)',
+      processing: 'rgb(54, 162, 235)',
+      shipped: 'rgb(75, 192, 192)',
+      delivered: 'rgb(75, 192, 75)',
+      cancelled: 'rgb(255, 99, 132)'
+    };
+    
+    new Chart(ordersByStatusCtx, {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(statusData).map(s => s.titleize),
+        datasets: [{
+          data: Object.values(statusData),
+          backgroundColor: Object.keys(statusData).map(s => colors[s] || 'rgb(201, 203, 207)'),
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.label + ': ' + context.parsed;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+</script>
+

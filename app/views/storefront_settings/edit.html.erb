@@ -1,0 +1,87 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">
+            <i class="fas fa-paint-brush me-2"></i>
+            Customize Storefront
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_for [@store, @storefront_settings], html: { multipart: true } do |f| %>
+            <%= render 'shared/errors', object: @storefront_settings %>
+            
+            <div class="row mb-4">
+              <div class="col-md-4 mb-3">
+                <%= f.label :primary_color, "Primary Color", class: "form-label" %>
+                <%= f.color_field :primary_color, class: 'form-control form-control-color', value: @storefront_settings.primary_color || '#007bff' %>
+                <small class="form-text text-muted">Main brand color</small>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <%= f.label :secondary_color, "Secondary Color", class: "form-label" %>
+                <%= f.color_field :secondary_color, class: 'form-control form-control-color', value: @storefront_settings.secondary_color || '#6c757d' %>
+                <small class="form-text text-muted">Secondary brand color</small>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <%= f.label :accent_color, "Accent Color", class: "form-label" %>
+                <%= f.color_field :accent_color, class: 'form-control form-control-color', value: @storefront_settings.accent_color || '#28a745' %>
+                <small class="form-text text-muted">Highlight color</small>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <%= f.label :theme, class: "form-label" %>
+                <%= f.select :theme, options_for_select(StorefrontSettings::THEMES.map { |t| [t.titleize, t] }, @storefront_settings.theme), {}, { class: 'form-select' } %>
+                <small class="form-text text-muted">Storefront layout theme</small>
+              </div>
+              
+              <div class="col-md-6">
+                <%= f.label :font_family, class: "form-label" %>
+                <%= f.text_field :font_family, class: 'form-control', placeholder: 'Arial, sans-serif' %>
+                <small class="form-text text-muted">CSS font family</small>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :logo, "Store Logo", class: "form-label" %>
+              <%= f.file_field :logo, class: 'form-control', accept: 'image/*' %>
+              <% if @storefront_settings.logo.present? %>
+                <div class="mt-2">
+                  <small class="text-muted">Current logo:</small><br>
+                  <%= image_tag @storefront_settings.logo, style: "max-height: 100px;", class: "mt-1" %>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :banner_image, "Banner Image", class: "form-label" %>
+              <%= f.file_field :banner_image, class: 'form-control', accept: 'image/*' %>
+              <% if @storefront_settings.banner_image.present? %>
+                <div class="mt-2">
+                  <small class="text-muted">Current banner:</small><br>
+                  <%= image_tag @storefront_settings.banner_image, style: "max-width: 300px; height: auto;", class: "mt-1" %>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="mb-3">
+              <%= f.label :custom_css, "Custom CSS", class: "form-label" %>
+              <%= f.text_area :custom_css, class: 'form-control', rows: 10, placeholder: '.custom-class { color: red; }' %>
+              <small class="form-text text-muted">Add custom CSS to further customize your storefront</small>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Cancel', store_storefront_settings_path(@store), class: 'btn btn-secondary' %>
+              <%= f.submit 'Save Settings', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

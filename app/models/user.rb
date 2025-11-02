@@ -27,6 +27,9 @@ class User < ActiveRecord::Base
   has_many :ticket_listings, dependent: :destroy
   has_many :standard_tickets
   has_many :vip_tickets
+  
+  # Store associations
+  has_many :stores, dependent: :destroy
 
   # Scopes for role-based queries
   scope :djs, -> { where(role: :dj) }
