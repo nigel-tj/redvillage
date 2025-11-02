@@ -4,7 +4,7 @@
       %strong Impersonating:
       = current_user.name
       (#{current_user.role})
-      = link_to "Stop Impersonating", stop_impersonating_path, method: :delete, class: "btn btn-sm btn-outline-danger ms-2"
+      = button_to "Stop Impersonating", stop_impersonating_path, method: :delete, class: "btn btn-sm btn-outline-danger ms-2"
       %button.btn-close{type: "button", "data-bs-dismiss": "alert", "aria-label": "Close"}
 
   .row.mb-4
@@ -155,7 +155,7 @@
                     = user.role.titleize
                   %small.text-muted.d-block= time_ago_in_words(user.created_at) + " ago"
                   - if user_signed_in? && current_user.admin? && user != current_user
-                    = link_to "Impersonate", impersonate_path(user), method: :post, class: "btn btn-sm btn-outline-primary mt-1"
+                    = button_to "Impersonate", impersonate_path(user), method: :post, class: "btn btn-sm btn-outline-primary mt-1"
           - else
             %p.text-muted No users yet.
 

@@ -225,7 +225,7 @@
               </span>
             </li>
             <li class="nav-item">
-              <%= link_to "Stop", stop_impersonating_path, method: :delete, class: 'nav-link btn btn-sm btn-danger' %>
+              <%= button_to "Stop", stop_impersonating_path, method: :delete, class: 'nav-link btn btn-sm btn-danger', form_class: 'd-inline' %>
             </li>
           <% end %>
           <li class="nav-item dropdown">

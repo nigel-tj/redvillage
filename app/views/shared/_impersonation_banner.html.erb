@@ -3,7 +3,7 @@
     <strong>⚠️ Impersonating:</strong> 
     You are currently viewing as <strong><%= current_user.name %></strong> (<%= current_user.role.titleize %>).
     Logged in as: <strong><%= original_user.name %></strong> (Admin).
-    <%= link_to "Stop Impersonating", stop_impersonating_path, method: :delete, class: "btn btn-sm btn-danger ms-2" %>
+    <%= button_to "Stop Impersonating", stop_impersonating_path, method: :delete, class: "btn btn-sm btn-danger ms-2" %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% end %>
