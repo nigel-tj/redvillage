@@ -150,16 +150,299 @@
   vertical-align: 0.255em;
 }
 
-/* Offset fixed-top navbar so content doesn't slide beneath it */
+/* Admin Sidebar Layout */
+.admin-body {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  background-color: #343a40;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.mobile-menu-toggle:hover {
+  background-color: #495057;
+}
+
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  background-color: #343a40;
+  color: #fff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-header {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-brand {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.1rem;
+  white-space: nowrap;
+}
+
+.sidebar-brand:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.sidebar-profile {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-icon {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.profile-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-role {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: capitalize;
+}
+
+.sidebar-nav {
+  padding: 1rem 0;
+}
+
+.sidebar-nav .nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-section-header {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+.nav-section-header:first-child {
+  margin-top: 0;
+}
+
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.sidebar-nav .nav-link i {
+  width: 20px;
+  text-align: center;
+  margin-right: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.sidebar-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.sidebar-nav .nav-link.collapsed .fa-chevron-down {
+  transition: transform 0.2s ease;
+}
+
+.sidebar-nav .nav-link:not(.collapsed) .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+.sidebar-nav .nav .nav {
+  background-color: rgba(0, 0, 0, 0.2);
+  margin-left: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.sidebar-nav .nav .nav .nav-link {
+  padding-left: 2.75rem;
+  font-size: 0.9rem;
+}
+
+.sidebar-nav .nav .nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-link.logout-link {
+  color: #dc3545;
+}
+
+.nav-link.logout-link:hover {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.nav-link-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Content area with sidebar */
 .admin-main-content {
-  margin-top: 100px; /* Space below fixed navbar */
+  margin-left: 260px;
+  flex: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease-in-out;
+  min-height: 100vh;
+}
+
+/* Footer is now inside admin-main-content so no separate margin needed */
+
+/* Mobile sidebar styles */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.sidebar-overlay.show {
+  display: block;
+}
+
+@media (max-width: 991.98px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .admin-sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .admin-main-content {
+    margin-left: 0;
+    padding-top: 4rem;
+  }
+  
+  .sidebar-overlay.show {
+    display: block;
+  }
 }
 
 /* Ensure flash alerts are positioned correctly */
 .admin-body .alert {
   position: relative;
   z-index: 1050;
-  margin-top: 10px;
+}
+
+/* Impersonation banner styles */
+.admin-body > .alert {
+  margin-left: 260px;
+  margin-bottom: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1051;
+  border-radius: 0;
+}
+
+@media (max-width: 991.98px) {
+  .admin-body > .alert {
+    margin-left: 0;
+  }
+}
+
+/* Adjust main content when impersonation banner is visible */
+.admin-body.impersonating .admin-main-content {
+  padding-top: 1rem;
+}
+
+/* Old navbar styles - keeping for reference but not used with sidebar */
+/* Offset fixed-top navbar so content doesn't slide beneath it */
+.navbar-admin-main-content {
+  margin-top: 100px; /* Space below fixed navbar */
 }
 
 /* Navbar responsive improvements */

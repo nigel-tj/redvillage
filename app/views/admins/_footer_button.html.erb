@@ -1,13 +1,259 @@
-<!-- Footer Section -->
-<div id="footer" class="module parallax parallax-footer">
-  <div id="copy-right">
-    <div class="container">
-      <div class="row text-center">
-        <p>
-          CopyRight &copy; 2015
-          <%= link_to 'Red Village', '#' %>
-        </p>
+<!-- Admin Dashboard Footer -->
+<footer id="admin-footer" class="admin-footer">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <!-- Quick Actions -->
+      <div class="col-md-8">
+        <div class="quick-actions">
+          <span class="quick-actions-label me-3">
+            <i class="fas fa-bolt text-warning"></i> Quick Actions:
+          </span>
+          <% if user_signed_in? && (current_user.admin? || current_user.photographer? || current_user.curator? || current_user.editor?) %>
+            <%= link_to new_gallery_path, class: 'quick-action-btn', title: 'Create Gallery' do %>
+              <i class="fas fa-images"></i>
+            <% end %>
+          <% end %>
+          <% if user_signed_in? && (current_user.admin? || current_user.curator? || current_user.editor?) %>
+            <%= link_to new_feature_path, class: 'quick-action-btn', title: 'Add News' do %>
+              <i class="fas fa-newspaper"></i>
+            <% end %>
+          <% end %>
+          <% if user_signed_in? && (current_user.admin? || current_user.videographer? || current_user.curator? || current_user.editor?) %>
+            <%= link_to new_video_upload_path, class: 'quick-action-btn', title: 'Upload Video' do %>
+              <i class="fas fa-video"></i>
+            <% end %>
+          <% end %>
+          <% if user_signed_in? && (current_user.admin? || current_user.artist?) %>
+            <%= link_to new_track_path, class: 'quick-action-btn', title: 'Add Music' do %>
+              <i class="fas fa-music"></i>
+            <% end %>
+          <% end %>
+          <% if user_signed_in? && (current_user.admin? || current_user.dj?) %>
+            <%= link_to new_event_upload_path, class: 'quick-action-btn', title: 'Create Event' do %>
+              <i class="fas fa-calendar-plus"></i>
+            <% end %>
+          <% end %>
+          <% if user_signed_in? && (current_user.admin? || current_user.member?) %>
+            <%= link_to new_ticket_listing_path, class: 'quick-action-btn', title: 'List Tickets' do %>
+              <i class="fas fa-ticket-alt"></i>
+            <% end %>
+          <% end %>
+          <% if user_signed_in? && current_user.admin? %>
+            <%= link_to new_ad_path, class: 'quick-action-btn', title: 'Create Ad' do %>
+              <i class="fas fa-ad"></i>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      
+      <!-- Quick Tips & Info -->
+      <div class="col-md-4 text-end footer-right-section">
+        <div class="footer-info">
+          <button class="footer-tip-btn" data-bs-toggle="collapse" data-bs-target="#quickTips" title="Toggle Quick Tips">
+            <i class="fas fa-lightbulb text-info"></i>
+            <span class="d-none d-md-inline ms-1">Tips</span>
+          </button>
+          <span class="footer-copyright">
+            © <%= Date.current.year %> Red Cup Village
+          </span>
+        </div>
+        
+        <!-- Quick Tips Collapsible -->
+        <div class="collapse" id="quickTips">
+          <div class="quick-tips-popup">
+            <h6 class="text-primary mb-2">
+              <i class="fas fa-info-circle"></i> Quick Tips
+            </h6>
+            <ul class="quick-tips-list">
+              <li><i class="fas fa-check-circle text-success"></i> Upload high-quality images for better engagement</li>
+              <li><i class="fas fa-check-circle text-success"></i> Schedule events 2+ weeks in advance</li>
+              <li><i class="fas fa-check-circle text-success"></i> Use SEO-friendly titles and descriptions</li>
+              <li><i class="fas fa-check-circle text-success"></i> Moderate user content regularly</li>
+              <li><i class="fas fa-check-circle text-success"></i> Monitor ad performance weekly</li>
+            </ul>
+            <button class="btn btn-sm btn-outline-primary mt-2 w-100" data-bs-toggle="collapse" data-bs-target="#quickTips">
+              Got it!
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</footer>
+
+<style>
+  .admin-footer {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    position: relative;
+    border-top: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .quick-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .quick-actions-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  
+  .quick-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .quick-action-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .quick-action-btn i {
+    font-size: 1.1rem;
+  }
+  
+  .footer-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  
+  .footer-tip-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  .footer-tip-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+  }
+  
+  .footer-copyright {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  .footer-right-section {
+    position: relative;
+  }
+  
+  .quick-tips-popup {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background: white;
+    color: #333;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+    min-width: 300px;
+    max-width: 400px;
+    margin-bottom: 0.5rem;
+    z-index: 1000;
+  }
+  
+  .quick-tips-popup::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 30px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+  }
+  
+  .quick-tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .quick-tips-list li {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .quick-tips-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .quick-tips-list li i {
+    margin-right: 0.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .admin-footer {
+      padding: 1rem;
+    }
+    
+    .quick-actions {
+      margin-bottom: 1rem;
+    }
+    
+    .quick-actions-label {
+      display: none;
+    }
+    
+    .footer-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .quick-tips-popup {
+      right: 1rem;
+      left: 1rem;
+      min-width: auto;
+    }
+    
+    .quick-tips-popup::after {
+      right: 20px;
+    }
+  }
+</style>
+
+<script>
+  // Add keyboard shortcut support
+  document.addEventListener('keydown', function(e) {
+    // Ctrl+K or Cmd+K to focus quick actions
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      const quickActions = document.querySelector('.quick-actions');
+      if (quickActions) {
+        quickActions.style.transform = 'scale(1.05)';
+        setTimeout(() => {
+          quickActions.style.transform = 'scale(1)';
+        }, 200);
+      }
+    }
+  });
+</script>

@@ -1,0 +1,412 @@
+<% if user_signed_in? && current_user.can_access_backend? %>
+  <% dashboard_path = case current_user.role
+       when 'admin' then admin_dashboard_path
+       when 'dj' then dj_dashboard_path
+       when 'artist' then artist_dashboard_path
+       when 'photographer' then photographer_dashboard_path
+       when 'videographer' then videographer_dashboard_path
+       when 'curator' then curator_dashboard_path
+       when 'designer' then designer_dashboard_path
+       when 'editor' then editor_dashboard_path
+       else '/admin'
+     end %>
+  
+  <!-- Mobile Menu Toggle Button -->
+  <button class="mobile-menu-toggle d-lg-none" type="button" id="mobileMenuToggle">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <aside class="admin-sidebar" id="adminSidebar">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <button class="sidebar-toggle d-lg-none" type="button" id="sidebarClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <a href="<%= dashboard_path %>" class="sidebar-brand">
+        <% case current_user.role
+           when 'admin' %>RED VILLAGE ADMIN
+        <% when 'dj' %>RED VILLAGE DJ
+        <% when 'artist' %>RED VILLAGE ARTIST
+        <% when 'photographer' %>RED VILLAGE PHOTOGRAPHER
+        <% when 'videographer' %>RED VILLAGE VIDEOGRAPHER
+        <% when 'curator' %>RED VILLAGE CURATOR
+        <% when 'designer' %>RED VILLAGE DESIGNER
+        <% when 'editor' %>RED VILLAGE EDITOR
+        <% else %>RED VILLAGE<% end %>
+      </a>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="sidebar-profile">
+      <div class="profile-info">
+        <% if current_user.profile&.profile_picture_url.present? %>
+          <%= image_tag current_user.profile.profile_picture_url(:thumb), class: "profile-avatar", style: "width: 40px; height: 40px; object-fit: cover;" %>
+        <% else %>
+          <i class="fas fa-user-circle profile-icon"></i>
+        <% end %>
+        <div class="profile-details">
+          <div class="profile-name"><%= current_user.name %></div>
+          <div class="profile-role"><%= current_user.role.titleize %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="sidebar-nav">
+      <ul class="nav flex-column">
+        
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <%= link_to dashboard_path, class: 'nav-link' do %>
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          <% end %>
+        </li>
+
+        <!-- CONTENT SECTION -->
+        <% if current_user.admin? || current_user.photographer? || current_user.curator? || current_user.editor? || current_user.videographer? || current_user.designer? %>
+          <li class="nav-section-header-collapsible">
+            <a class="nav-link" data-bs-toggle="collapse" href="#contentSection" aria-expanded="true">
+              <span>Content</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+          </li>
+          <div class="collapse show" id="contentSection">
+          
+          <!-- Gallery -->
+          <% if current_user.photographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-toggle="collapse" href="#galleryMenu" aria-expanded="false">
+                <i class="fas fa-images"></i>
+                <span>Gallery</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+              </a>
+              <ul class="nav collapse" id="galleryMenu">
+                <% if current_user.photographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+                  <li><%= link_to "Create gallery", new_gallery_path, class: 'nav-link' %></li>
+                <% end %>
+                <li><%= link_to "All galleries", galleries_path, class: 'nav-link' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- Videos -->
+          <% if current_user.videographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-toggle="collapse" href="#videosMenu" aria-expanded="false">
+                <i class="fas fa-video"></i>
+                <span>Videos</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+              </a>
+              <ul class="nav collapse" id="videosMenu">
+                <% if current_user.videographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+                  <li><%= link_to "Upload video", new_video_upload_path, class: 'nav-link' %></li>
+                <% end %>
+                <li><%= link_to "All videos", all_videos_path, class: 'nav-link' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- News -->
+          <% if current_user.curator? || current_user.admin? || current_user.editor? %>
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-toggle="collapse" href="#newsMenu" aria-expanded="false">
+                <i class="fas fa-newspaper"></i>
+                <span>News</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+              </a>
+              <ul class="nav collapse" id="newsMenu">
+                <% if current_user.curator? || current_user.admin? || current_user.editor? %>
+                  <li><%= link_to "New news article", new_feature_path, class: 'nav-link' %></li>
+                <% end %>
+                <li><%= link_to "All news articles", '/admin_index', class: 'nav-link' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- Lifestyle -->
+          <% if current_user.admin? %>
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-toggle="collapse" href="#lifestyleMenu" aria-expanded="false">
+                <i class="fas fa-leaf"></i>
+                <span>Lifestyle</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+              </a>
+              <ul class="nav collapse" id="lifestyleMenu">
+                <li><%= link_to "New lifestyle article", new_lifestyle_upload_path, class: 'nav-link' %></li>
+                <li><%= link_to "All lifestyle articles", '/lifestyle_admin_index', class: 'nav-link' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- Banners -->
+          <% if current_user.designer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-toggle="collapse" href="#bannersMenu" aria-expanded="false">
+                <i class="fas fa-image"></i>
+                <span>Main Banners</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+              </a>
+              <ul class="nav collapse" id="bannersMenu">
+                <% if current_user.designer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+                  <li><%= link_to "Upload new banner", new_banner_upload_path, class: 'nav-link' %></li>
+                <% end %>
+                <li><%= link_to "All banners", banners_index_path, class: 'nav-link' %></li>
+              </ul>
+            </li>
+          <% end %>
+          </div>
+        <% end %>
+
+        <!-- MUSIC & ENTERTAINMENT SECTION -->
+        <% if current_user.admin? || current_user.dj? || current_user.artist? || current_user.curator? || current_user.editor? %>
+          <li class="nav-section-header-collapsible">
+            <a class="nav-link" data-bs-toggle="collapse" href="#musicEntertainmentSection" aria-expanded="true">
+              <span>Music & Entertainment</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+          </li>
+          <div class="collapse show" id="musicEntertainmentSection">
+          
+          <!-- Music -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#musicMenu" aria-expanded="false">
+              <i class="fas fa-music"></i>
+              <span>Music</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav collapse" id="musicMenu">
+              <% if current_user.admin? || current_user.artist? %>
+                <li><%= link_to "Upload new track", new_track_path, class: 'nav-link' %></li>
+              <% end %>
+              <li><%= link_to "All music", '/admin_all_music', class: 'nav-link' %></li>
+            </ul>
+          </li>
+
+          <!-- Albums -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#albumsMenu" aria-expanded="false">
+              <i class="fas fa-compact-disc"></i>
+              <span>Albums</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav collapse" id="albumsMenu">
+              <% if current_user.admin? || current_user.artist? %>
+                <li><%= link_to "Upload new album", new_album_path, class: 'nav-link' %></li>
+              <% end %>
+              <li><%= link_to "All albums", '/admin_album_index', class: 'nav-link' %></li>
+            </ul>
+          </li>
+
+          <!-- Artists -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#artistsMenu" aria-expanded="false">
+              <i class="fas fa-microphone"></i>
+              <span>Artists</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav collapse" id="artistsMenu">
+              <% if current_user.admin? %>
+                <li><%= link_to "Add new artist", new_artist_upload_path, class: 'nav-link' %></li>
+              <% end %>
+              <li><%= link_to "All artists", '/admin_artist_index', class: 'nav-link' %></li>
+            </ul>
+          </li>
+
+          <!-- Events -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#eventsMenu" aria-expanded="false">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Events</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav collapse" id="eventsMenu">
+              <% if current_user.admin? || current_user.dj? %>
+                <li><%= link_to "New event", new_event_upload_path, class: 'nav-link' %></li>
+              <% end %>
+              <li><%= link_to "All events", admin_all_events_path, class: 'nav-link' %></li>
+            </ul>
+          </li>
+          </div>
+        <% end %>
+
+        <!-- MARKETPLACE SECTION -->
+        <li class="nav-section-header-collapsible">
+          <a class="nav-link" data-bs-toggle="collapse" href="#marketplaceSection" aria-expanded="true">
+            <span>Marketplace</span>
+            <i class="fas fa-chevron-down ms-auto"></i>
+          </a>
+        </li>
+        <div class="collapse show" id="marketplaceSection">
+        
+        <!-- Tickets -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-toggle="collapse" href="#ticketsMenu" aria-expanded="false">
+            <i class="fas fa-ticket-alt"></i>
+            <span>Tickets</span>
+            <i class="fas fa-chevron-down ms-auto"></i>
+          </a>
+          <ul class="nav collapse" id="ticketsMenu">
+            <li><%= link_to "Marketplace", ticket_listings_path, class: 'nav-link' %></li>
+            <% if current_user.admin? || current_user.member? %>
+              <li><%= link_to "Create Listing", new_ticket_listing_path, class: 'nav-link' %></li>
+              <li><%= link_to "My Listings", my_tickets_path, class: 'nav-link' %></li>
+            <% end %>
+            <% if current_user.admin? %>
+              <li><hr class="dropdown-divider"></li>
+              <li><span class="nav-link-text"><small class="text-muted">Admin Tools</small></span></li>
+              <li><%= link_to "View All Listings", ticket_listings_path, class: 'nav-link' %></li>
+            <% end %>
+          </ul>
+        </li>
+        </div>
+
+        <!-- ADMIN SECTION -->
+        <% if current_user.admin? %>
+          <li class="nav-section-header-collapsible">
+            <a class="nav-link" data-bs-toggle="collapse" href="#adminSection" aria-expanded="true">
+              <span>Admin</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+          </li>
+          <div class="collapse show" id="adminSection">
+          
+          <!-- Users -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#usersMenu" aria-expanded="false">
+              <i class="fas fa-users"></i>
+              <span>Users</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav collapse" id="usersMenu">
+              <li><%= link_to "All Users", users_path, class: 'nav-link' %></li>
+              <li><%= link_to "DJs", users_path(role: 'dj'), class: 'nav-link' %></li>
+              <li><%= link_to "Artists", users_path(role: 'artist'), class: 'nav-link' %></li>
+            </ul>
+          </li>
+
+          <!-- Stores -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#storesMenu" aria-expanded="false">
+              <i class="fas fa-store"></i>
+              <span>Stores</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav collapse" id="storesMenu">
+              <li><%= link_to "New store", new_store_upload_path, class: 'nav-link' %></li>
+              <li><%= link_to "All stores", stores_path, class: 'nav-link' %></li>
+            </ul>
+          </li>
+
+          <!-- Advertising -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#adsMenu" aria-expanded="false">
+              <i class="fas fa-ad"></i>
+              <span>Advertising</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav collapse" id="adsMenu">
+              <li><%= link_to ad_revenue_dashboard_path, class: 'nav-link' do %>
+                <i class="fas fa-chart-line"></i> Revenue Dashboard
+              <% end %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "Ad Spots", ad_spots_path, class: 'nav-link' %></li>
+              <li><%= link_to "Create Ad Spot", new_ad_spot_path, class: 'nav-link' %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "All Ads", ads_path, class: 'nav-link' %></li>
+              <li><%= link_to "Create Ad", new_ad_path, class: 'nav-link' %></li>
+            </ul>
+          </li>
+          </div>
+        <% end %>
+
+        <!-- GENERAL SECTION -->
+        <li class="nav-section-header-collapsible">
+          <a class="nav-link" data-bs-toggle="collapse" href="#generalSection" aria-expanded="true">
+            <span>General</span>
+            <i class="fas fa-chevron-down ms-auto"></i>
+          </a>
+        </li>
+        <div class="collapse show" id="generalSection">
+        
+        <!-- Front-End -->
+        <li class="nav-item">
+          <%= link_to root_path, class: 'nav-link' do %>
+            <i class="fas fa-home"></i>
+            <span>Front-End</span>
+          <% end %>
+        </li>
+
+        <!-- Profile -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-toggle="collapse" href="#profileMenu" aria-expanded="false">
+            <i class="fas fa-user-circle"></i>
+            <span>Profile</span>
+            <i class="fas fa-chevron-down ms-auto"></i>
+          </a>
+          <ul class="nav collapse" id="profileMenu">
+            <li><%= link_to "My Profile", my_profile_path, class: 'nav-link' %></li>
+            <% if current_user.profile.present? %>
+              <li><%= link_to "Edit Profile", edit_profile_path(current_user.profile), class: 'nav-link' %></li>
+            <% end %>
+          </ul>
+        </li>
+
+        <!-- Logout -->
+        <li class="nav-item">
+          <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link logout-link' do %>
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          <% end %>
+        </li>
+        </div>
+      </ul>
+    </nav>
+    
+    <style>
+      .nav-section-header-collapsible .nav-link {
+        padding: 0.75rem 1rem !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+      }
+      
+      .nav-section-header-collapsible .nav-link .fa-chevron-down {
+        transition: transform 0.2s ease;
+      }
+      
+      .nav-section-header-collapsible .nav-link:not(.collapsed) .fa-chevron-down {
+        transform: rotate(180deg);
+      }
+    </style>
+  </aside>
+
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay d-lg-none" id="sidebarOverlay"></div>
+
+  <script>
+    (function() {
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const sidebar = document.getElementById('adminSidebar');
+      const sidebarClose = document.getElementById('sidebarClose');
+      const overlay = document.getElementById('sidebarOverlay');
+      
+      if (mobileMenuToggle && sidebar && sidebarClose && overlay) {
+        mobileMenuToggle.addEventListener('click', function() {
+          sidebar.classList.add('show');
+          overlay.classList.add('show');
+        });
+        
+        sidebarClose.addEventListener('click', function() {
+          sidebar.classList.remove('show');
+          overlay.classList.remove('show');
+        });
+        
+        overlay.addEventListener('click', function() {
+          sidebar.classList.remove('show');
+          overlay.classList.remove('show');
+        });
+      }
+    })();
+  </script>
+<% end %>

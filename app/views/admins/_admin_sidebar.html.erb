@@ -1,0 +1,309 @@
+<!-- Mobile Menu Toggle Button -->
+<button class="mobile-menu-toggle d-lg-none" type="button" id="mobileMenuToggle">
+  <i class="fas fa-bars"></i>
+</button>
+
+<aside class="admin-sidebar" id="adminSidebar">
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <button class="sidebar-toggle d-lg-none" type="button" id="sidebarClose">
+      <i class="fas fa-times"></i>
+    </button>
+    <a href="/admin" class="sidebar-brand">
+      RED VILLAGE ADMIN
+    </a>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="sidebar-nav">
+    <ul class="nav flex-column">
+      
+      <!-- Dashboard -->
+      <li class="nav-item">
+        <%= link_to '/admin', class: 'nav-link' do %>
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        <% end %>
+      </li>
+
+      <!-- CONTENT SECTION -->
+      <li class="nav-section-header-collapsible">
+        <a class="nav-link" data-bs-toggle="collapse" href="#contentSection" aria-expanded="true">
+          <span>Content</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+      </li>
+      <div class="collapse show" id="contentSection">
+      
+      <!-- Gallery -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#galleryMenu" aria-expanded="false">
+          <i class="fas fa-images"></i>
+          <span>Gallery</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="galleryMenu">
+          <li><%= link_to "Create gallery", new_gallery_path, class: 'nav-link' %></li>
+          <li><%= link_to "All galleries", galleries_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- News -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#newsMenu" aria-expanded="false">
+          <i class="fas fa-newspaper"></i>
+          <span>News</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="newsMenu">
+          <li><%= link_to "New news article", new_feature_path, class: 'nav-link' %></li>
+          <li><%= link_to "All news articles", '/admin_index', class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Videos -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#videosMenu" aria-expanded="false">
+          <i class="fas fa-video"></i>
+          <span>Videos</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="videosMenu">
+          <li><%= link_to "Upload video", new_video_upload_path, class: 'nav-link' %></li>
+          <li><%= link_to "All videos", all_videos_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Lifestyle -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#lifestyleMenu" aria-expanded="false">
+          <i class="fas fa-leaf"></i>
+          <span>Lifestyle</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="lifestyleMenu">
+          <li><%= link_to "New lifestyle article", new_lifestyle_upload_path, class: 'nav-link' %></li>
+          <li><%= link_to "All lifestyle articles", '/lifestyle_admin_index', class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Banners -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#bannersMenu" aria-expanded="false">
+          <i class="fas fa-image"></i>
+          <span>Main Banners</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="bannersMenu">
+          <li><%= link_to "Upload new banner", new_banner_upload_path, class: 'nav-link' %></li>
+          <li><%= link_to "All banners", banners_index_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+      </div>
+
+      <!-- MUSIC & ENTERTAINMENT SECTION -->
+      <li class="nav-section-header-collapsible">
+        <a class="nav-link" data-bs-toggle="collapse" href="#musicEntertainmentSection" aria-expanded="true">
+          <span>Music & Entertainment</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+      </li>
+      <div class="collapse show" id="musicEntertainmentSection">
+      
+      <!-- Music -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#musicMenu" aria-expanded="false">
+          <i class="fas fa-music"></i>
+          <span>Music</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="musicMenu">
+          <li><%= link_to "Upload new track", new_track_path, class: 'nav-link' %></li>
+          <li><%= link_to "All music", '/admin_all_music', class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Albums -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#albumsMenu" aria-expanded="false">
+          <i class="fas fa-compact-disc"></i>
+          <span>Albums</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="albumsMenu">
+          <li><%= link_to "Upload new album", new_album_path, class: 'nav-link' %></li>
+          <li><%= link_to "All albums", '/admin_album_index', class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Artists -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#artistsMenu" aria-expanded="false">
+          <i class="fas fa-microphone"></i>
+          <span>Artists</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="artistsMenu">
+          <li><%= link_to "Add new artist", new_artist_upload_path, class: 'nav-link' %></li>
+          <li><%= link_to "All artists", '/admin_artist_index', class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Events -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#eventsMenu" aria-expanded="false">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Events</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="eventsMenu">
+          <li><%= link_to "New event", new_event_upload_path, class: 'nav-link' %></li>
+          <li><%= link_to "All events", admin_all_events_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+      </div>
+
+      <!-- MARKETPLACE SECTION -->
+      <li class="nav-section-header-collapsible">
+        <a class="nav-link" data-bs-toggle="collapse" href="#marketplaceSection" aria-expanded="true">
+          <span>Marketplace</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+      </li>
+      <div class="collapse show" id="marketplaceSection">
+      
+      <!-- Tickets -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#ticketsMenu" aria-expanded="false">
+          <i class="fas fa-ticket-alt"></i>
+          <span>Tickets</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="ticketsMenu">
+          <li><%= link_to "Marketplace", ticket_listings_path, class: 'nav-link' %></li>
+          <li><%= link_to "Create Listing", new_ticket_listing_path, class: 'nav-link' %></li>
+          <li><%= link_to "My Listings", my_tickets_path, class: 'nav-link' %></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><span class="nav-link-text"><small class="text-muted">Admin Tools</small></span></li>
+          <li><%= link_to "View All Listings", ticket_listings_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+      </div>
+
+      <!-- ADMIN SECTION -->
+      <li class="nav-section-header-collapsible">
+        <a class="nav-link" data-bs-toggle="collapse" href="#adminSection" aria-expanded="true">
+          <span>Admin</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+      </li>
+      <div class="collapse show" id="adminSection">
+      
+      <!-- Stores -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#storesMenu" aria-expanded="false">
+          <i class="fas fa-store"></i>
+          <span>Stores</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="storesMenu">
+          <li><%= link_to "New store", new_store_upload_path, class: 'nav-link' %></li>
+          <li><%= link_to "All stores", stores_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+
+      <!-- Advertising -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#adsMenu" aria-expanded="false">
+          <i class="fas fa-ad"></i>
+          <span>Advertising</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="nav collapse" id="adsMenu">
+          <li><%= link_to ad_revenue_dashboard_path, class: 'nav-link' do %>
+            <i class="fas fa-chart-line"></i> Revenue Dashboard
+          <% end %></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><%= link_to "Ad Spots", ad_spots_path, class: 'nav-link' %></li>
+          <li><%= link_to "Create Ad Spot", new_ad_spot_path, class: 'nav-link' %></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><%= link_to "All Ads", ads_path, class: 'nav-link' %></li>
+          <li><%= link_to "Create Ad", new_ad_path, class: 'nav-link' %></li>
+        </ul>
+      </li>
+      </div>
+
+      <!-- GENERAL SECTION -->
+      <li class="nav-section-header-collapsible">
+        <a class="nav-link" data-bs-toggle="collapse" href="#generalSection" aria-expanded="true">
+          <span>General</span>
+          <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+      </li>
+      <div class="collapse show" id="generalSection">
+      
+      <!-- Front-End -->
+      <li class="nav-item">
+        <%= link_to root_path, class: 'nav-link' do %>
+          <i class="fas fa-home"></i>
+          <span>Front-End</span>
+        <% end %>
+      </li>
+
+      <!-- Logout -->
+      <li class="nav-item">
+        <%= link_to destroy_admin_session_path, method: :delete, class: 'nav-link logout-link' do %>
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        <% end %>
+      </li>
+      </div>
+    </ul>
+  </nav>
+  
+  <style>
+    .nav-section-header-collapsible .nav-link {
+      padding: 0.75rem 1rem !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .nav-section-header-collapsible .nav-link .fa-chevron-down {
+      transition: transform 0.2s ease;
+    }
+    
+    .nav-section-header-collapsible .nav-link:not(.collapsed) .fa-chevron-down {
+      transform: rotate(180deg);
+    }
+  </style>
+</aside>
+
+<!-- Mobile overlay -->
+<div class="sidebar-overlay d-lg-none" id="sidebarOverlay"></div>
+
+<script>
+  (function() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const sidebar = document.getElementById('adminSidebar');
+    const sidebarClose = document.getElementById('sidebarClose');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (mobileMenuToggle && sidebar && sidebarClose && overlay) {
+      mobileMenuToggle.addEventListener('click', function() {
+        sidebar.classList.add('show');
+        overlay.classList.add('show');
+      });
+      
+      sidebarClose.addEventListener('click', function() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+      });
+      
+      overlay.addEventListener('click', function() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+      });
+    }
+  })();
+</script>

@@ -12,6 +12,12 @@
     <!-- Admin Styles -->
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
     <%= stylesheet_link_tag 'admin/admin-styles', media: 'all' %>
+    
+    <!-- Font Awesome Icons -->
+    <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+          integrity: 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==',
+          crossorigin: 'anonymous',
+          referrerpolicy: 'no-referrer' %>
 
     <%= csrf_meta_tags %>
     <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
@@ -28,24 +34,11 @@
     
     <% unless devise_controller? %>
       <% if user_signed_in? && current_user.can_access_backend? %>
-        <%= render 'shared/impersonation_banner' %>
-        <header>
-          <%= render 'shared/role_navbar' %>
-        </header>
+        <%= render 'shared/admin_sidebar' %>
       <% else %>
-        <header>
-          <%= render 'admins/navbar' %>
-        </header>
+        <%= render 'admins/admin_sidebar' %>
       <% end %>
-    <% end %>
-    
-    <% flash.each do |name, msg| %>
-      <% if msg.is_a?(String) %>
-        <div class="alert <%= name == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show m-3" role="alert">
-          <%= msg %>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      <% end %>
+      <%= render 'shared/impersonation_banner' %>
     <% end %>
     
     <% if devise_controller? %>
@@ -57,12 +50,20 @@
       </div>
     <% else %>
       <main class="admin-main-content">
+        <% flash.each do |name, msg| %>
+          <% if msg.is_a?(String) %>
+            <div class="alert <%= name == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show" role="alert">
+              <%= msg %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% end %>
+        <% end %>
         <%= yield %>
+        
+        <% unless devise_controller? %>
+          <%= render 'admins/footer_button' %>
+        <% end %>
       </main>
-    <% end %>
-    
-    <% unless devise_controller? %>
-      <%= render 'admins/footer_button' %>
     <% end %>
 
     <!-- Admin JavaScripts -->

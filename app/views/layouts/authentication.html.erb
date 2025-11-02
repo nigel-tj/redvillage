@@ -10,6 +10,12 @@
     <%= favicon_link_tag "favicon.ico" %>
     <%= stylesheet_link_tag "new_look/bootstrap.min", media: "all" %>
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+    
+    <!-- Font Awesome Icons -->
+    <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+          integrity: 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==',
+          crossorigin: 'anonymous',
+          referrerpolicy: 'no-referrer' %>
   </head>
   <body class="auth-body">
     <div class="auth-wrapper <%= content_for?(:auth_wrapper_class) ? yield(:auth_wrapper_class) : "" %>">
