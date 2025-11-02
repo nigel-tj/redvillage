@@ -1,4 +1,5 @@
-class AddColumnsToUsers < ActiveRecord::Migration[6.1]
+class AddColumnsToUsers < ActiveRecord::Migration[7.2]
+class AddColumnsToUsers < ActiveRecord::Migration[7.2]
   def change
     add_column :users, :provider, :string
     add_column :users, :uid, :string

@@ -1,4 +1,5 @@
-class AddImageMusics < ActiveRecord::Migration[6.1]
+class AddImageMusics < ActiveRecord::Migration[7.2]
+class AddImageMusics < ActiveRecord::Migration[7.2]
   def change
     add_column :musics, :image, :string
   end

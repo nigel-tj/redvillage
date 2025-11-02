@@ -1,4 +1,5 @@
-class AddImageToGalleries < ActiveRecord::Migration[6.1]
+class AddImageToGalleries < ActiveRecord::Migration[7.2]
+class AddImageToGalleries < ActiveRecord::Migration[7.2]
   def change
     add_column :galleries, :image, :string
   end

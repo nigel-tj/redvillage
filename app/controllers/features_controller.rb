@@ -1,5 +1,5 @@
 class FeaturesController < ApplicationController
-  before_action :authenticate_admin!, except: [:index, :test,:show]
+  before_action :authenticate_admin!, except: [:index,:show]
   layout "admin", only: [:new, :create, :update, :admin_index]   
   
   def index

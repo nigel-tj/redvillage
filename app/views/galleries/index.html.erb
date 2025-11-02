@@ -1,0 +1,27 @@
+<div class="container">
+  <div id="gallery">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Galleries</h1>
+
+        <div>
+          <%= link_to "New Gallery", new_gallery_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <% @galleries.each do |gallery| %>
+        <div class="col-md-4">
+          <% if gallery.image? %>
+            <%= image_tag gallery.image_url(:thumbnail), class: "img-fluid" %>
+          <% end %>
+          <p>
+            <%= link_to gallery.name, gallery %><br />
+            Images: <%= gallery.images.size %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
-class CreateLifestyleBanners < ActiveRecord::Migration[6.1]
+class CreateLifestyleBanners < ActiveRecord::Migration[7.2]
+class CreateLifestyleBanners < ActiveRecord::Migration[7.2]
   def change
     create_table :lifestyle_banners do |t|
       t.string :name

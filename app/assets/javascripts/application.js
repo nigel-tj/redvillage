@@ -12,3 +12,5 @@
 //
 //= require jquery
 //= require_tree .
+// app/javascript/application.js
+

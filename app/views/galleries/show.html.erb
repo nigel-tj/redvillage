@@ -1,0 +1,43 @@
+<div id="services">
+  <div class="container">
+    <div class="row text-center">
+      <h2><%= @gallery.name %></h2>
+    </div>
+    <div class="row text-center mb-3">
+      <div class="col-md-6">
+        <%= link_to "Add More Images", new_image_path(gallery_id: @gallery.id), class: "btn btn-success" %>
+      </div>
+      <div class="col-md-6">
+        <%= link_to "Back to Galleries", galleries_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row gallery text-center">
+        <div class="col-md-12 noPadding">
+          <div class="gallery-photo-grid">
+            <div class="gallery-photos">
+              <div class="gallery-photos-thumb">
+                <% @gallery.images.each do |image| %>
+                  <div class="col-md-4">
+                    <a class="pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="<%= image.image_url(:original) %>">
+                      <div class="photo-thumb">
+                        <% if image.image? %>
+                          <%= image_tag(image.image_url(:thumbnail)) %>
+                        <% end %>
+                      </div>
+                      <div class="overlay">
+                        <span class="gallery-icon">
+                          <i class="fa fa-search-plus fa-2x"></i>
+                        </span>
+                      </div>
+                    </a>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 class LifestylesController < ApplicationController
-  before_action :authenticate_admin!, except: [:index,:show]
+  before_action :authenticate_admin!, except: [:index]
   layout "admin", only: [:new, :create, :update, :admin_index, :lifestyle_admin_index]   
   def index
     @lifestyle = Lifestyle.order('created_at DESC')

@@ -1,0 +1,262 @@
+    <!-- breadcrump begin -->
+    <div class="breadcrump">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="breadcrump-content">
+                        <span class="page-name"><%= link_to 'Home', root_path, style: "color: inherit; text-decoration: none;" %></span>
+                        <span class="icon"><i class="fas fa-chevron-right"></i></span>
+                        <% if request.path == '/featured_events' %>
+                            <span class="page-name"><%= link_to 'Events', events_list_new_look_path, style: "color: inherit; text-decoration: none;" %></span>
+                            <span class="icon"><i class="fas fa-chevron-right"></i></span>
+                            <span class="page-name">Featured Events</span>
+                        <% else %>
+                            <span class="page-name">Events</span>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrump end -->
+
+    <% if request.path == '/featured_events' %>
+    <!-- featured events banner begin -->
+    <div class="featured-banner" style="background-color: #1A1A2E; color: #fff; padding: 30px 0; position: relative; overflow: hidden;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div style="position: relative; z-index: 2;">
+                        <i class="fas fa-star" style="color: gold; font-size: 24px; margin-bottom: 10px; display: inline-block;"></i>
+                        <h3 style="color: #fff; font-size: 22px; margin-bottom: 5px;">Premium Selected Events</h3>
+                        <p style="color: #ccc;">These events have been highlighted as special by our team</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(255,20,147,0.2) 0%, rgba(26,26,46,0.1) 100%); z-index: 1;"></div>
+    </div>
+    <!-- featured events banner end -->
+    <% end %>
+
+    <!-- events grid begin -->
+    <div class="events-grid-section <%= request.path == '/featured_events' ? 'featured-page' : '' %>" style="background-color: #000B14; color: #fff; padding: 100px 0;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8">
+                    <div class="section-title text-center">
+                        <% if request.path == '/featured_events' %>
+                            <h2 style="color: #ff1493; font-size: 40px; margin-bottom: 20px;">Featured Events</h2>
+                            <p style="color: #ccc; margin-bottom: 50px;">Discover our specially highlighted events selected just for you!</p>
+                        <% else %>
+                            <h2 style="color: #ff1493; font-size: 40px; margin-bottom: 50px;">Upcoming Events</h2>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <% if @events.any? %>
+                    <% @events.each do |event| %>
+                        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+                            <div class="event-card" style="background-color: #1A1A2E; border-radius: 10px; overflow: hidden; height: 100%; transition: transform 0.3s; display: flex; flex-direction: column; <%= request.path == '/featured_events' ? 'box-shadow: 0 5px 15px rgba(255, 20, 147, 0.2);' : '' %>">
+                                <div style="display: flex; flex-direction: row;">
+                                    <!-- Date Box -->
+                                    <% if event.date %>
+                                        <div style="background-color: #ff1493; color: #fff; text-align: center; width: 70px; display: flex; flex-direction: column; justify-content: center;">
+                                            <div style="font-size: 28px; font-weight: 700; line-height: 1;"><%= event.date.strftime('%d') %></div>
+                                            <div style="font-size: 16px; text-transform: uppercase;"><%= event.date.strftime('%^b') %></div>
+                                        </div>
+                                    <% end %>
+                                    
+                                    <!-- Event Image -->
+                                    <div class="part-img" style="position: relative; flex-grow: 1;">
+                                        <% if event.image %>
+                                            <% img_url = shrine_image_url(event, :image, :medium) || shrine_image_url(event, :image) %>
+                                            <% if img_url %>
+                                                <img src="<%= img_url %>" alt="<%= event.name %>" style="width: 100%; height: 220px; object-fit: cover;">
+                                            <% else %>
+                                                <img src="/new_look/assets/img/event-grid-1.jpg" alt="Event" style="width: 100%; height: 220px; object-fit: cover;">
+                                            <% end %>
+                                        <% else %>
+                                            <img src="/new_look/assets/img/event-grid-1.jpg" alt="Event" style="width: 100%; height: 220px; object-fit: cover;">
+                                        <% end %>
+                                        <% if event.featured? %>
+                                            <div style="position: absolute; top: 10px; right: 10px; background-color: #ff1493; color: white; padding: 5px 8px; border-radius: 3px; font-size: 12px; font-weight: bold; z-index: 10;">
+                                                <i class="fas fa-star" style="color: gold; margin-right: 3px;"></i> Featured
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                </div>
+                                
+                                <div class="part-text" style="padding: 25px; color: #fff; flex-grow: 1; display: flex; flex-direction: column;">
+                                    <h3 style="font-size: 22px; margin-bottom: 15px; color: #fff;"><%= event.name %></h3>
+                                    <p style="color: #ccc; margin-bottom: 20px;"><%= truncate(event.summary, length: 100) if event.summary %></p>
+                                    <div class="meta-info" style="margin-bottom: 20px;">
+                                        <span class="time" style="display: block; margin-bottom: 5px; color: #aaa;">
+                                            <i class="far fa-clock" style="color: #ff1493; margin-right: 10px;"></i> 
+                                            <%= event.formatted_start_time %>
+                                        </span>
+                                        <span class="location" style="display: block; margin-bottom: 5px; color: #aaa;">
+                                            <i class="fas fa-map-marker-alt" style="color: #ff1493; margin-right: 10px;"></i> 
+                                            <%= event.venue %>
+                                        </span>
+                                        <% if event.standard_ticket_price.present? || event.vip_ticket_price.present? %>
+                                            <span class="tickets" style="display: block; margin-bottom: 5px; color: #aaa;">
+                                                <i class="fas fa-ticket-alt" style="color: #ff1493; margin-right: 10px;"></i>
+                                                Tickets from 
+                                                <% if event.standard_ticket_price.present? %>
+                                                    <%= format_price(event.standard_ticket_price, event.currency) %>
+                                                <% elsif event.vip_ticket_price.present? %>
+                                                    <%= format_price(event.vip_ticket_price, event.currency) %>
+                                                <% end %>
+                                            </span>
+                                        <% end %>
+                                    </div>
+                                    <div class="part-button" style="margin-top: auto;">
+                                        <%= link_to "View Details", event_new_look_with_id_path(event.id), style: "display: inline-block; background: #ff1493; color: #fff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; width: 100%; text-align: center;" %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                <% else %>
+                    <div class="col-12 text-center">
+                        <% if request.path == '/featured_events' %>
+                            <p style="color: #ccc; font-size: 18px;">No featured events at this time. Please check back later or view <a href="<%= events_list_new_look_path %>" style="color: #ff1493; text-decoration: none;">all upcoming events</a>.</p>
+                        <% else %>
+                            <p style="color: #ccc; font-size: 18px;">No events scheduled at this time. Please check back later.</p>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- events grid end -->
+
+    <style>
+        .events-grid-section {
+            padding: 100px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .section-title {
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            color: #ff1493;
+            font-size: 36px;
+            font-weight: 700;
+        }
+        
+        .single-event-grid {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .single-event-grid:hover {
+            transform: translateY(-10px);
+        }
+        
+        .part-img {
+            position: relative;
+        }
+        
+        .part-img img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .date-holder {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: #ff1493;
+            color: #fff;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        
+        .date-holder .date {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .date-holder .month {
+            display: block;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        
+        .part-text {
+            padding: 25px;
+        }
+        
+        .part-text h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        
+        .part-text p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .meta-info {
+            margin-bottom: 20px;
+        }
+        
+        .meta-info span {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .meta-info span i {
+            color: #ff1493;
+            margin-right: 10px;
+        }
+        
+        .part-button a {
+            display: inline-block;
+            background: #ff1493;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .part-button a:hover {
+            background: #e60082;
+        }
+        
+        /* Featured Events Page Specific Styles */
+        .featured-page .event-card {
+            transition: all 0.4s ease-in-out;
+        }
+        
+        .featured-page .event-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3) !important;
+        }
+        
+        .featured-page .part-button a {
+            background-image: linear-gradient(to right, #ff1493, #ff69b4);
+        }
+        
+        .featured-page .part-button a:hover {
+            background-image: linear-gradient(to right, #ff69b4, #ff1493);
+        }
+    </style> 

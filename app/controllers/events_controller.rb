@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_admin!, except: [:index]
-  layout "admin", only: [:new, :create, :update,  :admin_all_events, :admin_show_event]
+  layout "admin", only: [:new, :create, :update,  :admin_all_events, :admin_show_event, :edit]
   def index
     @events = Event.order('created_at DESC')  
   end
@@ -41,15 +41,28 @@ class EventsController < ApplicationController
   
   def update
     @event = Event.find(params[:id])
-    if @artist.update(event_params)
+    if @event.update(event_params)
       flash[:notice] = "Event has been updated."
-      #   redirect_to admin_panel_index_path
+      redirect_to admin_all_events_path
+    else
+      flash[:alert] = "Event could not be updated."
+      render "edit"
     end  
+  end
+  
+  def destroy
+    @event = Event.find(params[:id])
+    if @event.destroy
+      flash[:notice] = "Event has been deleted."
+    else
+      flash[:alert] = "Event could not be deleted."
+    end
+    redirect_to admin_all_events_path
   end
 
   private
   def event_params
-    params.require(:event).permit(:name , :image, :summary, :date, :start_time)  
+    params.require(:event).permit(:name, :image, :summary, :date, :start_time, :venue, :featured, :standard_ticket_price, :vip_ticket_price, :currency)  
   end
 
 end

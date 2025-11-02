@@ -1,4 +1,5 @@
-class CreateGalleryBanners < ActiveRecord::Migration[6.1]
+class CreateGalleryBanners < ActiveRecord::Migration[7.2]
+class CreateGalleryBanners < ActiveRecord::Migration[7.2]
   def change
     create_table :gallery_banners do |t|
       t.string :name

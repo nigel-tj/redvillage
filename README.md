@@ -1,0 +1,196 @@
+# Red Village
+
+A Ruby on Rails application for event management and ticketing.
+
+## Development Setup
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Git
+
+### Getting Started
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/redvillage.git
+cd redvillage
+```
+
+2. Build and start the Docker containers:
+```bash
+docker-compose build
+docker-compose up
+```
+
+3. Set up the database:
+```bash
+docker-compose exec web rails db:create
+docker-compose exec web rails db:migrate
+docker-compose exec web rails db:seed  # if you have seed data
+```
+
+4. Access the application:
+- Visit `http://localhost:3000` in your browser
+- Admin interface is available at `http://localhost:3000/admins/sign_in`
+
+### Development Workflow
+
+1. Start the development server:
+```bash
+docker-compose up
+```
+
+2. Running tests:
+```bash
+docker-compose exec web rails test
+```
+
+3. Running the Rails console:
+```bash
+docker-compose exec web rails console
+```
+
+4. Accessing the database console:
+```bash
+docker-compose exec db mysql -u root -p
+```
+
+5. Installing new gems:
+- Add the gem to `Gemfile`
+- Run `docker-compose exec web bundle install`
+- Restart the containers: `docker-compose restart`
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+```
+MYSQL_ROOT_PASSWORD=your_root_password
+MYSQL_DATABASE=redvillage_development
+MYSQL_USER=your_username
+MYSQL_PASSWORD=your_password
+RAILS_ENV=development
+```
+
+## Deployment
+
+### Prerequisites
+
+- A server running Linux (Ubuntu recommended)
+- Docker and Docker Compose installed on the server
+- Domain name (optional)
+
+### Deployment Steps
+
+1. Clone the repository on your server:
+```bash
+git clone https://github.com/yourusername/redvillage.git
+cd redvillage
+```
+
+2. Create production environment variables:
+```bash
+cp .env.example .env.production
+```
+Edit `.env.production` with your production credentials.
+
+3. Build and start the production containers:
+```bash
+docker-compose -f docker-compose.prod.yml build
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+4. Set up the production database:
+```bash
+docker-compose -f docker-compose.prod.yml exec web rails db:create RAILS_ENV=production
+docker-compose -f docker-compose.prod.yml exec web rails db:migrate RAILS_ENV=production
+```
+
+5. Configure Nginx (if using):
+```bash
+# Install Nginx
+sudo apt-get update
+sudo apt-get install nginx
+
+# Configure Nginx as reverse proxy
+sudo nano /etc/nginx/sites-available/redvillage
+```
+
+Add the following configuration:
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+Enable the site:
+```bash
+sudo ln -s /etc/nginx/sites-available/redvillage /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+### SSL Configuration (Optional)
+
+1. Install Certbot:
+```bash
+sudo apt-get install certbot python3-certbot-nginx
+```
+
+2. Obtain SSL certificate:
+```bash
+sudo certbot --nginx -d your-domain.com
+```
+
+### Maintenance
+
+1. Updating the application:
+```bash
+git pull origin main
+docker-compose -f docker-compose.prod.yml build
+docker-compose -f docker-compose.prod.yml up -d
+docker-compose -f docker-compose.prod.yml exec web rails db:migrate RAILS_ENV=production
+```
+
+2. Viewing logs:
+```bash
+docker-compose -f docker-compose.prod.yml logs -f
+```
+
+3. Backing up the database:
+```bash
+docker-compose -f docker-compose.prod.yml exec db mysqldump -u root -p redvillage_production > backup.sql
+```
+
+## Additional Information
+
+### Tech Stack
+
+- Ruby on Rails
+- MySQL
+- Docker
+- Nginx (in production)
+- Bootstrap for frontend
+
+### Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Support
+
+For support, please contact [your-email@example.com]
+
+### License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 

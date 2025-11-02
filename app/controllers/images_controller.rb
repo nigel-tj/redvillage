@@ -1,6 +1,6 @@
 class ImagesController < ApplicationController
   before_action :authenticate_admin!
-  layout "admin", only: [:new, :create, :update, :new, :edit, :destroy]
+  layout "admin", only: [:new, :create, :update, :edit, :destroy]
 
   def new
     @image = Image.new(:gallery_id => params[:gallery_id])
@@ -50,7 +50,7 @@ class ImagesController < ApplicationController
 
   private
   def painting_params
-    params.require(:image).permit(:gallery_id, :name, :images, :remote_image_url)
+    params.require(:image).permit(:gallery_id, :name, :images, :remote_image_url,:file)
   end
 
 end

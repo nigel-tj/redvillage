@@ -1,4 +1,4 @@
 class Feature < ActiveRecord::Base
-  #paginates_per 4 
-  mount_uploader :image, ImageUploader
+  # paginates_per 4
+  include ImageUploader::Attachment(:image) 
 end

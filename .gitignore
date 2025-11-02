@@ -4,19 +4,124 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-# Ignore bundler config.
+# Ignore bundler config
 /.bundle
 
-# Ignore the default SQLite database.
+# Ignore the default SQLite database
 /db/*.sqlite3
-/db/*.sqlite3-journal
+/db/*.sqlite3-*
 
-# Ignore all logfiles and tempfiles.
+# Ignore all logfiles and tempfiles
 /log/*
+/tmp/*
 !/log/.keep
-/tmp
-/public/uploads/*
+!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+
+# Ignore master key for decrypting credentials and more
+/config/master.key
+
+# Ignore environment files
+.env*
+!.env.example
+
+# Ignore RubyMine files
+.idea/
+*.iml
+
+# Ignore VSCode files
+.vscode/
+
+# Ignore macOS files
+.DS_Store
+
+# Ignore node_modules
+/node_modules
+
+# Ignore yarn files
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Ignore public assets
+/public/assets
+/public/packs
+/public/packs-test
+
+# Ignore coverage reports
+/coverage/
+
+# Ignore Spring files
+/spring/*.pid
+
+# Ignore test coverage reports
+/coverage/
+
+# Ignore rbenv files
+.rbenv-version
+
+# Ignore rvm files
+.rvmrc
+
+# Ignore byebug history
+.byebug_history
+
+# Ignore local .env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore Ruby version manager files
+.ruby-version
+.rbenv-vars
+
+# Ignore npm debug logs
+npm-debug.log*
+
+# Ignore test coverage reports
+/coverage/
+
+# Ignore system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Ignore application configuration
+/config/application.yml
+/config/database.yml
+
+# Ignore generated documentation
+/doc/
+/rdoc/
+
+# Ignore cache files
+.cache/
+.rake_tasks~
+
+# Ignore backup files
+*.bak
+*.swp
 *~
-/db/schema.rb 
-/spring/*
-/RackMultipart*
+
+# Docker
+.docker-sync/
+docker-compose.override.yml
+
+# Ignore local environment files
+.env
+.env.local
+.env.*.local
+

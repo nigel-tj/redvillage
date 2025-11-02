@@ -1,55 +1,45 @@
-# encoding: utf-8
+# app/uploaders/image_uploader.rb
+require 'image_processing/mini_magick'
 
-class ImageUploader < CarrierWave::Uploader::Base
+class ImageUploader < Shrine
+  plugin :processing
+  plugin :versions    # Enable versions for different sizes of images
+  plugin :delete_raw  # Delete the original file after processing
+  plugin :validation_helpers
+  plugin :determine_mime_type
+  plugin :store_dimensions
+  plugin :url_options, store: { host: "http://localhost:3000" }
 
-  # Include RMagick or ImageScience support:
-  include CarrierWave::RMagick
-  # include CarrierWave::ImageScience
-
-  # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :s3
-
-  # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
-  def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  Attacher.validate do
+    validate_mime_type_inclusion %w[image/jpeg image/png image/gif]
+    validate_max_size 5 * 1024 * 1024 # 5MB
   end
 
-  # Provide a default URL as a default if there hasn't been a file uploaded:
-  # def default_url
-  #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  # end
+  process(:store) do |io, context|
+    versions = { original: io }
 
-  # Process files as they are uploaded:
-  # process :scale => [200, 300]
-  #
-  # def scale(width, height)
-  #   # do something
-  # end
+    io_path = io.download.path if io.respond_to?(:download)
+    io_path ||= io.path if io.respond_to?(:path)
 
-  # Create different versions of your uploaded files:
-  version :thumb do
-    process :resize_to_limit => [200, 200]
+    if io_path
+      versions.merge! process_versions(io_path)
+    end
+
+    versions
   end
 
-  version :trend do
-    process :resize_to_limit => [179, 134]
+  private
+
+  def process_versions(io_path)
+    magick = ImageProcessing::MiniMagick.source(io_path)
+
+    {
+      large:     magick.resize_to_limit!(800, 800),
+      medium:    magick.resize_to_limit!(500, 500),
+      thumbnail: magick.resize_to_limit!(300, 300)
+    }
+  rescue => e
+    Rails.logger.error "Error processing image: #{e.message}"
+    { large: io_path, medium: io_path, thumbnail: io_path }
   end
-
-  version :banner do
-    process :resize_to_limit => [1080, 720]
-  end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  # def extension_white_list
-  #   %w(jpg jpeg gif png)
-  # end
-
-  # Override the filename of the uploaded files:
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
-
 end

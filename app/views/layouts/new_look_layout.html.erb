@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Red Cup Village</title>
+    <!-- favicon -->
+    <%= favicon_link_tag 'favicon.ico' %>
+    <!-- bootstrap -->
+    <%= stylesheet_link_tag 'new_look/bootstrap.min' %>
+    <!-- fontawesome icon  -->
+    <%= stylesheet_link_tag 'new_look/fontawesome.min' %>
+    <!-- flaticon css -->
+    <%= stylesheet_link_tag 'new_look/flaticon' %>
+    <!-- animate.css -->
+    <%= stylesheet_link_tag 'new_look/animate' %>
+    <!-- Owl Carousel -->
+    <%= stylesheet_link_tag 'new_look/owl.carousel.min' %>
+    <!-- magnific popup -->
+    <%= stylesheet_link_tag 'new_look/magnific-popup' %>
+    <!-- stylesheet -->
+    <%= stylesheet_link_tag 'new_look/style' %>
+    <!-- responsive -->
+    <%= stylesheet_link_tag 'new_look/responsive' %>
+    <%= javascript_include_tag 'application' %>
+    <style>
+        /* Dropdown styles */
+        .dropdown-menu {
+            background-color: #1A1A2E;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            padding: 0;
+            min-width: 180px;
+            margin-top: 10px;
+        }
+        
+        .dropdown-item {
+            color: #fff;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
+            background-color: #ff1493;
+            color: #fff;
+        }
+        
+        .dropdown-toggle::after {
+            margin-left: 0.5em;
+            vertical-align: 0.1em;
+        }
+        
+        /* Mobile dropdown styles */
+        @media (max-width: 991px) {
+            .dropdown-menu {
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                padding-left: 20px;
+            }
+            
+            .dropdown-item {
+                color: #fff;
+                border-bottom: none;
+                padding: 8px 0;
+            }
+            
+            .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
+                background-color: transparent;
+                color: #ff1493;
+            }
+        }
+    </style>
+</head>
+
+    <body>
+
+        <!-- preloader begin -->
+        <div class="preloader">
+            <div class="loader">
+                <hr>
+                <hr>
+            </div>
+        </div>
+        <!-- preloader end -->
+
+        <!-- header begin -->
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 d-xl-flex d-lg-flex align-items-center">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-6 d-xl-block d-lg-block d-flex align-items-center">
+                                <div class="logo">
+                                    <%= link_to root_path do %>
+                                        <%= image_tag 'new_look/logo.png', alt: 'Logo' %>
+                                    <% end %>
+                                </div>
+                            </div>
+                            <div class="d-xl-none d-lg-none d-block col-6">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="mainmenu">
+  <nav class="navbar navbar-expand-lg">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <%= link_to 'About', about_us_path, class: "nav-link #{active_class(about_us_path)}" %>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="eventDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Events
+          </a>
+          <div class="dropdown-menu" aria-labelledby="eventDropdown">
+            <%= link_to 'Featured Event', event_new_look_path, class: "dropdown-item #{active_class(event_new_look_path)}" %>
+            <%= link_to 'Featured Events', featured_events_path, class: "dropdown-item #{active_class(featured_events_path)}" %>
+            <%= link_to 'All Events', events_list_new_look_path, class: "dropdown-item #{active_class(events_list_new_look_path)}" %>
+          </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Gallery', gallery_new_look_path, class: "nav-link #{active_class(gallery_new_look_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Top DJ', top_dj_path, class: "nav-link #{active_class(top_dj_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Schedule', schedule_path, class: "nav-link #{active_class(schedule_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Blog', blog_path, class: "nav-link #{active_class(blog_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'FAQ', faq_path, class: "nav-link #{active_class(faq_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Contact', contact_us_path, class: "nav-link #{active_class(contact_us_path)}" %>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- header end -->
+
+        <!-- page content-->
+        <%= yield %>
+        <!-- page content end -->
+        
+        <!-- footer begin -->
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-4 d-xl-flex d-lg-flex align-items-center">
+                        <div class="logo">
+                            <%= link_to root_path do %>
+                                <%= image_tag 'new_look/logo.png', alt: 'Logo' %>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-lg-8">
+                        <div class="footer-menu">
+                            <nav class="navbar navbar-expand-lg">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <%= link_to 'About', about_us_path, class: "nav-link" %>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="footerEventDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Events
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="footerEventDropdown">
+                                            <%= link_to 'Featured Event', event_new_look_path, class: "dropdown-item" %>
+                                            <%= link_to 'Featured Events', featured_events_path, class: "dropdown-item" %>
+                                            <%= link_to 'All Events', events_list_new_look_path, class: "dropdown-item" %>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <%= link_to 'Gallery', gallery_new_look_path, class: "nav-link" %>
+                                    </li>
+                                    <li class="nav-item">
+                                        <%= link_to 'Top DJ', top_dj_path, class: "nav-link" %>
+                                    </li>
+                                    <li class="nav-item">
+                                        <%= link_to 'Schedule', schedule_path, class: "nav-link" %>
+                                    </li>
+                                    <li class="nav-item">
+                                        <%= link_to 'Blog', blog_path, class: "nav-link" %>
+                                    </li>
+                                    <li class="nav-item">
+                                        <%= link_to 'FAQ', faq_path, class: "nav-link" %>
+                                    </li>
+                                    <li class="nav-item">
+                                        <%= link_to 'Contact', contact_us_path, class: "nav-link" %>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer end -->
+     
+        <!-- jquery -->
+        <%= javascript_include_tag 'new_look/jquery' %>
+        <!-- bootstrap -->
+        <%= javascript_include_tag 'new_look/bootstrap.min' %>
+        <!-- owl carousel -->
+        <%= javascript_include_tag 'new_look/owl.carousel' %>
+        <!-- magnific popup -->
+        <%= javascript_include_tag 'new_look/jquery.magnific-popup' %>
+        <!-- way poin js-->
+        <%= javascript_include_tag 'new_look/waypoints.min' %>
+        <!-- wow js-->
+        <%= javascript_include_tag 'new_look/wow.min' %>
+        <!-- main -->
+        <%= javascript_include_tag 'new_look/main' %>
+        <script>
+            // Initialize dropdowns
+            $(document).ready(function() {
+                // Make sure dropdown toggles work on click
+                $('.dropdown-toggle').dropdown();
+                
+                // Make dropdown items highlighted when their page is active
+                var currentUrl = window.location.pathname;
+                
+                // Highlight the current page in the menu
+                $('.dropdown-item').each(function() {
+                    var linkUrl = $(this).attr('href');
+                    if (linkUrl === currentUrl) {
+                        $(this).addClass('active');
+                        $(this).closest('.dropdown').find('.nav-link').addClass('active');
+                    }
+                });
+                
+                // Handle Events dropdown active state for both the featured and all events pages
+                if (currentUrl.includes('/event_new_look') || currentUrl.includes('/events_list_new_look') || currentUrl.includes('/featured_events')) {
+                    $('#eventDropdown, #footerEventDropdown').addClass('active');
+                }
+            });
+        </script>
+    </body>
+
+</html>

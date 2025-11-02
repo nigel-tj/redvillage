@@ -1,4 +1,5 @@
-class DropMusic < ActiveRecord::Migration[6.1]
+class DropMusic < ActiveRecord::Migration[7.2]
+class DropMusic < ActiveRecord::Migration[7.2]
   def change
     drop_table :musics
   end

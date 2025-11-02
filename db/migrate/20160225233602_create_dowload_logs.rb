@@ -1,4 +1,5 @@
-class CreateDowloadLogs < ActiveRecord::Migration[6.1]
+class CreateDowloadLogs < ActiveRecord::Migration[7.2]
+class CreateDowloadLogs < ActiveRecord::Migration[7.2]
   def change
     create_table :dowload_logs do |t|
       t.integer :download_id

@@ -1,0 +1,1203 @@
+        <!-- banner begin -->
+        <div class="banner">
+            <% if @banners.any? %>
+                <div id="mainBannerCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <% @banners.each_with_index do |banner, index| %>
+                            <div class="carousel-item <%= 'active' if index == 0 %>">
+                                <div class="banner-image">
+                                    <% if banner.image %>
+                                        <% img_url = shrine_image_url(banner, :image, :original) %>
+                                        <% if img_url %>
+                                            <img src="<%= img_url %>" alt="<%= banner.name %>" class="w-100">
+                                        <% end %>
+                                    <% end %>
+                                </div>
+                                <div class="banner-content text-center">
+                                    <h1><%= banner.name %></h1>
+                                    <h4><%= banner.title %></h4>
+                                </div>
+                                <% if banner.ticket_promo %>
+                                    <div class="ticket-promo-overlay">
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-xl-4 col-lg-4 col-md-6 d-xl-flex d-lg-flex d-md-block align-items-center">
+                                                    <div class="promo-video">
+                                                        <div class="part-icon">
+                                                            <a class="play-button venobox mfp-iframe" href="https://www.youtube.com/watch?v=GT6-H4BRyqQ">
+                                                                <i class="fas fa-play"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="part-text">
+                                                            <h3>promo videos</h3>
+                                                            <span class="intro">Watch our intro</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-6 d-xl-flex d-lg-flex d-md-flex align-items-center">
+                                                    <div class="banner-buttons">
+                                                        <a href="#" class="ticket-btn">get ticket</a>
+                                                        <a href="#" class="explore-btn">explore more</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </div>
+                    <a class="carousel-control-prev" href="#mainBannerCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#mainBannerCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            <% else %>
+                <div class="banner-content text-center">
+                    <h1>Redvillage</h1>
+                    <h5>presents</h5>
+                    <h4>DJ Party & Night Club</h4>
+                </div>
+            <% end %>
+        </div>
+        <!-- banner end -->
+
+        <!-- countdown begin -->
+        <div class="countdown">
+            <div class="container">
+                <div class="row justify-content-xl-center justify-content-lg-center justify-content-center">
+                    <div class="col-xl-6 col-lg-6 col-lg-8 d-xl-flex d-lg-block align-items-center">
+                        <div class="countdown-title">
+                            <h2>Event Will Start In</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-lg-8">
+                        <div class="part-countdown">
+                            <div class="timer" data-date="29 April 2025 9:56:00 GMT+02:00">
+                                <div class="single-count">
+                                    <span class="day"></span><span class="title">days</span>
+                                </div>
+                                <div class="single-count">
+                                    <span class="hour"></span><span class="title">hours</span>
+                                </div>
+                                <div class="single-count">
+                                    <span class="minute"></span><span class="title">minute</span>
+                                </div>
+                                <div class="single-count">
+                                    <span class="second"></span><span class="title">second</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- countdown end -->
+
+        <!-- about begin -->
+        <div class="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="about-area" style="background-image: url('<%= asset_path('new_look/about.png') %>');">
+                            <div class="row no-gutters">
+                                <div class="col-xl-6 col-lg-6">
+                                    <div class="part-text">
+                                        <h2>Hello There!</h2>
+                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo
+                                        eg diam in posuere solicit tincidunt nulla. Curabitur eleifend
+                                        tempe gncelerisquest placerat velet phasellus eget sem id
+                                        just the consequat gestass facilisis eleifend tempor
+                                        metus.Phasellus vehicula justo egeted diames posuere
+                                        solicitu tincidunt nulla.Curaeatbitur eleifend tempeture.</p>
+                                        <a href="#" class="btn-glow">Explore More</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 d-xl-block d-lg-block d-none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- about end -->
+
+        <!-- event schedule begin -->
+        <div class="event-schedule">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="section-title text-center">
+                            <h2>Event Schedules</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <% @events.each_with_index do |event, index| %>
+                                <a class="nav-link <%= 'active' if index == 0 %>" 
+                                   id="v-pills-<%= index %>-tab" 
+                                   data-toggle="pill" 
+                                   href="#v-pills-<%= index %>" 
+                                   role="tab"
+                                   aria-controls="v-pills-<%= index %>" 
+                                   aria-selected="<%= index == 0 %>">
+                                    <%= event.date.strftime("%A") if event.date %>
+                                    <span class="month-count"><%= event.date.strftime("%d %B") if event.date %></span>
+                                </a>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-9">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <% @events.each_with_index do |event, index| %>
+                                <div class="tab-pane fade <%= 'show active' if index == 0 %>" 
+                                     id="v-pills-<%= index %>" 
+                                     role="tabpanel" 
+                                     aria-labelledby="v-pills-<%= index %>-tab">
+                                    <div id="accordion<%= index %>">
+                                        <div class="card">
+                                            <div class="card-header" data-toggle="collapse" 
+                                                 data-target="#collapse<%= index %>" 
+                                                 aria-expanded="<%= index == 0 %>" 
+                                                 aria-controls="collapse<%= index %>" 
+                                                 role="button">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-2 col-sm-3">
+                                                        <div class="part-img">
+                                                            <% if event.image %>
+                                                                <%= image_tag shrine_image_url(event, :image, :thumbnail) || shrine_image_url(event, :image) %>
+                                                            <% else %>
+                                                                <%= image_tag 'new_look/gallery-1.jpg', alt: event.name %>
+                                                            <% end %>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-10 col-sm-9">
+                                                        <div class="part-text">
+                                                            <h3><%= event.name %></h3>
+                                                            <span class="time">
+                                                                <i class="fas fa-clock"></i> 
+                                                                <%= event.formatted_start_time %>
+                                                            </span> 
+                                                            <span class="location">
+                                                                <i class="fas fa-globe"></i> 
+                                                                <%= event.venue.present? ? event.venue : 'Red Village Main Hall' %>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    
+                                            <div id="collapse<%= index %>" 
+                                                 class="collapse <%= 'show' if index == 0 %>" 
+                                                 data-parent="#accordion<%= index %>">
+                                                <div class="card-body">
+                                                    <p><%= event.summary %></p>
+                                                    <div class="event-actions">
+                                                        <a href="<%= event_path(event) %>" class="btn-glow">Get Details</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- event schedule end -->
+
+        <!-- gallery begin -->
+        <div class="gallery">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="add-space section-title text-center">
+                            <h2>Photo Gallery</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-sm-6">
+                        <div class="single-img">
+                            <%= image_tag 'new_look/gallery-1.jpg', alt: '' %>
+                            <div class="hover-effect">
+                                <a href="#"><i class="far fa-eye"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-sm-6">
+                        <div class="single-img">
+                            <%= image_tag 'new_look/gallery-2.jpg', alt: '' %>
+                            <div class="hover-effect">
+                                <a href="#"><i class="far fa-eye"></i></a>
+                            </div>
+                        </div>
+                        <div class="single-img">
+                            <%= image_tag 'new_look/gallery-3.jpg', alt: '' %>
+                            <div class="hover-effect">
+                                <a href="#"><i class="far fa-eye"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 d-xl-block d-lg-block d-none">
+                        <div class="single-img">
+                            <%= image_tag 'new_look/gallery-4.jpg', alt: '' %>
+                            <div class="hover-effect">
+                                <a href="#"><i class="far fa-eye"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- gallery end -->
+
+        <!-- team dj begin -->
+        <div class="team-dj">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="add-space section-title text-center">
+                            <h2>Top DJs</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="dj-slider">
+                            <div class="single-dj">
+                                <div class="part-img">
+                                    <%= image_tag 'new_look/dj-1.jpg', alt: '' %>
+                                    <div class="hover-effect">
+                                        <a href="#"><i class="fab fa-twitter"></i></a>
+                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-dj">
+                                <div class="part-img">
+                                    <%= image_tag 'new_look/dj-2.jpg', alt: '' %>
+                                    <div class="hover-effect">
+                                        <a href="#"><i class="fab fa-twitter"></i></a>
+                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-dj">
+                                <div class="part-img">
+                                    <%= image_tag 'new_look/dj-3.jpg', alt: '' %>
+                                    <div class="hover-effect">
+                                        <a href="#"><i class="fab fa-twitter"></i></a>
+                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- team dj end -->
+
+        <!-- about venu begin -->
+        <div class="about-venu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 d-xl-block d-lg-block d-md-none">
+                        <div class="part-img">
+                            <%= image_tag 'new_look/about-venu.jpg', alt: '' %>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="part-text">
+                            <h3>About Venue</h3>
+                            <p>Garcia versatil web designer. Phasellus vehicula the justo
+                            diam in posuere sollicit tincidunt nulla. Curabitur eleifend
+                            tempe gncelerisquest placerat velet phasellus eget sem
+                            just the consequat gestass facilisis eleifend tempor mets.</p>
+                            <p>Phasellus vehicula justo egeted diames posuere sollicitu
+                            tincidunt nulla. Curaeatbitur eleifend tempeture.</p>
+                            <p>Tincidunt nulla. Curaeatbitur eleifend tempeture.
+                            Son agreed others exeter period myself few yet nature. Mention mr manners opinion if garrets enabled.</p>
+                            <a href="#">Explore More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- about venu end -->
+
+        <!-- ticket price begin -->
+        <div class="ticket-price">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="section-title text-center">
+                            <h2>Event Tickets</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-sm-6">
+                        <div class="single-ticket-price">
+                            <div class="part-feature">
+                                <span class="price">49</span>
+                                <h3>Basic Pass</h3>
+                                <ul>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular Seating</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable Seat</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee Break</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One Workshop</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Certificate</span></li>
+                                </ul>
+                            </div>
+                            <div class="part-button">
+                                <a href="#">Buy Ticket</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-sm-6">
+                        <div class="single-ticket-price">
+                            <div class="part-feature">
+                                <span class="price">59</span>
+                                <h3>Stardard Pass</h3>
+                                <ul>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular Seating</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable Seat</span>
+                                    </li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee Break</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One Workshop</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Certificate</span></li>
+                                </ul>
+                            </div>
+                            <div class="part-button">
+                                <a href="#">Buy Ticket</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-sm-6">
+                        <div class="single-ticket-price">
+                            <div class="part-feature">
+                                <span class="price">79</span>
+                                <h3>Premium Pass</h3>
+                                <ul>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular Seating</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable Seat</span>
+                                    </li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee Break</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One Workshop</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Certificate</span></li>
+                                </ul>
+                            </div>
+                            <div class="part-button">
+                                <a href="#">Buy Ticket</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-sm-6">
+                        <div class="single-ticket-price">
+                            <div class="part-feature">
+                                <span class="price">99</span>
+                                <h3>Business Pass</h3>
+                                <ul>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular Seating</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable Seat</span>
+                                    </li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Coffee Break</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">One Workshop</span></li>
+                                    <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Certificate</span></li>
+                                </ul>
+                            </div>
+                            <div class="part-button">
+                                <a href="#">Buy Ticket</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ticket price end -->
+
+        <!-- blog begin -->
+        <div class="blog">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="add-space section-title text-center">
+                            <h2>On The Blogs</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="single-blog">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6">
+                                    <div class="part-img">
+                                        <%= image_tag 'new_look/blog-1.jpg', alt: '' %>
+                                        <div class="date-on-img">
+                                            <span class="date">04 may</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
+                                    <div class="part-text">
+                                        <h3>Web Design Principles and Best Prectics</h3>
+                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
+                                        diam in posuere phasellus eget sem just the consequat gestass
+                                        facilisis eleifend tempor metus. Phasellus vehicula justo egeted
+                                        diames posuere.</p>
+                                        <p class="last-line">Phasellus vehicula the justo eg
+                                            diam in posuere.<a href="blog-details.html">Read More!</a></p>
+                                        <span class="poster">Rex Rifat</span>
+                                        <span class="date">20.02.2019 Sunday, 10:30am</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="single-blog">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
+                                    <div class="part-text">
+                                        <h3>15 Free Productive Design Tools</h3>
+                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
+                                            diam in posuere phasellus eget sem just the consequat gestass
+                                            facilisis eleifend tempor metus. Phasellus vehicula justo egeted
+                                            diames posuere.</p>
+                                        <p>Phasellus vehicula the justo eg
+                                            diam in posuere.<a href="blog-details.html">Read More!</a></p>
+                                        <span class="poster">Abu Ubaidah</span>
+                                        <span class="date">20.02.2019 Sunday, 10:30am</span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 order-xl-last order-lg-last order-first">
+                                    <div class="part-img">
+                                        <%= image_tag 'new_look/blog-2.jpg', alt: '' %>
+                                        <div class="date-on-img">
+                                            <span class="date">04 may</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="single-blog">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6">
+                                    <div class="part-img">
+                                        <%= image_tag 'new_look/blog-3.jpg', alt: '' %>
+                                        <div class="date-on-img">
+                                            <span class="date">04 may</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
+                                    <div class="part-text">
+                                        <h3>Getting Start With Sketch App</h3>
+                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
+                                            diam in posuere phasellus eget sem just the consequat gestass
+                                            facilisis eleifend tempor metus. Phasellus vehicula justo egeted
+                                            diames posuere.</p>
+                                        <p>Phasellus vehicula the justo eg
+                                            diam in posuere.<a href="blog-details.html">Read More!</a></p>
+                                        <span class="poster">Abir Khan</span>
+                                        <span class="date">20.02.2019 Sunday, 10:30am</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- blog end -->
+
+        <!-- testimonial begin -->
+        <div class="testimonial">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="section-title text-center">
+                            <h2>Testimonials</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="testimonial-slider">
+                            <div class="single-testimonial">
+                                <div class="row no-gutters">
+                                    <div class="col-xl-4 col-lg-4 col-sm-4 col-md-12 col-12">
+                                        <div class="part-img"></div>
+                                    </div>
+                                    <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
+                                        <div class="part-text">
+                                            <div class="bio">
+                                                <span class="name">Alison Burgas</span>
+                                                <span class="position">CEO @google</span>
+                                            </div>
+                                            <div class="social">
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                            </div>
+                                            <div class="text">
+                                                <p>Phasellus vehicula the justo egdiam
+                                                    posu phase eget sem just the
+                                                    consequat gesta facilisis eleifend
+                                                    tempor metus. Phasellus vehicula is
+                                                    diames posuere sollicitu.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-testimonial">
+                                <div class="row no-gutters">
+                                    <div class="col-xl-4 col-lg-4 col-sm-4 col-md-12 col-12">
+                                        <div class="part-img two"></div>
+                                    </div>
+                                    <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
+                                        <div class="part-text">
+                                            <div class="bio">
+                                                <span class="name">Abu Ubaidah</span>
+                                                <span class="position">CEO @google</span>
+                                            </div>
+                                            <div class="social">
+                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                            </div>
+                                            <div class="text">
+                                                <p>Phasellus vehicula the justo egdiam
+                                                    posu phase eget sem just the
+                                                    consequat gesta facilisis eleifend
+                                                    tempor metus. Phasellus vehicula is
+                                                    diames posuere sollicitu.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- testimonial end -->
+
+        <!-- faq begin -->
+        <div class="faq">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="section-title text-center">
+                            <h2>FAQ</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-header" id="heading1">
+                                    <h5>
+                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse1"
+                                            aria-expanded="true" aria-controls="collapse1">
+                                            How can i get help?
+                                        </button>
+                                    </h5>
+                                </div>
+                        
+                                <div id="collapse1" class="collapse show" aria-labelledby="heading1" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital need Marketing Agency all foundational tool need inbound success. With module there no need to go another day. 
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="heading2">
+                                    <h5>
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2"
+                                            aria-expanded="false" aria-controls="collapse2">
+                                            User Guide ; Getting started
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital need Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="heading3">
+                                    <h5>
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3"
+                                            aria-expanded="false" aria-controls="collapse3">
+                                            Did you plan to open a branch in Dhaka?
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital need Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="accordion2">
+                            <div class="card">
+                                <div class="card-header" id="headingFour">
+                                    <h5>
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour"
+                                            aria-expanded="false" aria-controls="collapseFour">
+                                            How can i get help by agency?
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent=".accordion2">
+                                    <div class="card-body">
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital need Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header" id="headingFive">
+                                    <h5>
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive"
+                                            aria-expanded="false" aria-controls="collapseFive">
+                                            How long your contract term?
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent=".accordion2">
+                                    <div class="card-body">
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital need Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingsix">
+                                    <h5>
+                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapsesix"
+                                            aria-expanded="true" aria-controls="collapsesix">
+                                            What about loan and bank advantage?
+                                        </button>
+                                    </h5>
+                                </div>
+                    
+                                <div id="collapsesix" class="collapse show" aria-labelledby="headingsix" data-parent=".accordion2">
+                                    <div class="card-body">
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital need Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- faq end -->
+
+        <!-- subscribe newsletter begin -->
+        <div class="subscribe-newsletter">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <div class="section-title text-center">
+                            <h2>Subscribe Our Newslatter</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="form">
+                            <form class="newsletter-form">
+                                <input class="newsletter-input" type="text" placeholder="Enter your email here">
+                                <button type="submit">Subscribe Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- subscribe newsletter end -->
+
+        <!-- contact begin -->
+        <div class="contact">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <div class="add-space section-title text-center">
+                            <h2>Drop A Message</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="contact-form">
+                            <form>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6">
+                                        <input type="text" placeholder="Enter your name">
+                                        <span></span>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6">
+                                        <input type="email" placeholder="Enter your email">
+                                        <span></span>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12">
+                                        <input type="text" placeholder="Enter your subject">
+                                        <span></span>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12">
+                                        <textarea placeholder="Write a message"></textarea>
+                                        <span class="textarea"></span>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6">
+                                        <button>Send Us Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- contact end -->
+
+<style>
+.banner {
+    position: relative;
+    height: 100vh;
+    background: #000;
+    overflow: hidden;
+}
+
+.carousel,
+.carousel-inner,
+.carousel-item {
+    height: 100vh;
+}
+
+.banner-image {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+.banner-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+}
+
+.banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 100%;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.banner-content h1 {
+    font-size: 4.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.banner-content h4 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.ticket-promo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4));
+    padding: 3rem 0;
+    z-index: 3;
+    backdrop-filter: blur(5px);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+    z-index: 4;
+}
+
+.promo-video {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.play-button {
+    width: 60px;
+    height: 60px;
+    background: #ff006c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255,0,108,0.3);
+}
+
+.play-button:hover {
+    background: #d60058;
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255,0,108,0.5);
+}
+
+.part-text {
+    color: #fff;
+}
+
+.part-text h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.part-text .intro {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.banner-buttons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.banner-buttons a {
+    padding: 12px 30px;
+    color: #fff;
+    border-radius: 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.ticket-btn {
+    background: #ff006c;
+    box-shadow: 0 0 20px rgba(255,0,108,0.3);
+}
+
+.ticket-btn:hover {
+    background: #d60058;
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255,0,108,0.5);
+}
+
+.explore-btn {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid #fff;
+}
+
+.explore-btn:hover {
+    background: #fff;
+    color: #000 !important;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .banner-content h1 {
+        font-size: 3rem;
+    }
+    .banner-content h4 {
+        font-size: 1.8rem;
+    }
+    .ticket-promo-overlay {
+        padding: 1.5rem 0;
+    }
+    .banner-buttons {
+        margin-top: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .banner-buttons a {
+        text-align: center;
+    }
+    .promo-video {
+        margin-bottom: 1rem;
+    }
+}
+
+.event-actions {
+    margin-top: 15px;
+}
+
+.event-actions .btn-glow {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #ff006c;
+    color: #fff;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255,0,108,0.3);
+}
+
+.event-actions .btn-glow:hover {
+    background: #d60058;
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255,0,108,0.5);
+}
+
+.nav-pills .nav-link {
+    color: #333;
+    background: #f8f9fa;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link.active {
+    background: #ff006c;
+    color: #fff;
+}
+
+.nav-pills .nav-link:hover {
+    transform: translateX(5px);
+}
+
+.month-count {
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+/* About section styles */
+.about-area {
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding: 100px 0;
+    position: relative;
+}
+
+.about-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.4) 100%);
+}
+
+.about-area .part-text {
+    position: relative;
+    z-index: 2;
+    padding: 40px;
+}
+
+.about-area .part-text h2 {
+    color: #ff006c;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.about-area .part-text p {
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.about-area .btn-glow {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #ff006c;
+    color: #fff;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255,0,108,0.3);
+}
+
+.about-area .btn-glow:hover {
+    background: #d60058;
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255,0,108,0.5);
+    color: #fff;
+}
+
+/* Event schedule styles */
+.event-schedule {
+    padding: 80px 0;
+    background-color: #080d15;
+}
+
+.event-schedule .section-title h2 {
+    color: #ff006c;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.event-schedule .card {
+    background-color: #111827;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.event-schedule .card-header {
+    background-color: #111827;
+    border-bottom: none;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.event-schedule .card-header:hover {
+    background-color: #1a2436;
+}
+
+.event-schedule .card-body {
+    background-color: #0d1420;
+    color: #fff;
+    padding: 20px;
+}
+
+.event-schedule .part-img {
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.event-schedule .part-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.event-schedule .part-text {
+    padding-left: 15px;
+}
+
+.event-schedule .part-text h3 {
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.event-schedule .part-text .time,
+.event-schedule .part-text .location {
+    display: inline-block;
+    margin-right: 20px;
+    color: #ff006c;
+    font-size: 0.9rem;
+}
+
+.event-schedule .part-text .time i,
+.event-schedule .part-text .location i {
+    margin-right: 5px;
+}
+
+.event-actions {
+    margin-top: 15px;
+}
+
+.event-actions .btn-glow {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #ff006c;
+    color: #fff;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255,0,108,0.3);
+}
+
+.event-actions .btn-glow:hover {
+    background: #d60058;
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255,0,108,0.5);
+}
+
+.nav-pills .nav-link {
+    color: #fff;
+    background: #111827;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-align: left;
+    padding: 15px 20px;
+}
+
+.nav-pills .nav-link.active {
+    background: #ff006c;
+    color: #fff;
+}
+
+.nav-pills .nav-link:hover {
+    transform: translateX(5px);
+    background: #1a2436;
+}
+
+.month-count {
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.8;
+    margin-top: 5px;
+}
+</style>
