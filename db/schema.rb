@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_02_155824) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_02_163600) do
+  create_table "ad_spots", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "page", null: false
+    t.string "position", null: false
+    t.integer "width", null: false
+    t.integer "height", null: false
+    t.decimal "price", precision: 10, scale: 2, default: "0.0"
+    t.string "currency", default: "USD", null: false
+    t.boolean "active", default: true, null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_ad_spots_on_active"
+    t.index ["page", "position"], name: "index_ad_spots_on_page_and_position", unique: true
+    t.index ["page"], name: "index_ad_spots_on_page"
+    t.index ["position"], name: "index_ad_spots_on_position"
+  end
+
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -26,6 +44,28 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_155824) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "ads", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "image"
+    t.text "image_data"
+    t.string "url"
+    t.integer "ad_spot_id", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.boolean "active", default: true, null: false
+    t.integer "impressions", default: 0, null: false
+    t.integer "clicks", default: 0, null: false
+    t.string "advertiser_name"
+    t.string "advertiser_email"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_ads_on_active"
+    t.index ["ad_spot_id", "active"], name: "index_ads_on_ad_spot_id_and_active"
+    t.index ["ad_spot_id"], name: "index_ads_on_ad_spot_id"
+    t.index ["start_date", "end_date"], name: "index_ads_on_start_date_and_end_date"
   end
 
   create_table "albums", force: :cascade do |t|
@@ -337,6 +377,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_155824) do
     t.index ["user_id"], name: "index_vip_tickets_on_user_id"
   end
 
+  add_foreign_key "ads", "ad_spots", on_delete: :restrict
   add_foreign_key "profiles", "users"
   add_foreign_key "standard_tickets", "events"
   add_foreign_key "standard_tickets", "users"

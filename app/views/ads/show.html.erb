@@ -1,0 +1,148 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="mb-0">Ad Details: <%= @ad.title %></h2>
+          <%= link_to 'Edit', edit_ad_path(@ad), class: 'btn btn-primary' %>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Ad Information</h4>
+              <table class="table">
+                <tr>
+                  <th>Title:</th>
+                  <td><%= @ad.title %></td>
+                </tr>
+                <tr>
+                  <th>Ad Spot:</th>
+                  <td><%= @ad.ad_spot.page.titleize %> - <%= @ad.ad_spot.position.titleize %></td>
+                </tr>
+                <tr>
+                  <th>Status:</th>
+                  <td>
+                    <% if @ad.currently_active? %>
+                      <span class="badge bg-success">Active</span>
+                    <% else %>
+                      <span class="badge bg-danger">Inactive</span>
+                    <% end %>
+                  </td>
+                </tr>
+                <% if @ad.url.present? %>
+                  <tr>
+                    <th>URL:</th>
+                    <td><%= link_to @ad.url, @ad.url, target: '_blank' %></td>
+                  </tr>
+                <% end %>
+                <% if @ad.advertiser_name.present? %>
+                  <tr>
+                    <th>Advertiser:</th>
+                    <td><%= @ad.advertiser_name %></td>
+                  </tr>
+                <% end %>
+                <% if @ad.advertiser_email.present? %>
+                  <tr>
+                    <th>Email:</th>
+                    <td><%= mail_to @ad.advertiser_email %></td>
+                  </tr>
+                <% end %>
+                <% if @ad.start_date.present? || @ad.end_date.present? %>
+                  <tr>
+                    <th>Date Range:</th>
+                    <td>
+                      <%= @ad.start_date&.strftime('%b %d, %Y') || 'No start date' %> - 
+                      <%= @ad.end_date&.strftime('%b %d, %Y') || 'No end date' %>
+                    </td>
+                  </tr>
+                <% end %>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <h4>Ad Preview</h4>
+              <% if @ad.image_data? %>
+                <div class="ad-preview">
+                  <% if @ad.image[:original] %>
+                    <%= image_tag @ad.image[:original].url, class: "img-fluid", alt: @ad.title %>
+                  <% end %>
+                </div>
+              <% else %>
+                <p class="text-muted">No image uploaded</p>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-12">
+              <h4>Statistics</h4>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="stat-card">
+                    <h3><%= number_with_delimiter(@ad.impressions) %></h3>
+                    <p>Impressions</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="stat-card">
+                    <h3><%= number_with_delimiter(@ad.clicks) %></h3>
+                    <p>Clicks</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="stat-card">
+                    <h3><%= @ad.click_through_rate %>%</h3>
+                    <p>Click-Through Rate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% if @ad.notes.present? %>
+            <div class="row mt-4">
+              <div class="col-12">
+                <h4>Notes</h4>
+                <p><%= simple_format(@ad.notes) %></p>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="mt-4">
+            <%= link_to 'Back to Ads', ads_path, class: 'btn btn-secondary' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stat-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .stat-card h3 {
+    margin: 0;
+    font-size: 32px;
+    color: #007bff;
+  }
+  .stat-card p {
+    margin: 10px 0 0 0;
+    color: #666;
+    font-size: 14px;
+  }
+  .ad-preview {
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    background: #f8f9fa;
+  }
+  .ad-preview img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+

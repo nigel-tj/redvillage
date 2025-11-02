@@ -1,0 +1,96 @@
+<% 
+  page = local_assigns[:page] || current_page_for_ads
+  position = local_assigns[:position] || 'sidebar_top'
+  show_label = local_assigns[:show_label] || false
+%>
+<%= render_ad(page, position, show_label: show_label, class: local_assigns[:class], style: local_assigns[:style]) %>
+
+<style>
+  .ad-container {
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .ad-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .ad-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .ad-link:hover {
+    text-decoration: none;
+  }
+  
+  .ad-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .ad-placeholder {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .ad-label {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+  
+  /* Responsive ad containers */
+  @media (max-width: 768px) {
+    .ad-container {
+      margin: 15px auto;
+      max-width: 100%;
+    }
+  }
+  
+  /* Sidebar ads */
+  .ad-sidebar_top,
+  .ad-sidebar_middle,
+  .ad-sidebar_bottom {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Content ads */
+  .ad-content_top,
+  .ad-content_middle,
+  .ad-content_bottom {
+    width: 100%;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  /* Banner ads */
+  .ad-banner {
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  /* Inline ads */
+  .ad-inline {
+    display: inline-block;
+    margin: 10px;
+    vertical-align: middle;
+  }
+</style>
+

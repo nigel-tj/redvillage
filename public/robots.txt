@@ -1,1 +1,13 @@
-# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+# robots.txt for The Red Cup Village
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admins/
+Disallow: /users/
+Disallow: /impersonate
+Disallow: /dashboard/
+Disallow: /new_*_upload
+Disallow: /admin_*
+
+# Sitemap
+Sitemap: https://yourdomain.com/sitemap.xml

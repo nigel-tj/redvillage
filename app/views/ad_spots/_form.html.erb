@@ -1,0 +1,120 @@
+<%= form_for @ad_spot do |f| %>
+  <% if @ad_spot.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4><%= pluralize(@ad_spot.errors.count, "error") %> prohibited this ad spot from being saved:</h4>
+      <ul class="mb-0">
+        <% @ad_spot.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'e.g., Homepage Sidebar Top' %>
+    <small class="form-text text-muted">A descriptive name for this ad spot</small>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :page, class: "form-label" %>
+    <%= f.select :page, 
+        options_for_select([
+          ['Home', 'home'],
+          ['Events', 'events'],
+          ['Gallery', 'gallery'],
+          ['Artists', 'artists'],
+          ['Videos', 'videos'],
+          ['Music', 'music'],
+          ['Blog', 'blog'],
+          ['About', 'about'],
+          ['Contact', 'contact'],
+          ['Team', 'team'],
+          ['Schedule', 'schedule'],
+          ['FAQ', 'faq']
+        ], @ad_spot.page),
+        {}, 
+        { class: 'form-select', required: true } %>
+    <small class="form-text text-muted">The page where this ad spot will appear</small>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :position, class: "form-label" %>
+    <%= f.select :position,
+        options_for_select([
+          ['Header', 'header'],
+          ['Sidebar Top', 'sidebar_top'],
+          ['Sidebar Middle', 'sidebar_middle'],
+          ['Sidebar Bottom', 'sidebar_bottom'],
+          ['Content Top', 'content_top'],
+          ['Content Middle', 'content_middle'],
+          ['Content Bottom', 'content_bottom'],
+          ['Footer', 'footer'],
+          ['Banner', 'banner'],
+          ['Inline', 'inline']
+        ], @ad_spot.position),
+        {}, 
+        { class: 'form-select', required: true } %>
+    <small class="form-text text-muted">Where on the page this ad spot appears</small>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :width, class: "form-label" %>
+      <%= f.number_field :width, class: 'form-control', required: true, min: 1, placeholder: 'e.g., 300' %>
+      <small class="form-text text-muted">Width in pixels</small>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= f.label :height, class: "form-label" %>
+      <%= f.number_field :height, class: 'form-control', required: true, min: 1, placeholder: 'e.g., 250' %>
+      <small class="form-text text-muted">Height in pixels</small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :price, class: "form-label" %>
+      <%= f.number_field :price, class: 'form-control', required: true, step: 0.01, min: 0, placeholder: '0.00' %>
+      <small class="form-text text-muted">Price per period (e.g., per month)</small>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= f.label :currency, class: "form-label" %>
+      <%= f.select :currency,
+          options_for_select([
+            ['USD - US Dollar', 'USD'],
+            ['EUR - Euro', 'EUR'],
+            ['GBP - British Pound', 'GBP'],
+            ['JPY - Japanese Yen', 'JPY'],
+            ['AUD - Australian Dollar', 'AUD'],
+            ['CAD - Canadian Dollar', 'CAD'],
+            ['CHF - Swiss Franc', 'CHF'],
+            ['CNY - Chinese Yuan', 'CNY'],
+            ['INR - Indian Rupee', 'INR']
+          ], @ad_spot.currency || 'USD'),
+          {}, 
+          { class: 'form-select', required: true } %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, class: 'form-control', rows: 3, placeholder: 'Optional description of this ad spot' %>
+    <small class="form-text text-muted">Optional description or notes about this ad spot</small>
+  </div>
+
+  <div class="mb-3">
+    <div class="form-check form-switch">
+      <%= f.check_box :active, class: 'form-check-input', id: 'adSpotActiveToggle' %>
+      <%= f.label :active, 'Active', class: 'form-check-label', for: 'adSpotActiveToggle' %>
+      <small class="form-text text-muted d-block">When active, ads can be assigned to this spot</small>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to 'Cancel', ad_spots_path, class: 'btn btn-secondary' %>
+    <%= f.submit @ad_spot.new_record? ? 'Create Ad Spot' : 'Update Ad Spot', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+

@@ -1,0 +1,97 @@
+<%= form_for @ad, html: { multipart: true } do |f| %>
+  <% if @ad.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4><%= pluralize(@ad.errors.count, "error") %> prohibited this ad from being saved:</h4>
+      <ul class="mb-0">
+        <% @ad.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :title, class: "form-label" %>
+    <%= f.text_field :title, class: 'form-control', required: true, placeholder: 'Ad title' %>
+    <small class="form-text text-muted">A descriptive title for this ad</small>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :ad_spot_id, "Ad Spot", class: "form-label" %>
+    <%= f.select :ad_spot_id,
+        options_from_collection_for_select(
+          @ad_spots,
+          :id,
+          ->(spot) { "#{spot.page.titleize} - #{spot.position.titleize} (#{spot.width}x#{spot.height}px) - #{spot.format_price}" }
+        ),
+        { prompt: 'Select an ad spot' },
+        { class: 'form-select', required: true } %>
+    <small class="form-text text-muted">Choose the ad spot where this ad will appear</small>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :image, class: "form-label" %>
+    <%= f.file_field :image, class: 'form-control', accept: 'image/*' %>
+    <% if @ad.image_data? %>
+      <div class="mt-2">
+        <p>Current image:</p>
+        <% if @ad.image[:thumbnail] %>
+          <%= image_tag @ad.image[:thumbnail].url, class: "img-thumbnail", style: "max-width: 200px;" %>
+        <% end %>
+      </div>
+    <% end %>
+    <small class="form-text text-muted">Upload the ad image (should match the ad spot dimensions)</small>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :url, "Click-through URL", class: "form-label" %>
+    <%= f.url_field :url, class: 'form-control', placeholder: 'https://example.com' %>
+    <small class="form-text text-muted">URL where users will be redirected when clicking the ad</small>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :start_date, class: "form-label" %>
+      <%= f.date_field :start_date, class: 'form-control' %>
+      <small class="form-text text-muted">Optional start date (leave blank for immediate start)</small>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= f.label :end_date, class: "form-label" %>
+      <%= f.date_field :end_date, class: 'form-control' %>
+      <small class="form-text text-muted">Optional end date (leave blank for no expiration)</small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= f.label :advertiser_name, "Advertiser Name", class: "form-label" %>
+      <%= f.text_field :advertiser_name, class: 'form-control', placeholder: 'Company or person name' %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= f.label :advertiser_email, "Advertiser Email", class: "form-label" %>
+      <%= f.email_field :advertiser_email, class: 'form-control', placeholder: 'contact@example.com' %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :notes, class: "form-label" %>
+    <%= f.text_area :notes, class: 'form-control', rows: 3, placeholder: 'Internal notes about this ad' %>
+    <small class="form-text text-muted">Optional internal notes (not visible to public)</small>
+  </div>
+
+  <div class="mb-3">
+    <div class="form-check form-switch">
+      <%= f.check_box :active, class: 'form-check-input', id: 'adActiveToggle' %>
+      <%= f.label :active, 'Active', class: 'form-check-label', for: 'adActiveToggle' %>
+      <small class="form-text text-muted d-block">When active, the ad will be displayed (if within date range)</small>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to 'Cancel', ads_path, class: 'btn btn-secondary' %>
+    <%= f.submit @ad.new_record? ? 'Create Ad' : 'Update Ad', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+

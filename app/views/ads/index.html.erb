@@ -1,0 +1,226 @@
+<!-- Content Section -->
+<div class="content-wrapper">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-12 d-flex justify-content-between align-items-center">
+        <h2 class="admin-title mb-0">Ads Management</h2>
+        <%= link_to "Add New Ad", new_ad_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="filter-wrapper">
+          <%= form_tag ads_path, method: :get, class: 'filter-form' do %>
+            <div class="filter-group">
+              <%= label_tag :ad_spot_id, "Filter by Ad Spot:" %>
+              <%= select_tag :ad_spot_id, 
+                  options_from_collection_for_select(
+                    AdSpot.active.order(:page, :position),
+                    :id,
+                    ->(spot) { "#{spot.page.titleize} - #{spot.position.titleize}" },
+                    params[:ad_spot_id]
+                  ).insert(0, ['All Spots', '']),
+                  class: 'form-control',
+                  onchange: 'this.form.submit();' %>
+              <%= label_tag :active, "Status:", style: "margin-left: 20px;" %>
+              <%= select_tag :active,
+                  options_for_select([
+                    ['All', ''],
+                    ['Active', 'true'],
+                    ['Inactive', 'false']
+                  ], params[:active]),
+                  class: 'form-control',
+                  onchange: 'this.form.submit();' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <% if @ads.any? %>
+        <% @ads.each do |ad| %>
+          <div class="col-md-6 mb-4">
+            <div class="ad-card">
+              <div class="ad-header">
+                <h4><%= ad.title %></h4>
+                <div class="ad-badges">
+                  <span class="spot-badge"><%= ad.ad_spot.page.titleize %> - <%= ad.ad_spot.position.titleize %></span>
+                  <% if ad.currently_active? %>
+                    <span class="active-badge">Active</span>
+                  <% else %>
+                    <span class="inactive-badge">Inactive</span>
+                  <% end %>
+                </div>
+              </div>
+              <div class="ad-image">
+                <% if ad.image_data? %>
+                  <% if ad.image[:thumbnail] %>
+                    <%= image_tag ad.image[:thumbnail].url, class: "img-fluid", alt: ad.title %>
+                  <% elsif ad.image[:original] %>
+                    <%= image_tag ad.image[:original].url, class: "img-fluid", alt: ad.title %>
+                  <% end %>
+                <% else %>
+                  <div class="no-image">No image</div>
+                <% end %>
+              </div>
+              <div class="ad-body">
+                <div class="ad-info">
+                  <% if ad.url.present? %>
+                    <p><strong>URL:</strong> <%= link_to truncate(ad.url, length: 50), ad.url, target: '_blank' %></p>
+                  <% end %>
+                  <% if ad.advertiser_name.present? %>
+                    <p><strong>Advertiser:</strong> <%= ad.advertiser_name %></p>
+                  <% end %>
+                  <% if ad.start_date.present? || ad.end_date.present? %>
+                    <p><strong>Date Range:</strong> 
+                      <%= ad.start_date&.strftime('%b %d, %Y') || 'No start date' %> - 
+                      <%= ad.end_date&.strftime('%b %d, %Y') || 'No end date' %>
+                    </p>
+                  <% end %>
+                  <p><strong>Impressions:</strong> <%= number_with_delimiter(ad.impressions) %> | 
+                     <strong>Clicks:</strong> <%= number_with_delimiter(ad.clicks) %> | 
+                     <strong>CTR:</strong> <%= ad.click_through_rate %>%
+                  </p>
+                </div>
+                <div class="ad-actions">
+                  <%= link_to "Edit", edit_ad_path(ad), class: "btn btn-sm btn-primary" %>
+                  <%= link_to "View Stats", ad_path(ad), class: "btn btn-sm btn-info" %>
+                  <%= button_to 'Delete', ad_path(ad), method: :delete, 
+                      data: { confirm: 'Are you sure?' },
+                      class: "btn btn-sm btn-danger" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="col-12">
+          <div class="alert alert-info">
+            <p>No ads found. <%= link_to "Create your first ad", new_ad_path %> to get started.</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Footer -->
+<footer class="admin-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>&copy; <%= Time.current.year %> RedVillage Admin Panel</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<% content_for :styles do %>
+  <style>
+    .ad-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 15px;
+      height: 100%;
+      transition: transform 0.2s ease;
+    }
+    .ad-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .ad-header {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .ad-header h4 {
+      margin: 0;
+      color: #333;
+      font-size: 18px;
+      flex: 1;
+    }
+    .ad-badges {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .spot-badge {
+      background: #d1ecf1;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #0c5460;
+    }
+    .active-badge {
+      background: #d4edda;
+      color: #155724;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .inactive-badge {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .ad-image {
+      margin-bottom: 15px;
+      text-align: center;
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ad-image img {
+      max-height: 150px;
+      width: auto;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    .no-image {
+      color: #999;
+      font-style: italic;
+    }
+    .ad-body {
+      padding: 10px 0;
+    }
+    .ad-info p {
+      margin-bottom: 8px;
+      color: #666;
+      font-size: 14px;
+    }
+    .ad-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .filter-group label {
+      margin: 0;
+      font-weight: 500;
+      color: #333;
+    }
+  </style>
+<% end %>
+

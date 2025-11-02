@@ -24,6 +24,12 @@ Rails.application.routes.draw do
   resources :features
   resources :videos
   resources :artists
+  resources :ad_spots
+  resources :ads do
+    member do
+      get 'click', to: 'ads#click'
+    end
+  end
   resources :events do
     resources :ticket_listings, only: [:index, :new]
   end
