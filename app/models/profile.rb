@@ -1,4 +1,4 @@
-class Profile < ApplicationRecord
+class Profile < ActiveRecord::Base
   belongs_to :user
   
   include ImageUploader::Attachment(:profile_picture) if defined?(ImageUploader)

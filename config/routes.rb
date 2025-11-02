@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     registrations: 'admins/registrations'
   }
 
+  # User management routes (for admins)
+  resources :users, only: [:index, :show, :edit, :update, :destroy]
+
   # Standard RESTful routes
   resources :lifestyles
   resources :albums
@@ -86,7 +89,6 @@ Rails.application.routes.draw do
   get '/admin_index', to: 'features#admin_index'
   get '/artist_songs', to: 'artists#artist'
   get '/banners_index', to: 'main_banners#index'
-  get '/users', to: 'users#index'
   get '/stage', to: 'visitors#stage'
   get '/coming_soon', to: 'coming_soon#index'
   get '/team', to: 'visitors#team'

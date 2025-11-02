@@ -1,5 +1,7 @@
 class StoresController < ApplicationController
   def index
+    @stores = Store.all
+    @banners = MainBanner.all
   end
 
   def new

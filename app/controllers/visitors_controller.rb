@@ -89,7 +89,7 @@ class VisitorsController < ApplicationController
 
   def news
     # News and social media feed page
-    # TODO: Implement current social media integrations
+    @features = Feature.order(created_at: :desc).limit(20)
   end
 
   def portfolio

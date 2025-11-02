@@ -1,0 +1,57 @@
+# breadcrump begin
+%div.breadcrump
+  .container
+    .row
+      .col-xl-6.col-lg-6
+        = render_breadcrumbs
+# breadcrump end
+
+/ news begin
+%div.gallery
+  .container
+    .row.justify-content-center
+      .col-xl-8.col-lg-8
+        %div.add-space.section-title.text-center
+          %h2 Latest News
+          %p Stay updated with the latest from Red Village
+    .row
+      - if @features.any?
+        - @features.each do |feature|
+          .col-xl-4.col-lg-4.col-md-6.mb-4
+            .news-card
+              - if feature.image.present?
+                = image_tag shrine_image_url(feature, :image, :thumbnail), class: 'news-image'
+              - else
+                = image_tag 'new_look/blog-1.jpg', class: 'news-image'
+              .news-content
+                %h5= feature.heading
+                %p= truncate(feature.summary || feature.description || '', length: 100)
+                = link_to 'Read More', feature_path(feature), class: 'btn btn-sm btn-primary'
+      - else
+        .col-xl-12
+          %p.text-center.text-muted No news articles yet.
+/ news end
+
+%style
+  .news-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .news-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .news-content {
+    padding: 20px;
+  }
+

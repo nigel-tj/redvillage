@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_02_133623) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_02_140006) do
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -186,6 +186,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_133623) do
     t.boolean "public_profile", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "profile_picture_data"
+    t.text "cover_image_data"
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 

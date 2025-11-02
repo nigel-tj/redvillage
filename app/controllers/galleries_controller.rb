@@ -5,15 +5,6 @@ class GalleriesController < ApplicationController
   before_action :require_photographer_or_admin, only: [:new, :create, :update, :edit, :destroy]
   layout "admin", only: [:new, :create, :update, :admin_show, :index, :show]
   
-  private
-  
-  def require_photographer_or_admin
-    unless current_user&.photographer? || current_user&.admin? || current_user&.curator? || current_user&.editor?
-      flash[:alert] = "You need photographer, curator, editor, or admin access to perform this action."
-      redirect_to root_path
-    end
-  end
-
   def index
     @galleries = Gallery.order('created_at DESC')
   end
@@ -69,6 +60,14 @@ class GalleriesController < ApplicationController
   end
 
   private
+  
+  def require_photographer_or_admin
+    unless current_user&.photographer? || current_user&.admin? || current_user&.curator? || current_user&.editor?
+      flash[:alert] = "You need photographer, curator, editor, or admin access to perform this action."
+      redirect_to root_path
+    end
+  end
+  
   def gallery_params
     params.require(:gallery).permit(:name,:category,:image)
   end

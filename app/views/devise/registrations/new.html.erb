@@ -97,23 +97,13 @@
               <label class="form-label mb-3">I'm joining as a:</label>
               <div class="role-selection">
                 <div class="role-option">
-                  <input type="radio" name="user[role]" id="role_member" value="0" <%= 'checked' if params.dig(:user, :role) != '1' %> class="role-radio">
+                  <input type="radio" name="user[role]" id="role_member" value="member" <%= 'checked' if params.dig(:user, :role) != 'admin' %> class="role-radio">
                   <label for="role_member" class="role-card">
                     <div class="role-icon">
                       <i class="fas fa-users"></i>
                     </div>
                     <h5>Member</h5>
                     <p>Join events, buy tickets, and enjoy the community</p>
-                  </label>
-                </div>
-                <div class="role-option">
-                  <input type="radio" name="user[role]" id="role_admin" value="1" <%= 'checked' if params.dig(:user, :role) == '1' %> class="role-radio">
-                  <label for="role_admin" class="role-card">
-                    <div class="role-icon admin">
-                      <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h5>Admin</h5>
-                    <p>Manage events, content, and community</p>
                   </label>
                 </div>
               </div>
