@@ -16,6 +16,7 @@ Rails.application.config.assets.precompile += %w[
   new_look/**/*.css
   new_look/**/*.js
   new_look/**/*.ttf
+  new_look/**/*.otf
   new_look/**/*.woff
   new_look/**/*.woff2
   new_look/**/*.eot

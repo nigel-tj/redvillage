@@ -7,57 +7,7 @@
     letter-spacing:1.9px;
 }
 
-li.dropdown.open{
-    height:auto !important;
-}
-
-.dropdown-submenu{ 
-    position:relative;
-}
-
-.dropdown-submenu>.dropdown-menu{
-    top:0;
-    left:100%;
-    margin-top:-6px;
-    margin-left:-1px;
-    -webkit-border-radius:0 6px 6px 6px;
-    -moz-border-radius:0 6px 6px 6px;
-    border-radius:0 6px 6px 6px;
-}
-
-.dropdown-submenu:hover>.dropdown-menu{
-    display:block;
-}
-
-.dropdown-submenu>a:after{
-    display:block;
-    content:" ";
-    float:right;
-    width:0;
-    height:0;
-    border-color:transparent;
-    border-style:solid;
-    border-width:5px 0 5px 5px;
-    border-left-color:#cccccc;
-    margin-top:5px;
-    margin-right:-10px;
-}
-
-.dropdown-submenu:hover>a:after{
-    border-left-color:#ffffff;
-}
-
-.dropdown-submenu.pull-left{
-    float:none;
-}
-
-.dropdown-submenu.pull-left>.dropdown-menu{
-    left:-100%;
-    margin-left:10px;
-    -webkit-border-radius:6px 0 6px 6px;
-    -moz-border-radius:6px 0 6px 6px;
-    border-radius:6px 0 6px 6px;
-}
+/* Old Bootstrap 3 dropdown styles removed - using Bootstrap 5 now */
 
 .event-box-right {
     display: flex;
@@ -77,11 +27,6 @@ li.dropdown.open{
   }
   
 
-@media (max-width: 979px){
-    .dropdown-submenu>.dropdown-menu {
-        margin-left: 20px;
-    }
-}
 
 /* Admin Authentication Pages */
 .auth-page {
@@ -159,4 +104,86 @@ li.dropdown.open{
 .auth-page .alert {
   border-radius: 4px;
   margin-bottom: 1.5rem;
+}
+
+/* Admin Navbar & Layout */
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.2s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Dropdown menu styling */
+.navbar-dark .dropdown-menu {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  margin-top: 0.125rem;
+  padding: 0.5rem 0;
+}
+
+.navbar-dark .dropdown-item {
+  color: #212529;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.navbar-dark .dropdown-item:hover,
+.navbar-dark .dropdown-item:focus {
+  background-color: #f8f9fa;
+  color: #16181b;
+}
+
+.navbar-dark .dropdown-item.active,
+.navbar-dark .dropdown-item:active {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* Fix dropdown toggle arrow */
+.navbar-dark .dropdown-toggle::after {
+  margin-left: 0.5em;
+  vertical-align: 0.255em;
+}
+
+/* Offset fixed-top navbar so content doesn't slide beneath it */
+.admin-main-content {
+  margin-top: 100px; /* Space below fixed navbar */
+}
+
+/* Ensure flash alerts are positioned correctly */
+.admin-body .alert {
+  position: relative;
+  z-index: 1050;
+  margin-top: 10px;
+}
+
+/* Navbar responsive improvements */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .navbar-nav .dropdown-menu {
+    margin-left: 1rem;
+    border: none;
+    box-shadow: none;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .navbar-dark .dropdown-item {
+    color: rgba(255, 255, 255, 0.85);
+    padding-left: 2rem;
+  }
+  
+  .navbar-dark .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 1);
+  }
 }

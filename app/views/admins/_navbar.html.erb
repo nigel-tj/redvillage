@@ -1,125 +1,108 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" role="navigation">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button class="navbar-toggle collapsed" aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/admin">RED VILLAGE ADMIN</a>
-    </div>
+    <a class="navbar-brand" href="/admin">RED VILLAGE ADMIN</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-left">
-        <li><a href="/admin">Dashboard</a></li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+    <div id="adminNavbar" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <%= link_to "Dashboard", '/admin', class: 'nav-link' %>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="galleryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Gallery
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Create gallery", new_gallery_path %></li>
-            <li><%= link_to "All galleries", galleries_path %></li>
+          <ul class="dropdown-menu" aria-labelledby="galleryDropdown">
+            <li><%= link_to "Create gallery", new_gallery_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All galleries", galleries_path, class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             News
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "New news article", new_feature_path %></li>
-            <li><%= link_to "All news articles", '/admin_index' %></li>
+          <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+            <li><%= link_to "New news article", new_feature_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All news articles", '/admin_index', class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="videosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Videos
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Upload video", new_video_upload_path %></li>
-            <li><%= link_to "All videos", all_videos_path %></li>
+          <ul class="dropdown-menu" aria-labelledby="videosDropdown">
+            <li><%= link_to "Upload video", new_video_upload_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All videos", all_videos_path, class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="musicDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Music
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Upload new track", new_track_path %></li>
-            <li><%= link_to "All music", '/admin_all_music' %></li>
+          <ul class="dropdown-menu" aria-labelledby="musicDropdown">
+            <li><%= link_to "Upload new track", new_track_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All music", '/admin_all_music', class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="albumsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Albums
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Upload new album", new_album_path %></li>
-            <li><%= link_to "All albums", '/admin_album_index' %></li>
+          <ul class="dropdown-menu" aria-labelledby="albumsDropdown">
+            <li><%= link_to "Upload new album", new_album_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All albums", '/admin_album_index', class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="artistsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Artists
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Add new artist", new_artist_upload_path %></li>
-            <li><%= link_to "All artists", '/admin_artist_index' %></li>
+          <ul class="dropdown-menu" aria-labelledby="artistsDropdown">
+            <li><%= link_to "Add new artist", new_artist_upload_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All artists", '/admin_artist_index', class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="lifestyleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Lifestyle
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "New lifestyle article", new_lifestyle_upload_path %></li>
-            <li><%= link_to "All lifestyle articles", '/lifestyle_admin_index' %></li>
+          <ul class="dropdown-menu" aria-labelledby="lifestyleDropdown">
+            <li><%= link_to "New lifestyle article", new_lifestyle_upload_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All lifestyle articles", '/lifestyle_admin_index', class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="bannersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Main Banners
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Upload new banner", new_banner_upload_path %></li>
-            <li><%= link_to "All banners", banners_index_path %></li>
+          <ul class="dropdown-menu" aria-labelledby="bannersDropdown">
+            <li><%= link_to "Upload new banner", new_banner_upload_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All banners", banners_index_path, class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="eventsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Events
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "New event", new_event_upload_path %></li>
-            <li><%= link_to "All events", admin_all_events_path %></li>
+          <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
+            <li><%= link_to "New event", new_event_upload_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All events", admin_all_events_path, class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li class="hvr-underline-from-center dropdown">
-          <a class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="storesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Stores
-            <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "New store", new_store_upload_path %></li>
-            <li><%= link_to "All stores", stores_path %></li>
+          <ul class="dropdown-menu" aria-labelledby="storesDropdown">
+            <li><%= link_to "New store", new_store_upload_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "All stores", stores_path, class: 'dropdown-item' %></li>
           </ul>
         </li>
-        <li><%= link_to "Front-End", root_path %></li>
-        <li><%= link_to "Logout", destroy_admin_session_path, method: :delete %></li>
+        <li class="nav-item"><%= link_to "Front-End", root_path, class: 'nav-link' %></li>
+        <li class="nav-item"><%= link_to "Logout", destroy_admin_session_path, method: :delete, class: 'nav-link' %></li>
       </ul>
     </div>
   </div>
 </nav>
-
-<div style="margin-bottom: 20px;"></div>
