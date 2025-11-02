@@ -1,27 +1,76 @@
-%script{:src => "/scripts/masonry.pkgd.min.js", :type => "text/javascript"}
-%script{:src => "/scripts/isotope.pkgd.min.js", :type => "text/javascript"}
-%script{:src => "/scripts/isotope.init.js", :type => "text/javascript"}
-#services
-  .container
+.container.mt-4
+  .row.mb-4
+    .col-md-12
+      .d-flex.justify-content-between.align-items-center
+        %h1.mb-0 All Artists
+        = link_to "New Artist", new_artist_path, class: 'btn btn-primary'
+  
+  - if @artists_model.any? || @user_artists.any?
     .row
-      .row.services
-        .col-sm-12
+      - if @artists_model.any?
+        .col-md-12.mb-4
+          %h3.mb-3 Artist Records
           .row
-            %h1 All Artists
-            %p= link_to "New Artist", new_artist_path
-            .grid
-              -for artist in @artists
-                .grid-item.grid-sizer.col-sm-4.servicebox.featured_club
-                  .servicebox-image
-                    %a.vid-item.pretty-photo{"data-gal" => "prettyPhoto[gallery-photo-thumb]", :href => "artists/#{artist.id}?#{artist.name}"}
-                      %img{:alt => "#{artist.name}", :src => "#{artist.profile_picture_url}"}
-                  .servicebox-inner
-                    %p
-                      #{artist.name}
-                  .servicebox-inner
-                    %p
-                      = link_to "edit", edit_artist_path(artist) | 
-                      = button_to 'delete', artist, confirm: 'Are you sure?', method: :delete
+            - @artists_model.each do |artist|
+              .col-md-3.mb-4
+                .card.h-100
+                  - if artist.profile_picture.present?
+                    %img.card-img-top{src: artist.profile_picture_url(:thumb) || '/assets/default-avatar.png', alt: artist.name, style: 'height: 200px; object-fit: cover;'}
+                  - else
+                    .card-img-top.bg-secondary.d-flex.align-items-center.justify-content-center{style: 'height: 200px;'}
+                      %i.fas.fa-user.fa-3x.text-white
+                  .card-body
+                    %h5.card-title= artist.name
+                    - if artist.email.present?
+                      %p.card-text.text-muted.small
+                        %i.fas.fa-envelope.me-1
+                        = artist.email
+                    .mt-2
+                      = link_to "Edit", edit_artist_path(artist), class: 'btn btn-sm btn-outline-primary me-2'
+                      = button_to 'Delete', artist, method: :delete, confirm: 'Are you sure?', class: 'btn btn-sm btn-outline-danger', form: { style: 'display: inline;' }
+      
+      - if @user_artists.any?
+        .col-md-12.mb-4
+          %h3.mb-3 Users with Artist Role
+          .row
+            - @user_artists.each do |user|
+              .col-md-3.mb-4
+                .card.h-100
+                  - if user.profile&.profile_picture.present?
+                    - img_url = user.profile.profile_picture_url(:thumb) rescue nil
+                    - if img_url
+                      %img.card-img-top{src: img_url, alt: user.name, style: 'height: 200px; object-fit: cover;'}
+                    - else
+                      .card-img-top.bg-secondary.d-flex.align-items-center.justify-content-center{style: 'height: 200px;'}
+                        %i.fas.fa-user.fa-3x.text-white
+                  - else
+                    .card-img-top.bg-secondary.d-flex.align-items-center.justify-content-center{style: 'height: 200px;'}
+                      %i.fas.fa-user.fa-3x.text-white
+                  .card-body
+                    %h5.card-title= user.name
+                    %p.card-text.text-muted.small
+                      %i.fas.fa-envelope.me-1
+                      = user.email
+                    %p.card-text.text-muted.small
+                      %i.fas.fa-user-tag.me-1
+                      Role: Artist
+                    .mt-2
+                      - if user.profile
+                        = link_to "View Profile", profile_path(user.profile), class: 'btn btn-sm btn-outline-primary me-2'
+                        = link_to "Edit User", edit_user_path(user), class: 'btn btn-sm btn-outline-secondary'
+                      - else
+                        %p.card-text.text-muted.small.mb-2
+                          %i.fas.fa-exclamation-triangle.me-1
+                          No Profile Yet
+                        = link_to "Edit User", edit_user_path(user), class: 'btn btn-sm btn-outline-secondary'
+  
+  - else
+    .row
+      .col-md-12
+        .alert.alert-info
+          %h5 No Artists Found
+          %p There are no artist records or users with artist role in the system.
+          = link_to "Create New Artist", new_artist_path, class: 'btn btn-primary'
 
 
 

@@ -16,7 +16,9 @@ class ArtistsController < ApplicationController
   end
 
   def admin_artist_index
-    @artists = Artist.all 
+    # Show both Artist model records and Users with artist role
+    @artists_model = Artist.all
+    @user_artists = User.artists.includes(:profile).order(:name)
   end
 
   def create

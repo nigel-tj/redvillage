@@ -9,7 +9,8 @@ class AdminsController < ApplicationController
     @videos_count = Video.count
     @tracks_count = Track.count
     @albums_count = Album.count
-    @artists_count = Artist.count
+    # Count both Artist records and Users with artist role
+    @artists_count = Artist.count + User.artists.count
     @lifestyles_count = Lifestyle.count
     @events_count = Event.count
 
