@@ -1,6 +1,18 @@
 class EventsController < ApplicationController
-  before_action :authenticate_admin!, except: [:index]
+  include RoleBasedAccess
+  
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :require_admin_or_dj, only: [:new, :create, :update, :edit, :destroy]
   layout "admin", only: [:new, :create, :update,  :admin_all_events, :admin_show_event, :edit]
+  
+  private
+  
+  def require_admin_or_dj
+    unless current_user&.admin? || current_user&.dj?
+      flash[:alert] = "You need to be an admin or DJ to perform this action."
+      redirect_to root_path
+    end
+  end
   def index
     @events = Event.order('created_at DESC')  
   end

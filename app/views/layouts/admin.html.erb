@@ -27,9 +27,16 @@
     </div>
     
     <% unless devise_controller? %>
-      <header>
-        <%= render 'admins/navbar' %>
-      </header>
+      <% if user_signed_in? && current_user.can_access_backend? %>
+        <%= render 'shared/impersonation_banner' %>
+        <header>
+          <%= render 'shared/role_navbar' %>
+        </header>
+      <% else %>
+        <header>
+          <%= render 'admins/navbar' %>
+        </header>
+      <% end %>
     <% end %>
     
     <% flash.each do |name, msg| %>

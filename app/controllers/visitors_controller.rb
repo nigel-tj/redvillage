@@ -13,11 +13,32 @@ class VisitorsController < ApplicationController
   end
 
   def team
-    # Team page - displays team members
+    # Team page - displays team members with public profiles
+    @djs = User.djs.joins(:profile)
+                .where(profiles: { public_profile: true })
+                .where.not(profiles: { profile_picture: nil })
+                .limit(12)
+    @artists = User.artists.joins(:profile)
+                    .where(profiles: { public_profile: true })
+                    .where.not(profiles: { profile_picture: nil })
+                    .limit(12)
+    @photographers = User.photographers.joins(:profile)
+                         .where(profiles: { public_profile: true })
+                         .where.not(profiles: { profile_picture: nil })
+                         .limit(6)
+    @videographers = User.videographers.joins(:profile)
+                         .where(profiles: { public_profile: true })
+                         .where.not(profiles: { profile_picture: nil })
+                         .limit(6)
   end
 
   def top_dj
-    # Top DJ page
+    # Top DJ page - displays DJs with public profiles
+    @djs = User.djs.joins(:profile)
+                .where(profiles: { public_profile: true })
+                .where.not(profiles: { profile_picture: nil })
+                .order('profiles.updated_at DESC')
+                .limit(12)
   end
 
   def schedule

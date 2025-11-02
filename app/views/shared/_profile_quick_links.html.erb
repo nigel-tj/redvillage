@@ -1,0 +1,10 @@
+<% if defined?(user) && user.present? %>
+  <% user.ensure_profile_exists if user.profile.blank? %>
+  <% if user.profile.present? %>
+    <%= link_to "View My Profile", profile_path(user.profile), class: "btn btn-outline-primary btn-sm me-2" %>
+    <%= link_to "Edit Profile", edit_profile_path(user.profile), class: "btn btn-outline-secondary btn-sm" %>
+  <% else %>
+    <%= link_to "Create Profile", edit_profile_path(user.create_profile), class: "btn btn-primary btn-sm" %>
+  <% end %>
+<% end %>
+

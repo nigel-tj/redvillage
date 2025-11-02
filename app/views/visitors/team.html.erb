@@ -7,64 +7,61 @@
     </div>
   </div>
 
-  <div class="row">
-    <!-- Team Member 1 -->
-    <div class="col-lg-4 col-md-6 mb-4">
-      <div class="card border-0 shadow-sm h-100">
-        <div class="card-body text-center p-4">
-          <div class="mb-4">
-            <img src="/images/team-member-1.jpg" alt="Team Member" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f8f9fa;">
-          </div>
-          <h5 class="card-title font-weight-bold text-dark mb-1">John Doe</h5>
-          <p class="text-primary font-weight-medium mb-3">Founder & CEO</p>
-          <p class="card-text text-muted">Passionate about creating memorable music experiences and bringing communities together through events.</p>
-          <div class="mt-3">
-            <a href="#" class="text-primary mx-2"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="text-primary mx-2"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="text-primary mx-2"><i class="fab fa-instagram"></i></a>
-          </div>
-        </div>
+  <!-- DJs Section -->
+  <% if @djs.any? %>
+    <div class="row mb-5">
+      <div class="col-12 mb-4">
+        <h3 class="text-center mb-4">Our DJs</h3>
       </div>
+      <% @djs.each do |dj| %>
+        <%= render 'profiles_listings/profile_card', profile: dj.profile, user: dj %>
+      <% end %>
     </div>
+  <% end %>
 
-    <!-- Team Member 2 -->
-    <div class="col-lg-4 col-md-6 mb-4">
-      <div class="card border-0 shadow-sm h-100">
-        <div class="card-body text-center p-4">
-          <div class="mb-4">
-            <img src="/images/team-member-2.jpg" alt="Team Member" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f8f9fa;">
-          </div>
-          <h5 class="card-title font-weight-bold text-dark mb-1">Jane Smith</h5>
-          <p class="text-primary font-weight-medium mb-3">Event Manager</p>
-          <p class="card-text text-muted">Expert in organizing world-class music events and ensuring every detail is perfect for our guests.</p>
-          <div class="mt-3">
-            <a href="#" class="text-primary mx-2"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="text-primary mx-2"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="text-primary mx-2"><i class="fab fa-instagram"></i></a>
-          </div>
-        </div>
+  <!-- Artists Section -->
+  <% if @artists.any? %>
+    <div class="row mb-5">
+      <div class="col-12 mb-4">
+        <h3 class="text-center mb-4">Our Artists</h3>
       </div>
+      <% @artists.each do |artist| %>
+        <%= render 'profiles_listings/profile_card', profile: artist.profile, user: artist %>
+      <% end %>
     </div>
+  <% end %>
 
-    <!-- Team Member 3 -->
-    <div class="col-lg-4 col-md-6 mb-4">
-      <div class="card border-0 shadow-sm h-100">
-        <div class="card-body text-center p-4">
-          <div class="mb-4">
-            <img src="/images/team-member-3.jpg" alt="Team Member" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f8f9fa;">
-          </div>
-          <h5 class="card-title font-weight-bold text-dark mb-1">Mike Johnson</h5>
-          <p class="text-primary font-weight-medium mb-3">Technical Director</p>
-          <p class="card-text text-muted">Ensures our sound systems and lighting create the perfect atmosphere for every performance.</p>
-          <div class="mt-3">
-            <a href="#" class="text-primary mx-2"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="text-primary mx-2"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="text-primary mx-2"><i class="fab fa-instagram"></i></a>
-          </div>
-        </div>
+  <!-- Photographers Section -->
+  <% if @photographers.any? %>
+    <div class="row mb-5">
+      <div class="col-12 mb-4">
+        <h3 class="text-center mb-4">Our Photographers</h3>
+      </div>
+      <% @photographers.each do |photographer| %>
+        <%= render 'profiles_listings/profile_card', profile: photographer.profile, user: photographer %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Videographers Section -->
+  <% if @videographers.any? %>
+    <div class="row mb-5">
+      <div class="col-12 mb-4">
+        <h3 class="text-center mb-4">Our Videographers</h3>
+      </div>
+      <% @videographers.each do |videographer| %>
+        <%= render 'profiles_listings/profile_card', profile: videographer.profile, user: videographer %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% unless @djs.any? || @artists.any? || @photographers.any? || @videographers.any? %>
+    <div class="row">
+      <div class="col-12 text-center">
+        <p class="text-muted">No team members with public profiles yet. Check back soon!</p>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <!-- Call to Action -->
   <div class="row mt-5">

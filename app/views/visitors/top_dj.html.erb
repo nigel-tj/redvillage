@@ -21,78 +21,55 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-dj">
-                        <div class="part-img">
-                            <img src="new_look/assets/img/dj-1.jpg" alt="">
-                            <div class="hover-effect">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                <% if @djs.any? %>
+                    <% @djs.each do |dj| %>
+                        <div class="col-xl-4 col-lg-4 col-sm-6 mb-4">
+                            <div class="single-dj">
+                                <div class="part-img">
+                                    <% if dj.profile&.profile_picture_url.present? %>
+                                        <%= link_to profile_path(dj.profile) do %>
+                                            <%= image_tag dj.profile.profile_picture_url(:medium) || 'new_look/assets/img/dj-1.jpg', alt: dj.name, style: "width: 100%; height: 300px; object-fit: cover;" %>
+                                        <% end %>
+                                    <% else %>
+                                        <img src="new_look/assets/img/dj-1.jpg" alt="<%= dj.name %>" style="width: 100%; height: 300px; object-fit: cover;">
+                                    <% end %>
+                                    <div class="hover-effect">
+                                        <% if dj.profile.present? %>
+                                            <% social_links = dj.profile.social_links %>
+                                            <% if social_links[:twitter].present? %>
+                                                <a href="<%= social_links[:twitter] %>" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+                                            <% end %>
+                                            <% if social_links[:facebook].present? %>
+                                                <a href="<%= social_links[:facebook] %>" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                                            <% end %>
+                                            <% if social_links[:instagram].present? %>
+                                                <a href="<%= social_links[:instagram] %>" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                                            <% end %>
+                                            <% if dj.profile.present? %>
+                                                <%= link_to profile_path(dj.profile), class: "profile-link" do %>
+                                                    <i class="fas fa-user-circle" title="View Profile"></i>
+                                                <% end %>
+                                            <% end %>
+                                        <% end %>
+                                    </div>
+                                </div>
+                                <div class="part-text text-center mt-3">
+                                    <h4><%= dj.name %></h4>
+                                    <% if dj.profile&.bio.present? %>
+                                        <p class="text-muted small"><%= truncate(dj.profile.bio, length: 100) %></p>
+                                    <% end %>
+                                    <% if dj.profile.present? %>
+                                        <%= link_to "View Profile", profile_path(dj.profile), class: "btn btn-sm btn-primary" %>
+                                    <% end %>
+                                </div>
                             </div>
                         </div>
+                    <% end %>
+                <% else %>
+                    <div class="col-12">
+                        <p class="text-center text-muted">No DJs with public profiles yet. Check back soon!</p>
                     </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-dj">
-                        <div class="part-img">
-                            <img src="new_look/assets/img/dj-2.jpg" alt="">
-                            <div class="hover-effect">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-dj">
-                        <div class="part-img">
-                            <img src="new_look/assets/img/dj-3.jpg" alt="">
-                            <div class="hover-effect">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-dj">
-                        <div class="part-img">
-                            <img src="new_look/assets/img/dj-4.jpg" alt="">
-                            <div class="hover-effect">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-dj">
-                        <div class="part-img">
-                            <img src="new_look/assets/img/dj-5.jpg" alt="">
-                            <div class="hover-effect">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-dj">
-                        <div class="part-img">
-                            <img src="new_look/assets/img/dj-6.jpg" alt="">
-                            <div class="hover-effect">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <% end %>
             </div>
         </div>
     </div>

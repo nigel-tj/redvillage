@@ -125,8 +125,21 @@
         <li class="nav-item">
           <%= link_to 'Gallery', gallery_new_look_path, class: "nav-link #{active_class(gallery_new_look_path)}" %>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="profilesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Creators
+          </a>
+          <div class="dropdown-menu" aria-labelledby="profilesDropdown">
+            <%= link_to 'Top DJs', top_dj_path, class: "dropdown-item #{active_class(top_dj_path)}" %>
+            <%= link_to 'DJs', djs_listing_path, class: "dropdown-item #{active_class(djs_listing_path)}" %>
+            <%= link_to 'Artists', artists_listing_path, class: "dropdown-item #{active_class(artists_listing_path)}" %>
+            <%= link_to 'Photographers', photographers_listing_path, class: "dropdown-item #{active_class(photographers_listing_path)}" %>
+            <%= link_to 'Videographers', videographers_listing_path, class: "dropdown-item #{active_class(videographers_listing_path)}" %>
+            <%= link_to 'All Creators', all_creators_listing_path, class: "dropdown-item #{active_class(all_creators_listing_path)}" %>
+          </div>
+        </li>
         <li class="nav-item">
-          <%= link_to 'Top DJ', top_dj_path, class: "nav-link #{active_class(top_dj_path)}" %>
+          <%= link_to 'Team', team_path, class: "nav-link #{active_class(team_path)}" %>
         </li>
         <li class="nav-item">
           <%= link_to 'Schedule', schedule_path, class: "nav-link #{active_class(schedule_path)}" %>
@@ -150,7 +163,16 @@
               <i class="fas fa-user"></i> Account
             </a>
             <div class="dropdown-menu" aria-labelledby="userDropdown">
-              <%= link_to 'Profile', edit_user_registration_path, class: "dropdown-item" %>
+              <% if current_user.profile.present? %>
+                <%= link_to 'My Profile', my_profile_path, class: "dropdown-item" %>
+                <%= link_to 'Edit Profile', edit_profile_path(current_user.profile), class: "dropdown-item" %>
+              <% else %>
+                <%= link_to 'Create Profile', edit_profile_path(current_user.create_profile), class: "dropdown-item" %>
+              <% end %>
+              <%= link_to 'Account Settings', edit_user_registration_path, class: "dropdown-item" %>
+              <% if current_user.can_access_backend? %>
+                <%= link_to 'Dashboard', dashboard_path, class: "dropdown-item" %>
+              <% end %>
               <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "dropdown-item" %>
             </div>
           </li>

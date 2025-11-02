@@ -1,9 +1,13 @@
 class UsersController < ApplicationController
+  include RoleBasedAccess
+  
   before_action :authenticate_user!
+  before_action :require_admin, only: [:index, :update, :destroy]
   after_action :verify_authorized
 
   def index
     @users = User.all
+    @users = @users.where(role: params[:role]) if params[:role].present?
     authorize User
   end
 

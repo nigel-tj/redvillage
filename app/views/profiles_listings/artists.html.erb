@@ -1,0 +1,41 @@
+<!-- breadcrump begin -->
+<div class="breadcrump">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6">
+                <%= render_breadcrumbs %>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrump end -->
+
+<!-- Artists listing begin -->
+<div class="team-dj top-dj-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-8">
+                <div class="add-space section-title text-center">
+                    <h2>Our Artists</h2>
+                    <p class="text-muted">Discover our talented artists</p>
+                </div>
+            </div>
+        </div>
+        
+        <% if @artists.any? %>
+            <div class="row">
+                <% @artists.each do |artist| %>
+                    <%= render 'profile_card', profile: artist.profile, user: artist %>
+                <% end %>
+            </div>
+        <% else %>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted">No artists with public profiles yet. Check back soon!</p>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>
+<!-- Artists listing end -->
+

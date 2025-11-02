@@ -31,12 +31,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
       end
     else
       # Step 2 - complete registration
+      # Restrict admin role - only allow member, dj, or artist during registration
+      user_params_hash = user_params.to_h
+      if user_params_hash[:role].present? && user_params_hash[:role] == 'admin'
+        user_params_hash[:role] = 'member'  # Default to member if trying to register as admin
+      end
+      
+      build_resource(user_params_hash)
+      
       super do |resource|
         if resource.persisted?
           # Set onboarding completion based on role
-          if resource.member?
-            session[:onboarding_complete] = true
-          end
+          session[:onboarding_complete] = true
           return
         else
           @step = 2
@@ -64,11 +70,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    if resource.member?
-      # Redirect to member dashboard or welcome page
-      root_path
+    case resource.role
+    when 'admin'
+      admin_dashboard_path
+    when 'dj'
+      dj_dashboard_path
+    when 'artist'
+      artist_dashboard_path
+    when 'photographer'
+      photographer_dashboard_path
+    when 'videographer'
+      videographer_dashboard_path
+    when 'curator'
+      curator_dashboard_path
+    when 'designer'
+      designer_dashboard_path
+    when 'editor'
+      editor_dashboard_path
     else
-      admin_path
+      # Regular members go to public site
+      root_path
     end
   end
 end

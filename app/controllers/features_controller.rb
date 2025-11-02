@@ -1,6 +1,18 @@
 class FeaturesController < ApplicationController
-  before_action :authenticate_admin!, except: [:index,:show]
-  layout "admin", only: [:new, :create, :update, :admin_index]   
+  include RoleBasedAccess
+  
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :require_curator_or_admin, only: [:new, :create, :update, :edit, :destroy]
+  layout "admin", only: [:new, :create, :update, :admin_index]
+  
+  private
+  
+  def require_curator_or_admin
+    unless current_user&.curator? || current_user&.admin? || current_user&.editor?
+      flash[:alert] = "You need curator, editor, or admin access to perform this action."
+      redirect_to root_path
+    end
+  end   
   
   def index
     @features = Feature.order('created_at DESC')

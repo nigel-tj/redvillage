@@ -1,0 +1,85 @@
+.container-fluid.mt-4
+  .row.mb-4
+    .col-md-12
+      %h1.mb-4 Curator Dashboard
+      %p Welcome back, #{@user.name}!
+      %p.text-muted Curate and manage content across the platform.
+      = render 'shared/profile_quick_links', user: @user
+
+  .row.mb-4
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title News Articles
+          %h2= @stats[:total_features]
+          = link_to "Manage", '/admin_index', class: "btn btn-primary btn-sm w-100 mt-2"
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Galleries
+          %h2= @stats[:total_galleries]
+          = link_to "Manage", galleries_path, class: "btn btn-primary btn-sm w-100 mt-2"
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title Videos
+          %h2= @stats[:total_videos]
+          = link_to "Manage", all_videos_path, class: "btn btn-primary btn-sm w-100 mt-2"
+    .col-md-3
+      .card.text-center
+        .card-body
+          %h5.card-title My Articles
+          %h2= @stats[:my_features]
+          = link_to "Create Article", new_feature_upload_path, class: "btn btn-outline-primary btn-sm w-100 mt-2"
+
+  .row.mb-4
+    .col-md-6
+      .card
+        .card-header.d-flex.justify-content-between.align-items-center
+          %h5.mb-0 News Articles / Features
+          = link_to "Create New Article", new_feature_upload_path, class: "btn btn-primary btn-sm"
+        .card-body
+          - if @features.any?
+            .table-responsive
+              %table.table.table-hover
+                %thead
+                  %tr
+                    %th Heading
+                    %th Created
+                    %th Actions
+                %tbody
+                  - @features.first(10).each do |feature|
+                    %tr
+                      %td= feature.heading || "Untitled"
+                      %td= time_ago_in_words(feature.created_at) + " ago"
+                      %td
+                        = link_to "View", feature_path(feature), class: "btn btn-sm btn-primary"
+          - else
+            %p.text-muted No articles yet.
+            = link_to "Create Your First Article", new_feature_upload_path, class: "btn btn-primary"
+
+    .col-md-6
+      .card
+        .card-header
+          %h5.mb-0 Recent Content
+        .card-body
+          %h6 Recent Galleries
+          - if @galleries.any?
+            %ul.list-group.list-group-flush.mb-3
+              - @galleries.each do |gallery|
+                %li.list-group-item
+                  = link_to gallery.name, gallery_path(gallery)
+                  %small.text-muted.d-block= time_ago_in_words(gallery.created_at) + " ago"
+          - else
+            %p.text-muted No galleries yet.
+          
+          %h6.mt-3 Recent Videos
+          - if @videos.any?
+            %ul.list-group.list-group-flush
+              - @videos.each do |video|
+                %li.list-group-item
+                  = link_to video.link&.truncate(40) || "Video #{video.id}", video_path(video)
+                  %small.text-muted.d-block= time_ago_in_words(video.created_at) + " ago"
+          - else
+            %p.text-muted No videos yet.
+

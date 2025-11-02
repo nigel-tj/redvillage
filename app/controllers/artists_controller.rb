@@ -2,7 +2,12 @@ class ArtistsController < ApplicationController
   layout "admin", only: [:new, :create, :update, :admin_artist_index, :edit]
 
   def index
-    @artists = Artist.all 
+    # Show both Artist model records and User artists with profiles
+    @artists_model = Artist.all
+    @user_artists = User.artists.joins(:profile)
+                        .where(profiles: { public_profile: true })
+                        .where.not(profiles: { profile_picture: nil })
+                        .limit(20)
   end
 
   def new

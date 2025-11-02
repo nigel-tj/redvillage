@@ -1,0 +1,97 @@
+.container-fluid.mt-4
+  .row.mb-4
+    .col-md-12
+      %h1.mb-4 Editor Dashboard
+      %p Welcome back, #{@user.name}!
+      %p.text-muted Review and manage content across all categories.
+      = render 'shared/profile_quick_links', user: @user
+
+  .row.mb-4
+    .col-md-2
+      .card.text-center
+        .card-body
+          %h5.card-title News
+          %h2= @stats[:total_features]
+          = link_to "Manage", '/admin_index', class: "btn btn-primary btn-sm w-100 mt-2"
+    .col-md-2
+      .card.text-center
+        .card-body
+          %h5.card-title Galleries
+          %h2= @stats[:total_galleries]
+          = link_to "Manage", galleries_path, class: "btn btn-primary btn-sm w-100 mt-2"
+    .col-md-2
+      .card.text-center
+        .card-body
+          %h5.card-title Videos
+          %h2= @stats[:total_videos]
+          = link_to "Manage", all_videos_path, class: "btn btn-primary btn-sm w-100 mt-2"
+    .col-md-2
+      .card.text-center
+        .card-body
+          %h5.card-title Tracks
+          %h2= @stats[:total_tracks]
+          = link_to "Manage", '/admin_all_music', class: "btn btn-primary btn-sm w-100 mt-2"
+    .col-md-2
+      .card.text-center
+        .card-body
+          %h5.card-title Pending Review
+          %h2= @stats[:pending_review]
+          %small.text-muted (Coming soon)
+    .col-md-2
+      .card.text-center
+        .card-body
+          %h5.card-title Quick Create
+          = link_to "New Article", new_feature_upload_path, class: "btn btn-outline-primary btn-sm w-100 mb-2"
+          = link_to "All Content", root_path, class: "btn btn-outline-secondary btn-sm w-100"
+
+  .row.mb-4
+    .col-md-6
+      .card
+        .card-header.d-flex.justify-content-between.align-items-center
+          %h5.mb-0 Recent News Articles
+          = link_to "View All", '/admin_index', class: "btn btn-sm btn-outline-primary"
+        .card-body
+          - if @features.any?
+            %ul.list-group.list-group-flush
+              - @recent_features.each do |feature|
+                %li.list-group-item
+                  = link_to feature.heading || "Untitled", feature_path(feature), class: "fw-bold"
+                  %small.text-muted.d-block= time_ago_in_words(feature.created_at) + " ago"
+          - else
+            %p.text-muted No articles yet.
+
+    .col-md-6
+      .card
+        .card-header
+          %h5.mb-0 Content Overview
+        .card-body
+          %h6 Recent Galleries
+          - if @galleries.any?
+            %ul.list-group.list-group-flush.mb-3
+              - @galleries.each do |gallery|
+                %li.list-group-item
+                  = link_to gallery.name, gallery_path(gallery)
+                  %small.text-muted.d-block= time_ago_in_words(gallery.created_at) + " ago"
+          - else
+            %p.text-muted.small No galleries yet.
+          
+          %h6.mt-3 Recent Videos
+          - if @videos.any?
+            %ul.list-group.list-group-flush.mb-3
+              - @videos.each do |video|
+                %li.list-group-item
+                  = link_to video.link&.truncate(40) || "Video #{video.id}", video_path(video)
+                  %small.text-muted.d-block= time_ago_in_words(video.created_at) + " ago"
+          - else
+            %p.text-muted.small No videos yet.
+          
+          %h6.mt-3 Recent Tracks
+          - if @tracks.any?
+            %ul.list-group.list-group-flush
+              - @tracks.each do |track|
+                %li.list-group-item
+                  = link_to track.title, track_path(track)
+                  %small.text-muted.d-block= time_ago_in_words(track.created_at) + " ago"
+          - else
+            %p.text-muted.small No tracks yet.
+

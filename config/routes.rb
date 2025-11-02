@@ -22,6 +22,19 @@ Rails.application.routes.draw do
   resources :videos
   resources :artists
   resources :events
+  
+  # Profile routes
+  resources :profiles, only: [:show, :edit, :update]
+  get '/my_profile', to: 'profiles#my_profile', as: :my_profile
+  
+  # Public profile listings
+  get '/djs', to: 'profiles_listings#djs', as: :djs_listing
+  get '/artists_listing', to: 'profiles_listings#artists', as: :artists_listing
+  get '/photographers', to: 'profiles_listings#photographers', as: :photographers_listing
+  get '/videographers', to: 'profiles_listings#videographers', as: :videographers_listing
+  get '/curators', to: 'profiles_listings#curators', as: :curators_listing
+  get '/designers', to: 'profiles_listings#designers', as: :designers_listing
+  get '/creators', to: 'profiles_listings#all_creators', as: :all_creators_listing
 
   # Custom routes (non-RESTful)
   get 'visitors/news'
@@ -94,6 +107,21 @@ Rails.application.routes.draw do
   get '/admins', to: 'galleries#new'
   get '/admin_all_events', to: 'events#admin_all_events', as: :admin_all_events
   get '/events_list_new_look', to: 'visitors#events_list_new_look'
+
+  # Role-based dashboards
+  get '/dashboard', to: 'dashboards#show', as: :dashboard
+  get '/admin/dashboard', to: 'dashboards#admin', as: :admin_dashboard
+  get '/dj/dashboard', to: 'dashboards#dj', as: :dj_dashboard
+  get '/artist/dashboard', to: 'dashboards#artist', as: :artist_dashboard
+  get '/photographer/dashboard', to: 'dashboards#photographer', as: :photographer_dashboard
+  get '/videographer/dashboard', to: 'dashboards#videographer', as: :videographer_dashboard
+  get '/curator/dashboard', to: 'dashboards#curator', as: :curator_dashboard
+  get '/designer/dashboard', to: 'dashboards#designer', as: :designer_dashboard
+  get '/editor/dashboard', to: 'dashboards#editor', as: :editor_dashboard
+
+  # Impersonation routes (admin only)
+  post '/impersonate/:id', to: 'impersonations#create', as: :impersonate
+  delete '/stop_impersonating', to: 'impersonations#destroy', as: :stop_impersonating
 
   # Spree engine (ensure Spree is properly installed)
   #mount Spree::Core::Engine, at: '/mall'

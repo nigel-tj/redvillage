@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_02_112106) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_02_133623) do
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -164,6 +164,31 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_112106) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.text "bio"
+    t.string "phone"
+    t.string "website"
+    t.string "profile_picture"
+    t.string "cover_image"
+    t.string "facebook_url"
+    t.string "twitter_url"
+    t.string "instagram_url"
+    t.string "linkedin_url"
+    t.string "youtube_url"
+    t.string "spotify_url"
+    t.string "soundcloud_url"
+    t.string "pinterest_url"
+    t.string "tiktok_url"
+    t.text "specialization"
+    t.text "experience"
+    t.string "location"
+    t.boolean "public_profile", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
+  end
+
   create_table "spree_products_promotion_rules", id: false, force: :cascade do |t|
     t.integer "product_id"
     t.integer "promotion_rule_id"
@@ -290,6 +315,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_02_112106) do
     t.index ["user_id"], name: "index_vip_tickets_on_user_id"
   end
 
+  add_foreign_key "profiles", "users"
   add_foreign_key "standard_tickets", "events"
   add_foreign_key "standard_tickets", "users"
   add_foreign_key "vip_tickets", "events"

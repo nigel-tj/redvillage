@@ -1,0 +1,255 @@
+<% if user_signed_in? && current_user.can_access_backend? %>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" role="navigation">
+    <div class="container-fluid">
+      <% dashboard_path = case current_user.role
+           when 'admin' then admin_dashboard_path
+           when 'dj' then dj_dashboard_path
+           when 'artist' then artist_dashboard_path
+           when 'photographer' then photographer_dashboard_path
+           when 'videographer' then videographer_dashboard_path
+           when 'curator' then curator_dashboard_path
+           when 'designer' then designer_dashboard_path
+           when 'editor' then editor_dashboard_path
+           else '/admin'
+         end %>
+      
+      <a class="navbar-brand" href="<%= dashboard_path %>">
+        <% case current_user.role
+           when 'admin' %>RED VILLAGE ADMIN
+        <% when 'dj' %>RED VILLAGE DJ
+        <% when 'artist' %>RED VILLAGE ARTIST
+        <% when 'photographer' %>RED VILLAGE PHOTOGRAPHER
+        <% when 'videographer' %>RED VILLAGE VIDEOGRAPHER
+        <% when 'curator' %>RED VILLAGE CURATOR
+        <% when 'designer' %>RED VILLAGE DESIGNER
+        <% when 'editor' %>RED VILLAGE EDITOR
+        <% else %>RED VILLAGE<% end %>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#roleNavbar" aria-controls="roleNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="roleNavbar" class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <%= link_to "Dashboard", dashboard_path, class: 'nav-link' %>
+          </li>
+          
+          <!-- Admin-only menu items -->
+          <% if current_user.admin? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="usersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Users
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="usersDropdown">
+                <li><%= link_to "All Users", users_path, class: 'dropdown-item' %></li>
+                <li><%= link_to "DJs", users_path(role: 'dj'), class: 'dropdown-item' %></li>
+                <li><%= link_to "Artists", users_path(role: 'artist'), class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="galleryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Gallery
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="galleryDropdown">
+                <li><%= link_to "Create gallery", new_gallery_path, class: 'dropdown-item' %></li>
+                <li><%= link_to "All galleries", galleries_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                News
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+                <li><%= link_to "New news article", new_feature_path, class: 'dropdown-item' %></li>
+                <li><%= link_to "All news articles", '/admin_index', class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="videosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Videos
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="videosDropdown">
+                <li><%= link_to "Upload video", new_video_upload_path, class: 'dropdown-item' %></li>
+                <li><%= link_to "All videos", all_videos_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="lifestyleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Lifestyle
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="lifestyleDropdown">
+                <li><%= link_to "New lifestyle article", new_lifestyle_upload_path, class: 'dropdown-item' %></li>
+                <li><%= link_to "All lifestyle articles", '/lifestyle_admin_index', class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="bannersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Main Banners
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="bannersDropdown">
+                <li><%= link_to "Upload new banner", new_banner_upload_path, class: 'dropdown-item' %></li>
+                <li><%= link_to "All banners", banners_index_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="storesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Stores
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="storesDropdown">
+                <li><%= link_to "New store", new_store_upload_path, class: 'dropdown-item' %></li>
+                <li><%= link_to "All stores", stores_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+          <% end %>
+          
+          <!-- Photographer menu items -->
+          <% if current_user.photographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="galleryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Gallery
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="galleryDropdown">
+                <% if current_user.photographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+                  <li><%= link_to "Create gallery", new_gallery_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All galleries", galleries_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- Videographer menu items -->
+          <% if current_user.videographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="videosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Videos
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="videosDropdown">
+                <% if current_user.videographer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+                  <li><%= link_to "Upload video", new_video_upload_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All videos", all_videos_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- Curator menu items -->
+          <% if current_user.curator? || current_user.admin? || current_user.editor? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                News
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+                <% if current_user.curator? || current_user.admin? || current_user.editor? %>
+                  <li><%= link_to "New news article", new_feature_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All news articles", '/admin_index', class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- Designer menu items -->
+          <% if current_user.designer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="bannersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Main Banners
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="bannersDropdown">
+                <% if current_user.designer? || current_user.admin? || current_user.curator? || current_user.editor? %>
+                  <li><%= link_to "Upload new banner", new_banner_upload_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All banners", banners_index_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- Shared menu items for Admin, DJ, and Artist -->
+          <% if current_user.admin? || current_user.dj? || current_user.artist? || current_user.curator? || current_user.editor? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="musicDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Music
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="musicDropdown">
+                <% if current_user.admin? || current_user.artist? %>
+                  <li><%= link_to "Upload new track", new_track_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All music", '/admin_all_music', class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="albumsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Albums
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="albumsDropdown">
+                <% if current_user.admin? || current_user.artist? %>
+                  <li><%= link_to "Upload new album", new_album_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All albums", '/admin_album_index', class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="artistsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Artists
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="artistsDropdown">
+                <% if current_user.admin? %>
+                  <li><%= link_to "Add new artist", new_artist_upload_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All artists", '/admin_artist_index', class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="eventsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Events
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
+                <% if current_user.admin? || current_user.dj? %>
+                  <li><%= link_to "New event", new_event_upload_path, class: 'dropdown-item' %></li>
+                <% end %>
+                <li><%= link_to "All events", admin_all_events_path, class: 'dropdown-item' %></li>
+              </ul>
+            </li>
+          <% end %>
+          
+          <li class="nav-item">
+            <%= link_to "Front-End", root_path, class: 'nav-link' %>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav ms-auto">
+          <% if defined?(impersonating?) && impersonating? && original_user %>
+            <li class="nav-item">
+              <span class="navbar-text text-warning me-2">
+                Impersonating: <%= current_user.name %>
+              </span>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Stop", stop_impersonating_path, method: :delete, class: 'nav-link btn btn-sm btn-danger' %>
+            </li>
+          <% end %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <% if current_user.profile&.profile_picture_url.present? %>
+                <%= image_tag current_user.profile.profile_picture_url(:thumb), class: "rounded-circle me-1", style: "width: 24px; height: 24px; object-fit: cover;" %>
+              <% else %>
+                <i class="fas fa-user-circle"></i>
+              <% end %>
+              <%= current_user.name %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              <li><%= link_to "My Profile", my_profile_path, class: 'dropdown-item' %></li>
+              <% if current_user.profile.present? %>
+                <li><%= link_to "Edit Profile", edit_profile_path(current_user.profile), class: 'dropdown-item' %></li>
+              <% end %>
+              <li><hr class="dropdown-divider"></li>
+              <li><span class="dropdown-item-text"><%= current_user.role.titleize %></span></li>
+              <li><%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'dropdown-item text-danger' %></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<% end %>
+

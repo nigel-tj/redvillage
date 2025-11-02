@@ -15,14 +15,30 @@
         .row
           .col-sm-12#gallery-content
             .grid
-              - for artist in @artists
-                .grid-item.grid-sizer.col-sm-4.servicebox.rcv_playlist
-                  .servicebox-image
-                    %a.vid-item.pretty-photo{"data-gal" => "prettyPhoto[gallery-photo-thumb]", :href => "artists/#{artist.id}?#{artist.name}"}
-                      %img{:alt => "#{artist.name}", :src => "#{artist.profile_picture_url(:thumb)}"}
-                  .servicebox-inner
-                    %p
-                      #{artist.name}
+              - if defined?(@artists_model)
+                - for artist in @artists_model
+                  .grid-item.grid-sizer.col-sm-4.servicebox.rcv_playlist
+                    .servicebox-image
+                      %a.vid-item.pretty-photo{"data-gal" => "prettyPhoto[gallery-photo-thumb]", :href => "artists/#{artist.id}?#{artist.name}"}
+                        %img{:alt => "#{artist.name}", :src => "#{artist.profile_picture_url(:thumb)}"}
+                    .servicebox-inner
+                      %p
+                        #{artist.name}
+              
+              - if defined?(@user_artists) && @user_artists.any?
+                - for user_artist in @user_artists
+                  - if user_artist.profile.present?
+                    .grid-item.grid-sizer.col-sm-4.servicebox.rcv_playlist
+                      .servicebox-image
+                        %a.vid-item.pretty-photo{href: profile_path(user_artist.profile)}
+                          - if user_artist.profile.profile_picture_url.present?
+                            %img{:alt => "#{user_artist.name}", :src => "#{user_artist.profile.profile_picture_url(:thumb)}"}
+                          - else
+                            %img{:alt => "#{user_artist.name}", :src => "new_look/assets/img/default-avatar.jpg"}
+                      .servicebox-inner
+                        %p
+                          #{user_artist.name}
+                          %small.d-block.text-muted= user_artist.role.titleize
 
 
         / Adverts

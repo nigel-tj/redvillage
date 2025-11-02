@@ -1,6 +1,18 @@
 class VideosController < ApplicationController
-  before_action :authenticate_admin!, except: [:index]
+  include RoleBasedAccess
+  
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :require_videographer_or_admin, only: [:new, :create, :update, :edit, :destroy]
   layout "admin", only: [:new, :create, :update, :all_videos]
+  
+  private
+  
+  def require_videographer_or_admin
+    unless current_user&.videographer? || current_user&.admin? || current_user&.curator? || current_user&.editor?
+      flash[:alert] = "You need videographer, curator, editor, or admin access to perform this action."
+      redirect_to root_path
+    end
+  end
 
   def index
     @videos = Video.order('created_at DESC')
