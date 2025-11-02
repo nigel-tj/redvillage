@@ -1,4 +1,6 @@
 class StorefrontSettingsController < ApplicationController
+  layout 'admin'
+  
   before_action :set_store
   before_action :set_storefront_settings
   before_action :authenticate_user!

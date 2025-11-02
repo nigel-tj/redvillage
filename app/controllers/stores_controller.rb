@@ -1,4 +1,6 @@
 class StoresController < ApplicationController
+  layout :determine_layout
+  
   before_action :set_store, only: [:show, :edit, :update, :destroy, :activate, :deactivate]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy, :my_stores]
   
@@ -82,6 +84,22 @@ class StoresController < ApplicationController
   end
 
   private
+
+  def determine_layout
+    case action_name
+    when 'new', 'create', 'edit', 'update', 'destroy', 'my_stores', 'activate', 'deactivate'
+      'admin'
+    when 'show'
+      # Use admin layout if user is owner or admin, otherwise use application layout
+      if user_signed_in? && (@store&.owner?(current_user) || current_user.admin?)
+        'admin'
+      else
+        'application'
+      end
+    else
+      'application'
+    end
+  end
 
   def set_store
     @store = Store.friendly.find(params[:id])

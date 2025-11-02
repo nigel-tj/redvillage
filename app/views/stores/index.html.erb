@@ -27,10 +27,12 @@
       <% @stores.each do |store| %>
         <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
           <div class="card h-100 shadow-sm">
-            <% if store.cover.present? %>
+            <% if store.cover.present? && store.cover.to_s.strip.present? %>
               <%= link_to store_path(store) do %>
                 <div style="height: 200px; overflow: hidden; background: #f8f9fa;">
-                  <%= image_tag store.cover, alt: store.name, style: "width: 100%; height: 100%; object-fit: cover;" %>
+                  <% cover_url = store.cover.to_s.strip %>
+                  <% cover_url = "/#{cover_url}" unless cover_url.start_with?('http://', 'https://') || cover_url.start_with?('/') %>
+                  <%= image_tag cover_url, alt: store.name, style: "width: 100%; height: 100%; object-fit: cover;" %>
                 </div>
               <% end %>
             <% else %>

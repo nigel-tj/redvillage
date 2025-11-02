@@ -1,5 +1,4 @@
 <div class="container mt-4">
-  <%= storefront_css(@store) %>
   <div class="storefront-header mb-4" style="<%= "background-color: #{@store.storefront_settings_with_defaults.primary_color}; color: white; padding: 2rem; border-radius: 0.5rem;" if @store.storefront_settings.present? %>">
     <div class="d-flex justify-content-between align-items-center">
       <div>

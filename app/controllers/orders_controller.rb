@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  layout 'admin'
+  
   before_action :set_store
   before_action :set_order, only: [:show, :update]
   before_action :authenticate_user!, except: [:show]

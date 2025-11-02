@@ -1,4 +1,6 @@
 class PaymentsController < ApplicationController
+  layout 'admin'
+  
   before_action :set_store
   before_action :set_order
   before_action :authenticate_user!

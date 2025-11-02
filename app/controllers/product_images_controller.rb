@@ -1,4 +1,6 @@
 class ProductImagesController < ApplicationController
+  layout 'admin'
+  
   before_action :set_store
   before_action :set_product
   before_action :set_product_image, only: [:destroy, :update_position]

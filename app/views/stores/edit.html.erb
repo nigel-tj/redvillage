@@ -20,10 +20,12 @@
               <%= f.label :cover, class: "form-label" %>
               <%= f.file_field :cover, class: 'form-control', accept: 'image/*' %>
               <small class="form-text text-muted">Store cover image</small>
-              <% if @store.cover.present? %>
+              <% if @store.cover.present? && @store.cover.to_s.strip.present? %>
                 <div class="mt-2">
                   <small class="text-muted">Current image:</small><br>
-                  <%= image_tag @store.cover, style: "max-width: 200px; height: auto;", class: "mt-1" %>
+                  <% cover_url = @store.cover.to_s.strip %>
+                  <% cover_url = "/#{cover_url}" unless cover_url.start_with?('http://', 'https://') || cover_url.start_with?('/') %>
+                  <%= image_tag cover_url, style: "max-width: 200px; height: auto;", class: "mt-1" %>
                 </div>
               <% end %>
             </div>

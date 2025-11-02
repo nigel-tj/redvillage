@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  layout :determine_layout
+  
   before_action :set_store
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
@@ -86,6 +88,22 @@ class ProductsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Product not found."
     redirect_to store_products_path(@store)
+  end
+
+  def determine_layout
+    case action_name
+    when 'new', 'create', 'edit', 'update', 'destroy'
+      'admin'
+    when 'index', 'show'
+      # Use admin layout if user is owner or admin, otherwise use application layout
+      if user_signed_in? && (@store&.owner?(current_user) || current_user&.admin?)
+        'admin'
+      else
+        'application'
+      end
+    else
+      'application'
+    end
   end
 
   def product_params
