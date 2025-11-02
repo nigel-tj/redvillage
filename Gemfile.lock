@@ -212,8 +212,6 @@ GEM
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
-    mysql2 (0.5.7)
-      bigdecimal
     naught (1.1.0)
     net-http (0.7.0)
       uri
@@ -384,6 +382,11 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
+    sqlite3 (1.7.3-aarch64-linux)
+    sqlite3 (1.7.3-arm-linux)
+    sqlite3 (1.7.3-arm64-darwin)
+    sqlite3 (1.7.3-x86_64-darwin)
+    sqlite3 (1.7.3-x86_64-linux)
     streamio-ffmpeg (3.0.2)
       multi_json (~> 1.8)
     stringio (3.1.7)
@@ -448,7 +451,6 @@ DEPENDENCIES
   importmap-rails
   jquery-rails
   kaminari
-  mysql2 (~> 0.5.5)
   omniauth
   omniauth-facebook
   omniauth-google-oauth2
@@ -462,6 +464,7 @@ DEPENDENCIES
   simple_form
   slim-rails
   spring
+  sqlite3 (~> 1.4)
   streamio-ffmpeg
   twitter
   tzinfo-data
