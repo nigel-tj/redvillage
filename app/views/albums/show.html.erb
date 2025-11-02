@@ -1,0 +1,30 @@
+<div class="container" style="margin-top:200px">
+  <div class="row">
+    <h1>
+      <%= @album.name %>
+    </h1>
+    <p>
+      <%= link_to "Add songs", new_album_path(:album_id => @album) %>
+      |
+      <%= link_to "Delete album", @album, data: { confirm: 'Are you sure?' }, method: :delete %>
+      |
+      <%= link_to "View All Albums", albums_path %>
+    </p>
+  </div>
+  <div id="musics">
+    <% for song in @album_tracks %>
+      <div class="col-md-4" style="height:300px">
+        <%= image_tag song.image_url(:thumb) if song.image? %>
+        <div class="name"><%= song.name %></div>
+        <div class="actions">
+          <%= link_to "edit", edit_album_path(song) %>
+          |
+          <%= link_to "remove", song, data: { confirm: 'Are you sure?' }, method: :delete %>
+        </div>
+      </div>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+

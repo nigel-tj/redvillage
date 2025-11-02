@@ -1,0 +1,40 @@
+<!-- Event of the month -->
+<div class="container">
+  <div id="events">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 class="wow fadeInUp" data-wow-duration="1s">EVENTS OF THE MONTH</h1>
+      </div>
+      <ul class="event-inner bxslider one">
+        <% for event in @events %>
+          <li class="col-sm-6">
+            <div class="event-box row text-center">
+              <div class="event-box-left col-sm-6 col-md-3">
+                <h2>
+                  29
+                  <br>
+                  <span class="month">APRIL</span>
+                </h2>
+                <h3>11:00 PM</h3>
+                <p>
+                  <i class="fa fa-map-marker"></i>
+                  <br>
+                  CITY PLAZA,
+                  <br>
+                  NEW
+                </p>
+              </div>
+              <div class="event-box-right col-sm-6 col-md-9">
+                <img class="img-responsive" alt="<%= event.name %>" src="<%= event.image_url(:thumb) %>">
+              </div>
+              <div class="event-box-bottom clearfix">
+                <h2><%= event.name %></h2>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+

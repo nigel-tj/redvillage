@@ -1,0 +1,127 @@
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1 class="mb-4">Curator Dashboard</h1>
+      <p>Welcome back, <%= @user.name %>!</p>
+      <p class="text-muted">Curate and manage content across the platform.</p>
+      <%= render 'shared/profile_quick_links', user: @user %>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">News Articles</h5>
+          <h2><%= @stats[:total_features] %></h2>
+          <%= link_to "Manage", '/admin_index', class: "btn btn-primary btn-sm w-100 mt-2" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Galleries</h5>
+          <h2><%= @stats[:total_galleries] %></h2>
+          <%= link_to "Manage", galleries_path, class: "btn btn-primary btn-sm w-100 mt-2" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Videos</h5>
+          <h2><%= @stats[:total_videos] %></h2>
+          <%= link_to "Manage", all_videos_path, class: "btn btn-primary btn-sm w-100 mt-2" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">My Articles</h5>
+          <h2><%= @stats[:my_features] %></h2>
+          <%= link_to "Create Article", new_feature_upload_path, class: "btn btn-outline-primary btn-sm w-100 mt-2" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">News Articles / Features</h5>
+          <%= link_to "Create New Article", new_feature_upload_path, class: "btn btn-primary btn-sm" %>
+        </div>
+        <div class="card-body">
+          <% if @features.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Heading</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @features.first(10).each do |feature| %>
+                    <tr>
+                      <td><%= feature.heading || "Untitled" %></td>
+                      <td><%= time_ago_in_words(feature.created_at) %> ago</td>
+                      <td>
+                        <%= link_to "View", feature_path(feature), class: "btn btn-sm btn-primary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No articles yet.</p>
+            <%= link_to "Create Your First Article", new_feature_upload_path, class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Recent Content</h5>
+        </div>
+        <div class="card-body">
+          <h6>Recent Galleries</h6>
+          <% if @galleries.any? %>
+            <ul class="list-group list-group-flush mb-3">
+              <% @galleries.each do |gallery| %>
+                <li class="list-group-item">
+                  <%= link_to gallery.name, gallery_path(gallery) %>
+                  <small class="text-muted d-block"><%= time_ago_in_words(gallery.created_at) %> ago</small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No galleries yet.</p>
+          <% end %>
+          
+          <h6 class="mt-3">Recent Videos</h6>
+          <% if @videos.any? %>
+            <ul class="list-group list-group-flush">
+              <% @videos.each do |video| %>
+                <li class="list-group-item">
+                  <%= link_to video.link&.truncate(40) || "Video #{video.id}", video_path(video) %>
+                  <small class="text-muted d-block"><%= time_ago_in_words(video.created_at) %> ago</small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No videos yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

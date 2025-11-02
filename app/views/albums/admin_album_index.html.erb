@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Albums</h1>
+      <p><%= link_to "New Album", new_album_path %></p>
+      <% for album in @albums %>
+        <div class="col-md-4" style="height:250px">
+          <%= image_tag album.cover_url(:thumb) if album.cover? %>
+          <p>
+            <%= link_to album.name, "admin_show_album/#{album.id}" %>
+            <br>
+            Tracks: <%= album.tracks.size %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

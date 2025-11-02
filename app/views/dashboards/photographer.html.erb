@@ -1,0 +1,118 @@
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1 class="mb-4">Photographer Dashboard</h1>
+      <p>Welcome back, <%= @user.name %>!</p>
+      <p class="text-muted">Manage your galleries and images.</p>
+      <%= render 'shared/profile_quick_links', user: @user %>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Galleries</h5>
+          <h2><%= @stats[:total_galleries] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">My Galleries</h5>
+          <h2><%= @stats[:my_galleries] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Images</h5>
+          <h2><%= @stats[:total_images] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Quick Actions</h5>
+          <%= link_to "Create Gallery", new_gallery_path, class: "btn btn-primary btn-sm w-100 mb-2" %>
+          <%= link_to "View All Galleries", galleries_path, class: "btn btn-outline-primary btn-sm w-100" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">My Galleries</h5>
+          <%= link_to "Create New Gallery", new_gallery_path, class: "btn btn-primary btn-sm" %>
+        </div>
+        <div class="card-body">
+          <% if @galleries.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Gallery Name</th>
+                    <th>Category</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @galleries.each do |gallery| %>
+                    <tr>
+                      <td><%= gallery.name %></td>
+                      <td>
+                        <% if gallery.category.present? %>
+                          <span class="badge bg-secondary"><%= gallery.category %></span>
+                        <% end %>
+                      </td>
+                      <td><%= time_ago_in_words(gallery.created_at) %> ago</td>
+                      <td>
+                        <%= link_to "View", gallery_path(gallery), class: "btn btn-sm btn-primary me-1" %>
+                        <%= link_to "Edit", edit_gallery_path(gallery), class: "btn btn-sm btn-outline-secondary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No galleries created yet.</p>
+            <%= link_to "Create Your First Gallery", new_gallery_path, class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Recent Galleries</h5>
+        </div>
+        <div class="card-body">
+          <% if @recent_galleries.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_galleries.each do |gallery| %>
+                <li class="list-group-item">
+                  <%= link_to gallery.name, gallery_path(gallery), class: "fw-bold" %>
+                  <small class="text-muted d-block"><%= time_ago_in_words(gallery.created_at) %> ago</small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No galleries available.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

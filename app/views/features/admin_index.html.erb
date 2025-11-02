@@ -1,0 +1,25 @@
+<div id="services">
+  <div class="container">
+    <div class="row">
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Features</h1>
+      <p><%= link_to "New Feature", new_feature_path %></p>
+      <% if @features.any? %>
+        <% for feature in @features %>
+          <div class="col-md-4" style="height:250px">
+            <h4><%= feature.heading %></h4>
+            <%= image_tag feature.image_url(:thumb) if feature.image? %>
+            <p><%= feature.intro %></p>
+            <p><%= feature.link %></p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+

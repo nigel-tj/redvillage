@@ -1,0 +1,114 @@
+<div id="reservation" class="module parallax parallax-reservation">
+  <div class="container">
+    <div class="row">
+      <div class="profile-header-container">
+        <div class="profile-header-img">
+          <img class="img-circle" src="<%= @artist.profile_picture_url %>">
+          <!-- badge -->
+          <div class="rank-label-container">
+            <span class="label label-default rank-label social affix-social">
+              <a href="http://www.facebook.com">
+                <i class="fa fa-facebook fa-2x"></i>
+              </a>
+              <a href="http://www.google.com">
+                <i class="fa fa-google fa-2x"></i>
+              </a>
+              <a href="http://www.linkedin.com">
+                <i class="fa fa-linkedin fa-2x"></i>
+              </a>
+              <a href="http://www.pinterest.com">
+                <i class="fa fa-pinterest fa-2x"></i>
+              </a>
+              <a href="http://www.twitter.com">
+                <i class="fa fa-twitter fa-2x"></i>
+              </a>
+              <a href="http://www.rss.com">
+                <i class="fa fa-rss fa-2x"></i>
+              </a>
+              <a href="http://www.skype.com">
+                <i class="fa fa-skype fa-2x"></i>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="wow fadeInUp" data-wow-duration="1s"><%= @artist.name %></h1>
+
+  <p class="wow fadeIn" data-wow-duration="1s"></p>
+</div>
+<!-- start gallery -->
+<div id="gallery" class="text-center">
+  <div class="container">
+    <div class="row text-center">
+      <div class="tabs tabs-style-linebox wow fadeInUp" data-wow-duration="2s">
+        <nav>
+          <ul class="filters">
+            <li class="hvr-sweep-to-top active filter" data-filter=".allDownloads" id="#all_downloads_tab">
+              <span>All Track</span>
+            </li>
+            <li class="hvr-sweep-to-top filter" data-filter=".bio">
+              <span>Bio</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="row gallery text-center">
+      <div class="col-md-12 noPadding">
+        <div class="gallery-photo-grid">
+          <div class="gallery-photos">
+            <div class="gallery-photos-thumb">
+              <div class="gallery-photo-item mix bio wow fadeIn">
+                <a class="pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="images/site-images/ass.jpg" id="#bio_div">
+                  <div class="photo-thumb">
+                    <img alt="image-1" src="images/site-images/400/1.png">
+                  </div>
+                  <div class="overlay">
+                    <span class="gallery-icon">
+                      <i class="fa fa-search-plus fa-2x"></i>
+                    </span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-sm-12 gallery-track-item mix allDownloads wow fadeIn" data-wow-delay="0.2s">
+                <div class="col-sm-10 col-sm-offset-1">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Track name</th>
+                        <th>File Size</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for track in @songs %>
+                        <tr>
+                          <td><%= track.track_title %></td>
+                          <td><%= track.track_title %></td>
+                          <td><%= track.track_title %></td>
+                          <td><button type="button" class="btn btn-primary">download</button></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end -->
+
+<script>
+  $(document).ready(function(){
+    document.getElementById('#all_downloads_tab').classList.add("active");
+  });
+  $('body').css('background-image','url(<%= @artist.cover_url %>)');
+</script>
+

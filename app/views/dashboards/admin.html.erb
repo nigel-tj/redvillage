@@ -1,0 +1,327 @@
+<div class="container-fluid mt-4">
+  <% if defined?(impersonating?) && impersonating? %>
+    <div class="alert alert-warning alert-dismissible fade show">
+      <strong>Impersonating:</strong>
+      <%= current_user.name %>
+      (<%= current_user.role %>)
+      <%= button_to "Stop Impersonating", stop_impersonating_path, method: :delete, class: "btn btn-sm btn-outline-danger ms-2" %>
+      <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1 class="mb-4">Admin Dashboard</h1>
+      <p>Welcome to the Red Cup Village Admin Panel</p>
+      <% if defined?(impersonating?) && impersonating? && original_user %>
+        <small class="text-muted">
+          Logged in as: <%= original_user.name %> (Admin)
+          <% if impersonating? %>
+            | Impersonating: <%= current_user.name %>
+          <% end %>
+        </small>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h5 class="mb-3">User Statistics</h5>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Users</h5>
+          <h2><%= @stats[:total_users] %></h2>
+          <a href="<%= users_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">DJs</h5>
+          <h2><%= @stats[:djs] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:djs], 'DJ') %></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Artists</h5>
+          <h2><%= @stats[:artists] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:artists], 'Artist') %></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Photographers</h5>
+          <h2><%= @stats[:photographers] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:photographers], 'Photographer') %></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Videographers</h5>
+          <h2><%= @stats[:videographers] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:videographers], 'Videographer') %></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Members</h5>
+          <h2><%= @stats[:members] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:members], 'Member') %></small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Curators</h5>
+          <h2><%= @stats[:curators] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:curators], 'Curator') %></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Designers</h5>
+          <h2><%= @stats[:designers] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:designers], 'Designer') %></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Editors</h5>
+          <h2><%= @stats[:editors] %></h2>
+          <small class="text-muted"><%= pluralize(@stats[:editors], 'Editor') %></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Content Creators</h5>
+          <h2><%= @stats[:djs] + @stats[:artists] + @stats[:photographers] + @stats[:videographers] + @stats[:curators] + @stats[:designers] + @stats[:editors] %></h2>
+          <small class="text-muted">Total creators</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Galleries</h5>
+          <h2><%= @stats[:galleries_count] %></h2>
+          <a href="<%= galleries_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">News Articles</h5>
+          <h2><%= @stats[:features_count] %></h2>
+          <a href="/admin_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Videos</h5>
+          <h2><%= @stats[:videos_count] %></h2>
+          <a href="<%= all_videos_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Music Tracks</h5>
+          <h2><%= @stats[:tracks_count] %></h2>
+          <a href="/admin_all_music" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Albums</h5>
+          <h2><%= @stats[:albums_count] %></h2>
+          <a href="/admin_album_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Artists</h5>
+          <h2><%= @stats[:artists_count] %></h2>
+          <a href="/admin_artist_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Lifestyle</h5>
+          <h2><%= @stats[:lifestyles_count] %></h2>
+          <a href="/lifestyle_admin_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Events</h5>
+          <h2><%= @stats[:events_count] %></h2>
+          <a href="<%= admin_all_events_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Banners</h5>
+          <h2><%= @stats[:banners_count] %></h2>
+          <a href="<%= banners_index_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Recent Users</div>
+        <div class="card-body">
+          <% if @stats[:recent_users].any? %>
+            <ul class="list-group list-group-flush">
+              <% @stats[:recent_users].each do |user| %>
+                <li class="list-group-item">
+                  <%= link_to user.name, user_path(user) %>
+                  <span class="badge bg-<%= user.admin? ? 'danger' : user.dj? ? 'info' : user.artist? ? 'success' : 'secondary' %>">
+                    <%= user.role.titleize %>
+                  </span>
+                  <small class="text-muted d-block"><%= time_ago_in_words(user.created_at) %> ago</small>
+                  <% if user_signed_in? && current_user.admin? && user != current_user %>
+                    <%= button_to "Impersonate", impersonate_path(user), method: :post, class: "btn btn-sm btn-outline-primary mt-1" %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No users yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Recent Galleries</div>
+        <div class="card-body">
+          <% if @recent_galleries.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_galleries.each do |gallery| %>
+                <li class="list-group-item">
+                  <%= link_to gallery.name, gallery_path(gallery) %>
+                  <small class="text-muted d-block"><%= time_ago_in_words(gallery.created_at) %> ago</small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No galleries yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Recent News</div>
+        <div class="card-body">
+          <% if @recent_features.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_features.each do |feature| %>
+                <li class="list-group-item">
+                  <%= link_to feature.heading, feature_path(feature) %>
+                  <small class="text-muted d-block"><%= time_ago_in_words(feature.created_at) %> ago</small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No news articles yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Recent Tracks</div>
+        <div class="card-body">
+          <% if @recent_tracks.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_tracks.each do |track| %>
+                <li class="list-group-item">
+                  <%= link_to track.title, track_path(track) %>
+                  <small class="text-muted d-block"><%= time_ago_in_words(track.created_at) %> ago</small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No tracks yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Recent Events</div>
+        <div class="card-body">
+          <% if @recent_events.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_events.each do |event| %>
+                <li class="list-group-item">
+                  <%= link_to event.name, event_path(event) %>
+                  <small class="text-muted d-block">
+                    <%= event.date.strftime("%B %d, %Y") if event.date %>
+                    <%= " - " + time_ago_in_words(event.created_at) + " ago" if event.date %>
+                  </small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No events yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,36 @@
+<%= form_for @feature_banner, html: { multipart: true } do |f| %>
+  <% if @feature_banner.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(@feature_banner.errors.count, "error") %> prohibited this feature_banner from being saved:</h5>
+      <ul class="mb-0">
+        <% @feature_banner.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: 'form-control', placeholder: 'Banner name' %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, class: 'form-control', rows: 4, placeholder: 'Banner description' %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :image, class: "form-label" %>
+    <%= f.file_field :image, class: 'form-control', accept: 'image/*' %>
+    <small class="form-text text-muted">Banner image file</small>
+  </div>
+  <div class="mb-3">
+    <%= f.label :link, class: "form-label" %>
+    <%= f.text_field :link, class: 'form-control', placeholder: 'https://example.com' %>
+    <small class="form-text text-muted">Link URL for the banner</small>
+  </div>
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to 'Cancel', feature_banners_path, class: 'btn btn-secondary' %>
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+

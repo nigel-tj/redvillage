@@ -1,0 +1,28 @@
+<div class="container">
+  <!-- start news tabs -->
+  <div id="gallery">
+    <!-- banner -->
+    <div class="row">
+      <div class="col-sm-12 banner">
+        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
+      </div>
+    </div>
+    <!-- banner end -->
+    <div id="gallery">
+      <div id="gallery-content" class="services">
+        <div id="gallery-content-center" class="row">
+          <% for article in @lifestyle %>
+            <a class="servicebox col-sm-3 all latest" href="<%= article.link %>">
+              <img class="img-responsive" alt="<%= article.title %>" src="<%= article.image_url %>">
+              <div class="servicebox-inner text-left">
+                <h2><%= article.title %></h2>
+                <p><%= article.intro %></p>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

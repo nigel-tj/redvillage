@@ -1,0 +1,45 @@
+<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.init.js" type="text/javascript"></script>
+<div id="services">
+  <div class="container">
+    <div class="row">
+      <div class="row services">
+        <div class="col-sm-12">
+          <div class="row">
+            <h1>All Tracks</h1>
+            <p><%= link_to "New Track", new_track_path %></p>
+            <div class="grid">
+              <% for track in @tracks %>
+                <div class="grid-item grid-sizer col-sm-4 servicebox featured_club">
+                  <div class="servicebox-image">
+                    <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="<%= track.track %>">
+                      <img alt="<%= track.title %>" src="<%= track.image_url(:thumb) %>">
+                    </a>
+                  </div>
+                  <div class="servicebox-inner">
+                    <p><%= track.title %></p>
+                  </div>
+                  <div class="servicebox-inner">
+                    <p>
+                      <%= link_to "edit", edit_track_path(track) %> |
+                      <%= button_to 'delete', track, data: { confirm: 'Are you sure?' }, method: :delete %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- end music -->
+<script>
+  $(document).ready(function(){
+    document.getElementById('#vilage_picks').classList.add("active");
+  });
+</script>
+

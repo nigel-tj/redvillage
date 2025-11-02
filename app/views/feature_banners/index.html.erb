@@ -1,0 +1,34 @@
+<h1>Listing feature_banners</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Image</th>
+      <th>Link</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @feature_banners.each do |feature_banner| %>
+      <tr>
+        <td><%= feature_banner.name %></td>
+        <td><%= feature_banner.description %></td>
+        <td><%= feature_banner.image %></td>
+        <td><%= feature_banner.link %></td>
+        <td><%= link_to 'Show', feature_banner %></td>
+        <td><%= link_to 'Edit', edit_feature_banner_path(feature_banner) %></td>
+        <td><%= link_to 'Destroy', feature_banner, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Feature banner', new_feature_banner_path %>
+

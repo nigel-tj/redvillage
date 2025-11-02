@@ -1,0 +1,62 @@
+<div id="services">
+  <div class="container">
+    <div class="row">
+      <div id="gallery" class="text-center">
+        <div class="container">
+          <div class="row text-center">
+            <div class="tabs tabs-style-linebox wow fadeInUp" data-wow-duration="2s">
+              <nav>
+                <ul class="filters">
+                  <li class="hvr-sweep-to-top active filter" data-filter="all" id="#all_tab">
+                    <span>All</span>
+                  </li>
+                  <li class="hvr-sweep-to-top filter" data-filter=".new">
+                    <span>Latest</span>
+                  </li>
+                  <li class="hvr-sweep-to-top filter" data-filter=".hallOfFame">
+                    <span>Hall Of Fame</span>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="services">
+        <div class="container">
+          <div class="row">
+            <div id="gallery" class="text-center">
+              <div class="container-fluid">
+                <div class="row gallery text-center">
+                  <div class="col-md-12 noPadding">
+                    <div class="gallery-photo-grid">
+                      <div class="gallery-photos">
+                        <div class="gallery-photos-thumb">
+                          <% for track in @album.tracks %>
+                            <div class="gallery-photo-item mix new fadeIn">
+                              <a class="pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="<%= album.cover_url %>">
+                                <div class="photo-thumb">
+                                  <%= image_tag track.image_url(:thumb) if track.image? %>
+                                </div>
+                                <div class="overlay">
+                                  <span class="gallery-icon">
+                                    <i class="fa fa-search-plus fa-2x"></i>
+                                  </span>
+                                </div>
+                              </a>
+                            </div>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

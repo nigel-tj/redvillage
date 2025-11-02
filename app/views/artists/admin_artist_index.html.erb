@@ -1,0 +1,110 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mb-0">All Artists</h1>
+        <%= link_to "New Artist", new_artist_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+  
+  <% if @artists_model.any? || @user_artists.any? %>
+    <div class="row">
+      <% if @artists_model.any? %>
+        <div class="col-md-12 mb-4">
+          <h3 class="mb-3">Artist Records</h3>
+          <div class="row">
+            <% @artists_model.each do |artist| %>
+              <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                  <% if artist.profile_picture.present? %>
+                    <img class="card-img-top" src="<%= artist.profile_picture_url(:thumb) || '/assets/default-avatar.png' %>" alt="<%= artist.name %>" style="height: 200px; object-fit: cover;">
+                  <% else %>
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                      <i class="fas fa-user fa-3x text-white"></i>
+                    </div>
+                  <% end %>
+                  <div class="card-body">
+                    <h5 class="card-title"><%= artist.name %></h5>
+                    <% if artist.email.present? %>
+                      <p class="card-text text-muted small">
+                        <i class="fas fa-envelope me-1"></i>
+                        <%= artist.email %>
+                      </p>
+                    <% end %>
+                    <div class="mt-2">
+                      <%= link_to "Edit", edit_artist_path(artist), class: 'btn btn-sm btn-outline-primary me-2' %>
+                      <%= button_to 'Delete', artist, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger', form: { style: 'display: inline;' } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      
+      <% if @user_artists.any? %>
+        <div class="col-md-12 mb-4">
+          <h3 class="mb-3">Users with Artist Role</h3>
+          <div class="row">
+            <% @user_artists.each do |user| %>
+              <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                  <% if user.profile&.profile_picture.present? %>
+                    <% img_url = user.profile.profile_picture_url(:thumb) rescue nil %>
+                    <% if img_url %>
+                      <img class="card-img-top" src="<%= img_url %>" alt="<%= user.name %>" style="height: 200px; object-fit: cover;">
+                    <% else %>
+                      <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-user fa-3x text-white"></i>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                      <i class="fas fa-user fa-3x text-white"></i>
+                    </div>
+                  <% end %>
+                  <div class="card-body">
+                    <h5 class="card-title"><%= user.name %></h5>
+                    <p class="card-text text-muted small">
+                      <i class="fas fa-envelope me-1"></i>
+                      <%= user.email %>
+                    </p>
+                    <p class="card-text text-muted small">
+                      <i class="fas fa-user-tag me-1"></i>
+                      Role: Artist
+                    </p>
+                    <div class="mt-2">
+                      <% if user.profile %>
+                        <%= link_to "View Profile", profile_path(user.profile), class: 'btn btn-sm btn-outline-primary me-2' %>
+                        <%= link_to "Edit User", edit_user_path(user), class: 'btn btn-sm btn-outline-secondary' %>
+                      <% else %>
+                        <p class="card-text text-muted small mb-2">
+                          <i class="fas fa-exclamation-triangle me-1"></i>
+                          No Profile Yet
+                        </p>
+                        <%= link_to "Edit User", edit_user_path(user), class: 'btn btn-sm btn-outline-secondary' %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-info">
+          <h5>No Artists Found</h5>
+          <p>There are no artist records or users with artist role in the system.</p>
+          <%= link_to "Create New Artist", new_artist_path, class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+

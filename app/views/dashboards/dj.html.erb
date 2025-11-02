@@ -1,0 +1,144 @@
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1 class="mb-4">DJ Dashboard</h1>
+      <p>Welcome back, <%= @user.name %>!</p>
+      <p class="text-muted">Manage your events, view schedules, and browse music tracks.</p>
+      <%= render 'shared/profile_quick_links', user: @user %>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Upcoming Events</h5>
+        </div>
+        <div class="card-body">
+          <% if @upcoming_events.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @upcoming_events.each do |event| %>
+                    <tr>
+                      <td><%= event.name %></td>
+                      <td><%= event.date ? event.date.strftime("%B %d, %Y") : "TBD" %></td>
+                      <td><%= event.venue || "TBD" %></td>
+                      <td>
+                        <%= link_to "View", event_path(event), class: "btn btn-sm btn-primary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No upcoming events scheduled.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Recent Events</h5>
+        </div>
+        <div class="card-body">
+          <% if @events.any? %>
+            <ul class="list-group list-group-flush">
+              <% @events.first(5).each do |event| %>
+                <li class="list-group-item">
+                  <%= link_to event.name, event_path(event), class: "fw-bold" %>
+                  <small class="text-muted d-block">
+                    <%= event.date ? event.date.strftime("%B %d, %Y") : "Date TBD" %>
+                    <% if event.venue.present? %>
+                      <%= " - #{event.venue}" %>
+                    <% end %>
+                  </small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No events available.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <%= link_to "View All Events", events_path, class: "btn btn-primary w-100 mb-2" %>
+            </li>
+            <li class="list-group-item">
+              <%= link_to "Browse Music Tracks", tracks_path, class: "btn btn-outline-primary w-100 mb-2" %>
+            </li>
+            <li class="list-group-item">
+              <%= link_to "View Albums", albums_path, class: "btn btn-outline-primary w-100 mb-2" %>
+            </li>
+            <li class="list-group-item">
+              <%= link_to "View Artists", artists_path, class: "btn btn-outline-primary w-100" %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Available Music Tracks</h5>
+        </div>
+        <div class="card-body">
+          <% if @tracks.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Track Title</th>
+                    <th>Artist</th>
+                    <th>Album</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @tracks.each do |track| %>
+                    <tr>
+                      <td><%= track.title %></td>
+                      <td><%= track.artist_name || "Unknown" %></td>
+                      <td><%= track.album&.name || "N/A" %></td>
+                      <td>
+                        <%= link_to "View", track_path(track), class: "btn btn-sm btn-primary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No tracks available.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

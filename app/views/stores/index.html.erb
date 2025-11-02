@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="row">
+    <!-- start banner -->
+    <div id="slider" class="flexslider">
+      <ul class="slides">
+        <% for banner in @banners %>
+          <li>
+            <img alt="<%= banner.name %>" src="<%= banner.image_url %>">
+            <div class="flex-caption-block">
+              <p class="flex-caption"><%= banner.name %></p>
+              <br>
+              <p class="flex-link">
+                <a href="#">More here</a>
+              </p>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <!-- start services -->
+  <div id="services">
+    <div class="row">
+      <div class="services-inner">
+        <h1 class="wow fadeInUp" data-wow-duration="2s">Trending News</h1>
+        <div class="servicebox col-md-4 wow fadeIn" data-wow-delay="1s" data-wow-duration="2s">
+          <img class="img-responsive" alt="Night club service" src="images/site-images/600/party-1.jpg">
+          <div class="servicebox-inner text-left wow slideInLeft">
+            <h2>DJ'S MUSIC</h2>
+            <p>
+              <a href="#">Read More</a>
+            </p>
+          </div>
+        </div>
+        <div class="servicebox col-md-4 wow fadeIn" data-wow-delay="1s" data-wow-duration="2s">
+          <img class="img-responsive" alt="Night club service" src="images/site-images/600/party-1.jpg">
+          <div class="servicebox-inner text-left wow slideInLeft">
+            <h2>DJ'S MUSIC</h2>
+            <p>
+              <a href="#">Read More</a>
+            </p>
+          </div>
+        </div>
+        <div class="servicebox col-md-4 wow fadeIn" data-wow-delay="1s" data-wow-duration="2s">
+          <img class="img-responsive" alt="Night club service" src="images/site-images/600/party-1.jpg">
+          <div class="servicebox-inner text-left wow slideInLeft">
+            <h2>DJ'S MUSIC</h2>
+            <p>
+              <a href="#">Read More</a>
+            </p>
+          </div>
+        </div>
+        <div class="servicebox col-md-4 wow fadeIn" data-wow-delay="1s" data-wow-duration="2s">
+          <img class="img-responsive" alt="Night club service" src="images/site-images/600/party-1.jpg">
+          <div class="servicebox-inner text-left wow slideInLeft">
+            <h2>DJ'S MUSIC</h2>
+            <p>
+              <a href="#">Read More</a>
+            </p>
+          </div>
+        </div>
+        <!-- advert -->
+        <div class="servicebox col-md-4 wow fadeIn" data-wow-delay="1.6s" data-wow-duration="2s">
+          <img class="img-responsive" alt="Night club service" src="images/davincis.jpg">
+          <div class="servicebox-inner text-left">
+            <img alt="Night Club Music" src="images/restaurant.png">
+            <h2>Advert</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

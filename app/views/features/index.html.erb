@@ -1,0 +1,112 @@
+<link href="/css/ticker.css" rel="stylesheet">
+<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
+<div class="container">
+  <!-- start news tabs -->
+  <div id="gallery">
+    <!-- banner -->
+    <div class="row">
+      <div class="col-sm-12 banner">
+        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
+      </div>
+    </div>
+    <!-- banner end -->
+
+    <!--news tabs -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ticker-container">
+          <div class="ticker-caption">
+            <p>News</p>
+          </div>
+          <ul>
+            <div>
+              <li>
+                <span class="breaking_news">
+                  Breaking News 1 –
+                  <a href="#">read more</a>
+                </span>
+              </li>
+            </div>
+            <div>
+              <li>
+                <span class="breaking_news">
+                  Breaking News 2 –
+                  <a href="#">read more</a>
+                </span>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9 services">
+        <div class="row">
+          <!--
+            <div class="col-sm-12">
+              <div id="gallery-header-center" class="clearfix">
+                <div id="gallery-header-center-left" class="pull-left">
+                  <div id="gallery-header-center-left-title">All</div>
+                </div>
+                <div id="gallery-header-center-right" class="pull-right">
+                  <div id="filter-all" class="gallery-header-center-right-links">All</div>
+                  <div id="filter-latest" class="gallery-header-center-right-links">Latest</div>
+                  <div id="filter-trending" class="gallery-header-center-right-links">Trending</div>
+                </div>
+              </div>
+            </div>
+          -->
+
+          <div class="col-sm-12" id="gallery-content">
+            <div class="grid">
+              <% for feature in @features %>
+                <div class="grid-item grid-sizer col-sm-12 servicebox">
+                  <div class="servicebox-image col-sm-4">
+                    <img class="img-responsive" alt="<%= feature.heading %>" src="<%= feature.image_url %>">
+                  </div>
+                  <div class="servicebox-inner col-sm-8">
+                    <%= feature.heading %>
+                  </div>
+                  <div class="servicebox-inner col-sm-8">
+                    <p>
+                      <i class="fa fa-fw fa-calendar"></i>
+                      <%= feature.created_at.strftime("%d %b %Y") %>
+                      <br>
+                      <a href="<%= feature.link %>" target="_blank"><%= feature.intro %></a>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Adverts -->
+      <div class="col-sm-3">
+        <div class="side-adverts">
+          <ul class="advert-image">
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
+            </li>
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/scripts/ticker.js" type="text/javascript"></script>
+
+<script>
+  $('.grid').masonry({
+    // options...
+    itemSelector: '.grid-item',
+    columnWidth: '.grid-sizer',
+    percentPosition: true
+  });
+</script>
+

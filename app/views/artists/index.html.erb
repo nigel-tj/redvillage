@@ -1,0 +1,110 @@
+<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.init.js" type="text/javascript"></script>
+<div class="container">
+  <!-- start news tabs -->
+  <div id="gallery">
+    <!-- banner -->
+    <div class="row">
+      <div class="col-sm-12 banner">
+        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
+      </div>
+    </div>
+    <!-- banner end -->
+    <!-- start services -->
+    <div class="row">
+      <div class="col-sm-9 services">
+        <div class="row">
+          <div class="col-sm-12" id="gallery-content">
+            <div class="grid">
+              <% if defined?(@artists_model) %>
+                <% for artist in @artists_model %>
+                  <div class="grid-item grid-sizer col-sm-4 servicebox rcv_playlist">
+                    <div class="servicebox-image">
+                      <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="artists/<%= artist.id %>?<%= artist.name %>">
+                        <img alt="<%= artist.name %>" src="<%= artist.profile_picture_url(:thumb) %>">
+                      </a>
+                    </div>
+                    <div class="servicebox-inner">
+                      <p><%= artist.name %></p>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+              
+              <% if defined?(@user_artists) && @user_artists.any? %>
+                <% for user_artist in @user_artists %>
+                  <% if user_artist.profile.present? %>
+                    <div class="grid-item grid-sizer col-sm-4 servicebox rcv_playlist">
+                      <div class="servicebox-image">
+                        <a class="vid-item pretty-photo" href="<%= profile_path(user_artist.profile) %>">
+                          <% if user_artist.profile.profile_picture_url.present? %>
+                            <img alt="<%= user_artist.name %>" src="<%= user_artist.profile.profile_picture_url(:thumb) %>">
+                          <% else %>
+                            <img alt="<%= user_artist.name %>" src="new_look/assets/img/default-avatar.jpg">
+                          <% end %>
+                        </a>
+                      </div>
+                      <div class="servicebox-inner">
+                        <p>
+                          <%= user_artist.name %>
+                          <small class="d-block text-muted"><%= user_artist.role.titleize %></small>
+                        </p>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Adverts -->
+      <div class="col-sm-3">
+        <div class="side-adverts">
+          <ul class="advert-image">
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
+            </li>
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Adverts -->
+      <div class="col-sm-3">
+        <div class="side-adverts">
+          <ul class="advert-image">
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
+            </li>
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Adverts -->
+      <div class="col-sm-3">
+        <div class="side-adverts">
+          <ul class="advert-image">
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
+            </li>
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function playSong() {
+    document.getElementById("audio_player").src = "https://raw.githubusercontent.com/kolber/audiojs/master/mp3/bensound-dubstep.mp3";
+  }
+</script>
+

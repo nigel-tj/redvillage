@@ -1,0 +1,38 @@
+<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.init.js" type="text/javascript"></script>
+<div id="services">
+  <div class="container">
+    <div class="row">
+      <div class="row services">
+        <div class="col-sm-12">
+          <div class="row">
+            <h1>All Videos</h1>
+            <p><%= link_to "New Video", new_video_path %></p>
+            <div class="grid">
+              <% for video in @videos %>
+                <div class="grid-item grid-sizer col-sm-4 servicebox featured_club">
+                  <div class="servicebox-image">
+                    <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="https://www.youtube.com/watch?v=<%= video.uid %>">
+                      <img alt="<%= video.title %>" src="https://img.youtube.com/vi/<%= video.uid %>/mqdefault.jpg">
+                    </a>
+                  </div>
+                  <div class="servicebox-inner">
+                    <p><%= video.title %></p>
+                  </div>
+                  <div class="servicebox-inner">
+                    <p>
+                      <%= link_to "edit", edit_video_path(video) %> |
+                      <%= button_to 'delete', video, data: { confirm: 'Are you sure?' }, method: :delete %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

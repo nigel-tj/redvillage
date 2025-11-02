@@ -1,0 +1,124 @@
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1 class="mb-4">Videographer Dashboard</h1>
+      <p>Welcome back, <%= @user.name %>!</p>
+      <p class="text-muted">Manage your video content.</p>
+      <%= render 'shared/profile_quick_links', user: @user %>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Videos</h5>
+          <h2><%= @stats[:total_videos] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">My Videos</h5>
+          <h2><%= @stats[:my_videos] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Quick Actions</h5>
+          <%= link_to "Upload Video", new_video_upload_path, class: "btn btn-primary btn-sm w-100 mb-2" %>
+          <%= link_to "View All Videos", all_videos_path, class: "btn btn-outline-primary btn-sm w-100" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Public View</h5>
+          <%= link_to "View Public Videos", videos_path, class: "btn btn-outline-secondary btn-sm w-100" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">My Videos</h5>
+          <%= link_to "Upload New Video", new_video_upload_path, class: "btn btn-primary btn-sm" %>
+        </div>
+        <div class="card-body">
+          <% if @videos.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Video Link</th>
+                    <th>Category</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @videos.each do |video| %>
+                    <tr>
+                      <td>
+                        <% if video.link.present? %>
+                          <%= link_to video.link.truncate(50), video.link, target: "_blank" %>
+                        <% else %>
+                          <span class="text-muted">No link</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <% if video.category.present? %>
+                          <span class="badge bg-secondary"><%= video.category %></span>
+                        <% end %>
+                      </td>
+                      <td><%= time_ago_in_words(video.created_at) %> ago</td>
+                      <td>
+                        <%= link_to "View", video_path(video), class: "btn btn-sm btn-primary me-1" %>
+                        <%= link_to "Edit", edit_video_path(video), class: "btn btn-sm btn-outline-secondary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No videos uploaded yet.</p>
+            <%= link_to "Upload Your First Video", new_video_upload_path, class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Recent Videos</h5>
+        </div>
+        <div class="card-body">
+          <% if @recent_videos.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_videos.each do |video| %>
+                <li class="list-group-item">
+                  <%= link_to video.link&.truncate(60) || "Video #{video.id}", video_path(video), class: "fw-bold" %>
+                  <small class="text-muted d-block"><%= time_ago_in_words(video.created_at) %> ago</small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No videos available.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

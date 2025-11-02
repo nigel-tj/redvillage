@@ -1,0 +1,218 @@
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1 class="mb-4">Artist Dashboard</h1>
+      <p>Welcome back, <%= @user.name %>!</p>
+      <p class="text-muted">Manage your music, tracks, and albums.</p>
+      <%= render 'shared/profile_quick_links', user: @user %>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Tracks</h5>
+          <h2><%= @stats[:total_tracks] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">My Tracks</h5>
+          <h2><%= @stats[:my_tracks] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Albums</h5>
+          <h2><%= @stats[:total_albums] %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">My Albums</h5>
+          <h2><%= @stats[:my_albums] %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">My Tracks</h5>
+          <%= link_to "Upload New Track", new_track_path, class: "btn btn-primary btn-sm" %>
+        </div>
+        <div class="card-body">
+          <% if @user_tracks.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Track Title</th>
+                    <th>Album</th>
+                    <th>Category</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @user_tracks.each do |track| %>
+                    <tr>
+                      <td><%= track.title %></td>
+                      <td><%= track.album&.name || "N/A" %></td>
+                      <td>
+                        <% if track.category.present? %>
+                          <span class="badge bg-secondary"><%= track.category %></span>
+                        <% end %>
+                      </td>
+                      <td><%= time_ago_in_words(track.created_at) %> ago</td>
+                      <td>
+                        <%= link_to "View", track_path(track), class: "btn btn-sm btn-primary me-1" %>
+                        <%= link_to "Edit", edit_track_path(track), class: "btn btn-sm btn-outline-secondary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No tracks uploaded yet.</p>
+            <%= link_to "Upload Your First Track", new_track_path, class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">My Albums</h5>
+          <%= link_to "Create New Album", new_album_path, class: "btn btn-primary btn-sm" %>
+        </div>
+        <div class="card-body">
+          <% if @user_albums.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Album Name</th>
+                    <th>Artist</th>
+                    <th>Tracks Count</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @user_albums.each do |album| %>
+                    <tr>
+                      <td><%= album.name %></td>
+                      <td><%= album.artist_name || "N/A" %></td>
+                      <td><%= Track.where(album_id: album.id).count %></td>
+                      <td><%= time_ago_in_words(album.created_at) %> ago</td>
+                      <td>
+                        <%= link_to "View", album_path(album), class: "btn btn-sm btn-primary me-1" %>
+                        <%= link_to "Edit", edit_album_path(album), class: "btn btn-sm btn-outline-secondary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No albums created yet.</p>
+            <%= link_to "Create Your First Album", new_album_path, class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <%= link_to "Upload Track", new_track_path, class: "btn btn-primary w-100 mb-2" %>
+            </div>
+            <div class="col-md-3">
+              <%= link_to "Create Album", new_album_path, class: "btn btn-outline-primary w-100 mb-2" %>
+            </div>
+            <div class="col-md-3">
+              <%= link_to "View All Tracks", tracks_path, class: "btn btn-outline-secondary w-100 mb-2" %>
+            </div>
+            <div class="col-md-3">
+              <%= link_to "View All Albums", albums_path, class: "btn btn-outline-secondary w-100 mb-2" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Recent Tracks</h5>
+        </div>
+        <div class="card-body">
+          <% if @tracks.any? %>
+            <ul class="list-group list-group-flush">
+              <% @tracks.first(5).each do |track| %>
+                <li class="list-group-item">
+                  <%= link_to track.title, track_path(track), class: "fw-bold" %>
+                  <small class="text-muted d-block">
+                    <%= track.artist_name || "Unknown Artist" %>
+                    <%= " - " + time_ago_in_words(track.created_at) + " ago" %>
+                  </small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No tracks available.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Recent Albums</h5>
+        </div>
+        <div class="card-body">
+          <% if @albums.any? %>
+            <ul class="list-group list-group-flush">
+              <% @albums.first(5).each do |album| %>
+                <li class="list-group-item">
+                  <%= link_to album.name, album_path(album), class: "fw-bold" %>
+                  <small class="text-muted d-block">
+                    <%= album.artist_name || "Unknown Artist" %>
+                    <%= " - " + time_ago_in_words(album.created_at) + " ago" %>
+                  </small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No albums available.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

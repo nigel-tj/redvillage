@@ -1,0 +1,146 @@
+<% container_class = (user_signed_in? && @profile.user.can_access_backend? && current_user == @profile.user) ? "container-fluid" : "container" %>
+<% layout_style = "mt-4" %>
+
+<div class="<%= container_class %> <%= layout_style %>">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="profile-header-container">
+        <% if @profile.cover_image_url.present? %>
+          <div class="profile-header-img" style="background-image: url('<%= @profile.cover_image_url %>'); background-size: cover; background-position: center; min-height: 300px; position: relative;">
+            <div class="profile-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4);"></div>
+          </div>
+        <% else %>
+          <div class="profile-header-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 300px; position: relative;">
+            <div class="profile-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.2);"></div>
+          </div>
+        <% end %>
+
+        <div class="profile-avatar-container" style="position: relative; text-align: center; margin-top: -100px; z-index: 10;">
+          <% if @profile.profile_picture_url.present? %>
+            <img class="img-circle" src="<%= @profile.profile_picture_url %>" alt="<%= @profile.display_name %>" style="width: 200px; height: 200px; border: 5px solid white; object-fit: cover;">
+          <% else %>
+            <div class="profile-placeholder" style="width: 200px; height: 200px; border-radius: 50%; background: #ddd; border: 5px solid white; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #999;">
+              <%= @profile.display_name.first.upcase %>
+            </div>
+          <% end %>
+
+          <% if @profile.has_social_links? %>
+            <div class="social-links-container" style="margin-top: 20px;">
+              <% @profile.social_links.each do |platform, url| %>
+                <% if url.present? %>
+                  <a href="<%= url %>" target="_blank" rel="noopener" class="btn btn-sm btn-outline-light me-2" style="margin: 5px;">
+                    <% case platform.to_s %>
+                    <% when 'facebook' %>
+                      <i class="fab fa-facebook"></i>
+                    <% when 'twitter' %>
+                      <i class="fab fa-twitter"></i>
+                    <% when 'instagram' %>
+                      <i class="fab fa-instagram"></i>
+                    <% when 'linkedin' %>
+                      <i class="fab fa-linkedin"></i>
+                    <% when 'youtube' %>
+                      <i class="fab fa-youtube"></i>
+                    <% when 'spotify' %>
+                      <i class="fab fa-spotify"></i>
+                    <% when 'soundcloud' %>
+                      <i class="fab fa-soundcloud"></i>
+                    <% when 'pinterest' %>
+                      <i class="fab fa-pinterest"></i>
+                    <% when 'tiktok' %>
+                      <i class="fab fa-tiktok"></i>
+                    <% end %>
+                  </a>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="mb-0"><%= @profile.display_name %></h1>
+          <p class="text-muted mb-0"><%= @profile.role_display %></p>
+          <% if @profile.location.present? %>
+            <p class="text-muted mb-0">
+              <i class="fas fa-map-marker-alt"></i>
+              <%= @profile.location %>
+            </p>
+          <% end %>
+          <% if @profile.user == current_user %>
+            <%= link_to "Edit Profile", edit_profile_path(@profile), class: "btn btn-primary btn-sm float-end" %>
+          <% end %>
+        </div>
+        <div class="card-body">
+          <% if @profile.bio.present? %>
+            <h5>About</h5>
+            <p><%= simple_format(@profile.bio) %></p>
+          <% else %>
+            <p class="text-muted">No bio available.</p>
+          <% end %>
+            
+          <% if @profile.specialization.present? %>
+            <hr>
+            <h5>Specialization</h5>
+            <p><%= simple_format(@profile.specialization) %></p>
+          <% end %>
+            
+          <% if @profile.experience.present? %>
+            <hr>
+            <h5>Experience</h5>
+            <p><%= simple_format(@profile.experience) %></p>
+          <% end %>
+
+          <% if @profile.website.present? %>
+            <hr>
+            <p>
+              <strong>Website:</strong>
+              <%= link_to @profile.website, @profile.website, target: "_blank", rel: "noopener" %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Contact Information</div>
+        <div class="card-body">
+          <% if @profile.phone.present? %>
+            <p>
+              <strong>Phone:</strong>
+              <%= @profile.phone %>
+            </p>
+          <% else %>
+            <p class="text-muted">No phone number provided</p>
+          <% end %>
+
+          <% if @profile.user.email.present? %>
+            <p>
+              <strong>Email:</strong>
+              <%= mail_to @profile.user.email %>
+            </p>
+          <% end %>
+
+          <% if @profile.has_social_links? %>
+            <hr>
+            <h6>Social Media</h6>
+            <% @profile.social_links.each do |platform, url| %>
+              <% if url.present? %>
+                <p>
+                  <strong><%= platform.to_s.titleize %></strong>
+                  <%= link_to url.truncate(40), url, target: "_blank", rel: "noopener" %>
+                </p>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">
+            <i class="fas fa-compact-disc me-2"></i>
+            New Album
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_for @album, html: { multipart: true } do |f| %>
+            <%= render 'shared/errors', object: @album %>
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Album name' %>
+              <small class="form-text text-muted">Album name</small>
+            </div>
+            <div class="mb-3">
+              <%= f.label :artist_name, class: "form-label" %>
+              <%= f.text_field :artist_name, class: 'form-control', required: true, placeholder: 'Artist name' %>
+              <small class="form-text text-muted">Artist name</small>
+            </div>
+            <div class="mb-3">
+              <%= f.label :cover, class: "form-label" %>
+              <%= f.file_field :cover, class: 'form-control', required: true, accept: 'image/*' %>
+              <small class="form-text text-muted">Album cover image</small>
+            </div>
+            <%= f.hidden_field :artist_id, value: @artist_id %>
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Cancel', albums_path, class: 'btn btn-secondary' %>
+              <%= f.submit 'Create Album', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

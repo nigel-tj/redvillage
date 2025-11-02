@@ -1,0 +1,149 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-4">Admin Dashboard</h1>
+      <p>Welcome to the Red Cup Village Admin Panel</p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Galleries</h5>
+          <h2><%= @galleries_count %></h2>
+          <a href="<%= galleries_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">News Articles</h5>
+          <h2><%= @features_count %></h2>
+          <a href="/admin_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Videos</h5>
+          <h2><%= @videos_count %></h2>
+          <a href="<%= all_videos_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Music Tracks</h5>
+          <h2><%= @tracks_count %></h2>
+          <a href="/admin_all_music" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Albums</h5>
+          <h2><%= @albums_count %></h2>
+          <a href="/admin_album_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Artists</h5>
+          <h2><%= @artists_count %></h2>
+          <a href="/admin_artist_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Lifestyle</h5>
+          <h2><%= @lifestyles_count %></h2>
+          <a href="/lifestyle_admin_index" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Events</h5>
+          <h2><%= @events_count %></h2>
+          <a href="<%= admin_all_events_path %>" class="btn btn-primary btn-sm">Manage</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Recent Galleries</div>
+        <div class="card-body">
+          <% if @recent_galleries.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_galleries.each do |gallery| %>
+                <li class="list-group-item">
+                  <%= link_to gallery.name, gallery_path(gallery) %>
+                  <small class="text-muted"><%= time_ago_in_words(gallery.created_at) %></small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No galleries yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Recent News</div>
+        <div class="card-body">
+          <% if @recent_features.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_features.each do |feature| %>
+                <li class="list-group-item">
+                  <%= link_to feature.heading, feature_path(feature) %>
+                  <small class="text-muted"><%= time_ago_in_words(feature.created_at) %></small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No news articles yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Recent Tracks</div>
+        <div class="card-body">
+          <% if @recent_tracks.any? %>
+            <ul class="list-group list-group-flush">
+              <% @recent_tracks.each do |track| %>
+                <li class="list-group-item">
+                  <%= link_to track.title, track_path(track) %>
+                  <small class="text-muted"><%= time_ago_in_words(track.created_at) %></small>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted">No tracks yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

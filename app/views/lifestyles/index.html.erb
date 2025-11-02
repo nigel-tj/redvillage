@@ -1,0 +1,146 @@
+<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
+<script src="/scripts/isotope.init.js" type="text/javascript"></script>
+<div class="container">
+  <!-- start news tabs -->
+  <div id="gallery">
+    <!-- banner -->
+    <div class="row">
+      <div class="col-sm-12 banner">
+        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
+      </div>
+    </div>
+    <!-- banner end -->
+    <!-- start services -->
+    <div class="row">
+      <div class="col-sm-9 services">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="tabs tabs-style-linebox wow fadeInUp" data-wow-duration="2s">
+              <nav class="pull-right">
+                <ul class="content_filter">
+                  <li class="hvr-sweep-to-top active filter" data-filter=".fashion" id="#fashion">
+                    <span>Fashion</span>
+                  </li>
+                  <li class="hvr-sweep-to-top filter" data-filter=".gadgets">
+                    <span>Healthy Living</span>
+                  </li>
+                  <li class="hvr-sweep-to-top filter" data-filter=".healthyLiving">
+                    <span>Street Hustle</span>
+                  </li>
+                  <li class="hvr-sweep-to-top filter" data-filter=".gadgets">
+                    <span>Gadgets</span>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="col-sm-12" id="gallery-content">
+            <div class="grid">
+              <% for article in @lifestyle %>
+                <% if(article.category == "healthyLiving") %>
+                  <div class="grid-item grid-sizer col-sm-12 servicebox healthyLiving">
+                    <div class="servicebox-image col-sm-4">
+                      <img class="img-responsive" alt="<%= article.title %>" src="<%= article.image_url %>">
+                    </div>
+                    <div class="servicebox-inner col-sm-8">
+                      <p>
+                        <%= article.title %>
+                        <br>
+                        <i class="fa fa-fw fa-calendar"></i>
+                        <%= article.created_at.strftime("%d %b %Y") %>
+                        <br>
+                        <a href="<%= article.link %>"><%= article.intro %></a>
+                      </p>
+                    </div>
+                  </div>
+                <% end %>
+
+                <% if(article.category == "fashion") %>
+                  <div class="grid-item grid-sizer col-sm-12 servicebox fashion">
+                    <div class="servicebox-image col-sm-4">
+                      <img class="img-responsive" alt="<%= article.title %>" src="<%= article.image_url %>">
+                    </div>
+                    <div class="servicebox-inner col-sm-8">
+                      <p>
+                        <%= article.title %>
+                        <br>
+                        <i class="fa fa-fw fa-calendar"></i>
+                        <%= article.created_at.strftime("%d %b %Y") %>
+                        <br>
+                        <a href="<%= article.link %>"><%= article.intro %></a>
+                      </p>
+                    </div>
+                  </div>
+                <% end %>
+
+                <% if(article.category == "streetHustle") %>
+                  <div class="grid-item grid-sizer col-sm-12 servicebox streetHustle">
+                    <div class="servicebox-image col-sm-4">
+                      <img class="img-responsive" alt="<%= article.title %>" src="<%= article.image_url %>">
+                    </div>
+                    <div class="servicebox-inner col-sm-8">
+                      <p>
+                        <%= article.title %>
+                        <br>
+                        <i class="fa fa-fw fa-calendar"></i>
+                        <%= article.created_at.strftime("%d %b %Y") %>
+                        <br>
+                        <a href="<%= article.link %>"><%= article.intro %></a>
+                      </p>
+                    </div>
+                  </div>
+                <% end %>
+
+                <% if(article.category == "gadgets") %>
+                  <div class="grid-item grid-sizer col-sm-12 servicebox gadgets">
+                    <div class="servicebox-image col-sm-4">
+                      <img class="img-responsive" alt="<%= article.title %>" src="<%= article.image_url %>">
+                    </div>
+                    <div class="servicebox-inner col-sm-8">
+                      <p>
+                        <%= article.title %>
+                        <br>
+                        <i class="fa fa-fw fa-calendar"></i>
+                        <%= article.created_at.strftime("%d %b %Y") %>
+                        <br>
+                        <a href="<%= article.link %>"><%= article.intro %></a>
+                      </p>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Adverts -->
+      <div class="col-sm-3">
+        <div class="side-adverts">
+          <ul class="advert-image">
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
+            </li>
+            <li>
+              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    document.getElementById('#fashion').classList.add("active");
+    $('.grid').masonry({
+      // options...
+      itemSelector: '.grid-item',
+      columnWidth: '.grid-sizer',
+      percentPosition: true
+    });
+  });
+</script>
+

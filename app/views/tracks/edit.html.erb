@@ -1,0 +1,55 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">
+            <i class="fas fa-edit me-2"></i>
+            Edit Track
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_for @track, html: { multipart: true } do |f| %>
+            <%= render 'shared/errors', object: @track %>
+            <div class="mb-3">
+              <%= f.label :title, class: "form-label" %>
+              <%= f.text_field :title, value: @track.title, class: 'form-control', required: true, placeholder: 'Track name' %>
+              <small class="form-text text-muted">Track name</small>
+            </div>
+            <div class="mb-3">
+              <%= f.label :category, class: "form-label" %>
+              <%= f.select "category", [["Select category","none"],["RCV Playlist","rcv_playlist"], ["Albums / Mixtapes","albums_mixtapes"]], { selected: @track.category }, { class: 'form-select' } %>
+              <small class="form-text text-muted">Select track category</small>
+            </div>
+            <div class="mb-3">
+              <%= f.label :image, class: "form-label" %>
+              <% if @track.image? %>
+                <div class="mb-2">
+                  <%= image_tag(@track.image_url, class: 'img-thumbnail', style: 'max-width: 200px;') %>
+                </div>
+              <% end %>
+              <%= f.hidden_field :image_cache %>
+              <%= f.file_field :image, class: 'form-control', accept: 'image/*' %>
+              <small class="form-text text-muted">Track cover image</small>
+            </div>
+            <div class="mb-3">
+              <%= f.label :track, class: "form-label" %>
+              <% if @track.track? %>
+                <div class="mb-2">
+                  <small class="text-muted">Current track: <%= @track.title %></small>
+                </div>
+              <% end %>
+              <%= f.file_field :track, class: 'form-control', accept: 'audio/*' %>
+              <small class="form-text text-muted">Music track file</small>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to 'Cancel', tracks_path, class: 'btn btn-secondary' %>
+              <%= f.submit 'Update Track', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

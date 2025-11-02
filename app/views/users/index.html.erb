@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Users</h3>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td><%= link_to user.email, user_path(user) %></td>
+                <td>
+                  <%= form_for(user) do |f| %>
+                    <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+                    <%= f.submit 'Change Role', class: 'btn btn-sm btn-primary' %>
+                  <% end %>
+                </td>
+                <td>
+                  <% unless user == current_user %>
+                    <%= link_to "Delete user", user_path(user), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-sm btn-danger' %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
