@@ -211,6 +211,58 @@
     </div>
   </div>
 
+  <!-- Ad Revenue Section -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">
+          <i class="fas fa-ad text-success"></i> Advertising Revenue
+        </h5>
+        <%= link_to ad_revenue_dashboard_path, class: "btn btn-sm btn-success" do %>
+          <i class="fas fa-chart-line"></i> View Full Analytics
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center border-success">
+        <div class="card-body">
+          <h5 class="card-title">Potential Revenue</h5>
+          <h2 class="text-success">$<%= sprintf('%.2f', @ad_stats[:potential_revenue]) %></h2>
+          <small class="text-muted">From active ad spots</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center border-info">
+        <div class="card-body">
+          <h5 class="card-title">Active Ads</h5>
+          <h2 class="text-info"><%= @ad_stats[:active_ads] %></h2>
+          <small class="text-muted"><%= @ad_stats[:current_ads] %> currently running</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center border-primary">
+        <div class="card-body">
+          <h5 class="card-title">Total Impressions</h5>
+          <h2 class="text-primary"><%= number_with_delimiter(@ad_stats[:total_impressions]) %></h2>
+          <small class="text-muted">Ad views</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center border-warning">
+        <div class="card-body">
+          <h5 class="card-title">Total Clicks</h5>
+          <h2 class="text-warning"><%= number_with_delimiter(@ad_stats[:total_clicks]) %></h2>
+          <small class="text-muted">CTR: <%= @ad_stats[:overall_ctr] %>%</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Ticket Marketplace Section -->
   <div class="row mb-4">
     <div class="col-md-12">

@@ -1,0 +1,429 @@
+<div class="container-fluid mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="mb-2">
+            <i class="fas fa-chart-line text-primary"></i> Ad Revenue Dashboard
+          </h1>
+          <p class="text-muted">Comprehensive analytics for advertising revenue and performance</p>
+        </div>
+        <div>
+          <%= link_to admin_dashboard_path, class: "btn btn-outline-secondary" do %>
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Date Range Filter -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form method="get" action="<%= ad_revenue_dashboard_path %>" class="d-flex align-items-center gap-3">
+            <label class="mb-0"><strong>Date Range:</strong></label>
+            <select name="date_range" class="form-select" style="width: auto;" onchange="this.form.submit()">
+              <option value="7" <%= 'selected' if @date_range == '7' %>>Last 7 days</option>
+              <option value="30" <%= 'selected' if @date_range == '30' %>>Last 30 days</option>
+              <option value="90" <%= 'selected' if @date_range == '90' %>>Last 90 days</option>
+              <option value="365" <%= 'selected' if @date_range == '365' %>>Last Year</option>
+            </select>
+            <span class="text-muted">
+              <i class="fas fa-calendar-alt"></i> <%= @ad_stats[:date_range] || 'All Time' %>
+            </span>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card border-primary">
+        <div class="card-body text-center">
+          <h5 class="card-title text-muted">Potential Revenue</h5>
+          <h2 class="text-primary">$<%= sprintf('%.2f', @ad_stats[:potential_revenue]) %></h2>
+          <small class="text-muted">From active ad spots</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-success">
+        <div class="card-body text-center">
+          <h5 class="card-title text-muted">Active Ads</h5>
+          <h2 class="text-success"><%= @ad_stats[:active_ads] %></h2>
+          <small class="text-muted">Currently running</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-info">
+        <div class="card-body text-center">
+          <h5 class="card-title text-muted">Total Impressions</h5>
+          <h2 class="text-info"><%= number_with_delimiter(@ad_stats[:total_impressions]) %></h2>
+          <small class="text-muted">Ad views</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-warning">
+        <div class="card-body text-center">
+          <h5 class="card-title text-muted">Total Clicks</h5>
+          <h2 class="text-warning"><%= number_with_delimiter(@ad_stats[:total_clicks]) %></h2>
+          <small class="text-muted">Click-through rate: <%= @ad_stats[:overall_ctr] %>%</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-area"></i> Revenue & Performance Trends</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="revenueTrendsChart" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Revenue by Page</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="revenueByPageChart" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Charts -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Impressions by Page</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="impressionsByPageChart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Clicks by Page</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="clicksByPageChart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Statistics Table -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-table"></i> Page Performance Statistics</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Page</th>
+                  <th>Ad Spots</th>
+                  <th>Total Ads</th>
+                  <th>Active Ads</th>
+                  <th>Impressions</th>
+                  <th>Clicks</th>
+                  <th>CTR</th>
+                  <th>Potential Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @page_stats.each do |stat| %>
+                  <tr>
+                    <td><strong><%= stat[:page] %></strong></td>
+                    <td><span class="badge bg-info"><%= stat[:spots_count] %></span></td>
+                    <td><%= stat[:ads_count] %></td>
+                    <td>
+                      <span class="badge bg-<%= stat[:active_ads] > 0 ? 'success' : 'secondary' %>">
+                        <%= stat[:active_ads] %>
+                      </span>
+                    </td>
+                    <td><%= number_with_delimiter(stat[:impressions]) %></td>
+                    <td><%= number_with_delimiter(stat[:clicks]) %></td>
+                    <td>
+                      <span class="badge bg-<%= stat[:ctr] > 2 ? 'success' : stat[:ctr] > 1 ? 'warning' : 'secondary' %>">
+                        <%= stat[:ctr] %>%
+                      </span>
+                    </td>
+                    <td><strong>$<%= sprintf('%.2f', stat[:potential_revenue]) %></strong></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Performing Ads -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-trophy text-warning"></i> Top Performing Ads</h5>
+        </div>
+        <div class="card-body">
+          <% if @top_ads.any? %>
+            <div class="list-group">
+              <% @top_ads.each_with_index do |ad, index| %>
+                <div class="list-group-item">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-<%= index < 3 ? 'warning' : 'secondary' %>">
+                          #<%= index + 1 %>
+                        </span>
+                        <strong><%= ad[:title] %></strong>
+                      </div>
+                      <small class="text-muted d-block">
+                        <%= ad[:page] %> - <%= ad[:position] %> | 
+                        <%= ad[:advertiser] || 'Unknown Advertiser' %>
+                      </small>
+                    </div>
+                    <div class="text-end">
+                      <div><strong><%= number_with_delimiter(ad[:impressions]) %></strong> <small>impressions</small></div>
+                      <div><strong><%= number_with_delimiter(ad[:clicks]) %></strong> <small>clicks</small></div>
+                      <div><span class="badge bg-info"><%= ad[:ctr] %>% CTR</span></div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No ads in this date range.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Performance by Spot -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-map-marker-alt text-primary"></i> Performance by Ad Spot</h5>
+        </div>
+        <div class="card-body">
+          <% if @ad_performance_by_spot.any? %>
+            <div class="list-group">
+              <% @ad_performance_by_spot.take(10).each do |spot| %>
+                <div class="list-group-item">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <strong><%= spot[:name] %></strong>
+                      <small class="text-muted d-block">
+                        <%= spot[:page] %> - <%= spot[:position] %>
+                      </small>
+                      <small class="text-muted">
+                        <%= spot[:ads_count] %> ads | Price: $<%= sprintf('%.2f', spot[:price]) %>
+                      </small>
+                    </div>
+                    <div class="text-end">
+                      <div><strong><%= number_with_delimiter(spot[:impressions]) %></strong> <small>impressions</small></div>
+                      <div><strong><%= number_with_delimiter(spot[:clicks]) %></strong> <small>clicks</small></div>
+                      <div><span class="badge bg-<%= spot[:ctr] > 2 ? 'success' : 'info' %>"><%= spot[:ctr] %>% CTR</span></div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No ad spot data in this date range.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+  // Revenue Trends Chart
+  const revenueTrendsCtx = document.getElementById('revenueTrendsChart');
+  if (revenueTrendsCtx) {
+    const trendsData = <%= @revenue_trends.to_json.html_safe %>;
+    
+    new Chart(revenueTrendsCtx, {
+      type: 'line',
+      data: {
+        labels: trendsData.map(d => d.date),
+        datasets: [
+          {
+            label: 'Impressions',
+            data: trendsData.map(d => d.impressions),
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1,
+            yAxisID: 'y'
+          },
+          {
+            label: 'Clicks',
+            data: trendsData.map(d => d.clicks),
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            tension: 0.1,
+            yAxisID: 'y'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: false
+          }
+        }
+      }
+    });
+  }
+
+  // Revenue by Page Pie Chart
+  const revenueByPageCtx = document.getElementById('revenueByPageChart');
+  if (revenueByPageCtx) {
+    const revenueData = <%= @revenue_by_page.to_json.html_safe %>;
+    const colors = [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)',
+      'rgb(75, 192, 192)',
+      'rgb(153, 102, 255)',
+      'rgb(255, 159, 64)'
+    ];
+    
+    new Chart(revenueByPageCtx, {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(revenueData),
+        datasets: [{
+          data: Object.values(revenueData),
+          backgroundColor: colors.slice(0, Object.keys(revenueData).length),
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.label + ': $' + context.parsed.toFixed(2);
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Impressions by Page Chart
+  const impressionsByPageCtx = document.getElementById('impressionsByPageChart');
+  if (impressionsByPageCtx) {
+    const pageStats = <%= @page_stats.to_json.html_safe %>;
+    
+    new Chart(impressionsByPageCtx, {
+      type: 'bar',
+      data: {
+        labels: pageStats.map(s => s.page),
+        datasets: [{
+          label: 'Impressions',
+          data: pageStats.map(s => s.impressions),
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgb(54, 162, 235)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  // Clicks by Page Chart
+  const clicksByPageCtx = document.getElementById('clicksByPageChart');
+  if (clicksByPageCtx) {
+    const pageStats = <%= @page_stats.to_json.html_safe %>;
+    
+    new Chart(clicksByPageCtx, {
+      type: 'bar',
+      data: {
+        labels: pageStats.map(s => s.page),
+        datasets: [{
+          label: 'Clicks',
+          data: pageStats.map(s => s.clicks),
+          backgroundColor: 'rgba(255, 99, 132, 0.6)',
+          borderColor: 'rgb(255, 99, 132)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+</script>
+

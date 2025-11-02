@@ -129,6 +129,7 @@ Rails.application.routes.draw do
   # Role-based dashboards
   get '/dashboard', to: 'dashboards#show', as: :dashboard
   get '/admin/dashboard', to: 'dashboards#admin', as: :admin_dashboard
+  get '/admin/ad_revenue', to: 'dashboards#ad_revenue', as: :ad_revenue_dashboard
   get '/member/dashboard', to: 'dashboards#member', as: :member_dashboard
   get '/dj/dashboard', to: 'dashboards#dj', as: :dj_dashboard
   get '/artist/dashboard', to: 'dashboards#artist', as: :artist_dashboard

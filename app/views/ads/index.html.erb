@@ -15,15 +15,16 @@
           <%= form_tag ads_path, method: :get, class: 'filter-form' do %>
             <div class="filter-group">
               <%= label_tag :ad_spot_id, "Filter by Ad Spot:" %>
+              <% 
+                ad_spot_options = AdSpot.active.order(:page, :position).map do |spot|
+                  ["#{spot.page.titleize} - #{spot.position.titleize}", spot.id]
+                end
+                ad_spot_options.unshift(['All Spots', ''])
+              %>
               <%= select_tag :ad_spot_id, 
-                  options_from_collection_for_select(
-                    AdSpot.active.order(:page, :position),
-                    :id,
-                    ->(spot) { "#{spot.page.titleize} - #{spot.position.titleize}" },
-                    params[:ad_spot_id]
-                  ).insert(0, ['All Spots', '']),
-                  class: 'form-control',
-                  onchange: 'this.form.submit();' %>
+                  options_for_select(ad_spot_options, params[:ad_spot_id]),
+                  { class: 'form-control',
+                    onchange: 'this.form.submit();' } %>
               <%= label_tag :active, "Status:", style: "margin-left: 20px;" %>
               <%= select_tag :active,
                   options_for_select([

@@ -107,6 +107,10 @@
                 <i class="fas fa-ad"></i> Advertising
               </a>
               <ul class="dropdown-menu" aria-labelledby="adsDropdown">
+                <li><%= link_to ad_revenue_dashboard_path, class: 'dropdown-item' do %>
+                  <i class="fas fa-chart-line"></i> Revenue Dashboard
+                <% end %></li>
+                <li><hr class="dropdown-divider"></li>
                 <li><%= link_to "Ad Spots", ad_spots_path, class: 'dropdown-item' %></li>
                 <li><%= link_to "Create Ad Spot", new_ad_spot_path, class: 'dropdown-item' %></li>
                 <li><hr class="dropdown-divider"></li>
