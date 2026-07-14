@@ -406,6 +406,34 @@ creator_profiles.each do |u, bio|
   puts "  ✓ Profile: #{profile.display_name}"
 end
 
+# --- Real bios for ALL role users so /team cards show real content (not the
+#     generic fallback). Those already set above (artist1/2, photographer1,
+#     videographer1, designer1, curator1) are overwritten only if blank. ---
+role_bios = {
+  dj1           => "DJ Tawanda spins Afro-house and amapiano across Harare, a resident at the Red Village Creative Festival.",
+  dj2           => "DJ Nothando blends deep house with Shona percussion for late-night sets.",
+  artist1       => "The Sound Artist is a producer and DJ crafting Afro-house and amapiano sets for the Red Village Creative Festival stage.",
+  artist2       => "Music Creator is a singer-songwriter and multi-instrumentalist blending Shona melodies with contemporary R&B.",
+  photographer1 => "Photo Snapper is a Harare-based photographer specialising in events and portraiture, with a decade behind the lens.",
+  photographer2 => "Photo Snapper II captures live music and street culture, with work in several local exhibitions.",
+  videographer1 => "Video Producer tells brand and music stories through film, with credits on several local music videos.",
+  videographer2 => "Video Producer II shoots documentaries on Zimbabwean makers and creatives.",
+  curator1      => "Content Curator shapes the Red Village editorial voice, championing emerging makers.",
+  curator2      => "Curator Two programmes the festival's visual-art programme and maker marketplace.",
+  designer1     => "Visual Designer Zolile builds bold visual identities for Zimbabwean startups and artists.",
+  designer2     => "Designer Two crafts packaging and product design for Red Village store owners.",
+  editor1       => "Editor in Chief oversees Red Village features, from maker profiles to festival coverage.",
+  editor2       => "Associate Editor commissions lifestyle and music stories for the Red Village blog."
+}
+role_bios.each do |u, bio|
+  profile = u.profile || u.build_profile(name: u.name)
+  profile.assign_attributes(location: "Harare, Zimbabwe", public_profile: true,
+                            website: "https://redvillage.test/#{u.name.parameterize}")
+  profile.bio = bio if profile.bio.blank?
+  profile.save!
+end
+puts "  ✓ Role-user bios ensured for /team"
+
 # --- Second Album + more Tracks ---
 album2 = Album.find_or_initialize_by(name: "Mbira Echoes")
 album2.assign_attributes(artist_name: "Tatenda Mapfumo")

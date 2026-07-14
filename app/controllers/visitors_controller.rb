@@ -13,23 +13,18 @@ class VisitorsController < ApplicationController
   end
 
   def team
-    # Team page - displays team members with public profiles
-    @djs = User.djs.joins(:profile)
-                .where(profiles: { public_profile: true })
-                .where.not(profiles: { profile_picture: nil })
-                .limit(12)
-    @artists = User.artists.joins(:profile)
-                    .where(profiles: { public_profile: true })
-                    .where.not(profiles: { profile_picture: nil })
-                    .limit(12)
-    @photographers = User.photographers.joins(:profile)
-                         .where(profiles: { public_profile: true })
-                         .where.not(profiles: { profile_picture: nil })
-                         .limit(6)
-    @videographers = User.videographers.joins(:profile)
-                         .where(profiles: { public_profile: true })
-                         .where.not(profiles: { profile_picture: nil })
-                         .limit(6)
+    # Team page - displays creative-community members with public profiles.
+    # NOTE: we deliberately do NOT filter on profile_picture presence — most demo
+    # users have no uploaded avatar, and the profile_card partial renders a
+    # placeholder icon for those. Gating on profile_picture previously left the
+    # page empty.
+    @djs = User.djs.joins(:profile).where(profiles: { public_profile: true }).limit(12)
+    @artists = User.artists.joins(:profile).where(profiles: { public_profile: true }).limit(12)
+    @photographers = User.photographers.joins(:profile).where(profiles: { public_profile: true }).limit(6)
+    @videographers = User.videographers.joins(:profile).where(profiles: { public_profile: true }).limit(6)
+    @curators = User.curators.joins(:profile).where(profiles: { public_profile: true }).limit(6)
+    @designers = User.designers.joins(:profile).where(profiles: { public_profile: true }).limit(6)
+    @editors = User.editors.joins(:profile).where(profiles: { public_profile: true }).limit(6)
   end
 
   def top_dj

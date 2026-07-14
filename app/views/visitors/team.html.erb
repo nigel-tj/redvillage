@@ -55,7 +55,43 @@
     </div>
   <% end %>
 
-  <% unless @djs.any? || @artists.any? || @photographers.any? || @videographers.any? %>
+  <!-- Curators Section -->
+  <% if @curators.any? %>
+    <div class="row mb-5">
+      <div class="col-12 mb-4">
+        <h3 class="text-center mb-4">Our Curators</h3>
+      </div>
+      <% @curators.each do |curator| %>
+        <%= render 'profiles_listings/profile_card', profile: curator.profile, user: curator %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Designers Section -->
+  <% if @designers.any? %>
+    <div class="row mb-5">
+      <div class="col-12 mb-4">
+        <h3 class="text-center mb-4">Our Designers</h3>
+      </div>
+      <% @designers.each do |designer| %>
+        <%= render 'profiles_listings/profile_card', profile: designer.profile, user: designer %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Editors Section -->
+  <% if @editors.any? %>
+    <div class="row mb-5">
+      <div class="col-12 mb-4">
+        <h3 class="text-center mb-4">Our Editors</h3>
+      </div>
+      <% @editors.each do |editor| %>
+        <%= render 'profiles_listings/profile_card', profile: editor.profile, user: editor %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% unless @djs.any? || @artists.any? || @photographers.any? || @videographers.any? || @curators.any? || @designers.any? || @editors.any? %>
     <div class="row">
       <div class="col-12 text-center">
         <p class="text-muted">No team members with public profiles yet. Check back soon!</p>
