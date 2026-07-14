@@ -77,7 +77,13 @@
                     </div>
                     <div class="col-xl-6 col-lg-6 col-lg-8">
                         <div class="part-countdown">
-                            <div class="timer" data-date="29 April 2025 9:56:00 GMT+02:00">
+                            <% next_event = @events&.first %>
+                            <% countdown_date = if next_event
+                                 "#{next_event.date.strftime('%d %B %Y')} #{(next_event.start_time.presence || '10:00')}:00 GMT+02:00"
+                               else
+                                 "19 September 2026 10:00:00 GMT+02:00"
+                               end %>
+                            <div class="timer" data-date="<%= countdown_date %>">
                                 <div class="single-count">
                                     <span class="day"></span><span class="title">days</span>
                                 </div>
@@ -108,13 +114,11 @@
                                 <div class="col-xl-6 col-lg-6">
                                     <div class="part-text">
                                         <h2>Hello There!</h2>
-                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo
-                                        eg diam in posuere solicit tincidunt nulla. Curabitur eleifend
-                                        tempe gncelerisquest placerat velet phasellus eget sem id
-                                        just the consequat gestass facilisis eleifend tempor
-                                        metus.Phasellus vehicula justo egeted diames posuere
-                                        solicitu tincidunt nulla.Curaeatbitur eleifend tempeture.</p>
-                                        <a href="#" class="btn-glow">Explore More</a>
+                                        <p>Red Village is a creative marketplace for Zimbabwean music, art, and
+                                        makers. Discover local artists, shop unique goods from stores like
+                                        Artisan Corner, and join us at the Red Village Creative Festival 2026
+                                        in Harare.</p>
+                                        <a href="/malls" class="btn-glow">Explore More</a>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 d-xl-block d-lg-block d-none"></div>
@@ -322,15 +326,12 @@
                     <div class="col-xl-6 col-lg-6">
                         <div class="part-text">
                             <h3>About Venue</h3>
-                            <p>Garcia versatil web designer. Phasellus vehicula the justo
-                            diam in posuere sollicit tincidunt nulla. Curabitur eleifend
-                            tempe gncelerisquest placerat velet phasellus eget sem
-                            just the consequat gestass facilisis eleifend tempor mets.</p>
-                            <p>Phasellus vehicula justo egeted diames posuere sollicitu
-                            tincidunt nulla. Curaeatbitur eleifend tempeture.</p>
-                            <p>Tincidunt nulla. Curaeatbitur eleifend tempeture.
-                            Son agreed others exeter period myself few yet nature. Mention mr manners opinion if garrets enabled.</p>
-                            <a href="#">Explore More</a>
+                            <p>The Red Village Creative Festival 2026 takes place at Harare Exhibition Park on
+                            19 September. Expect live music across two stages, a maker marketplace, and
+                            food and culture from across Zimbabwe.</p>
+                            <p>Doors open at 10:00 AM. Standard and VIP passes are available, with VIP
+                            guests enjoying a dedicated lounge and early entry.</p>
+                            <a href="/events" class="btn-glow">Explore More</a>
                         </div>
                     </div>
                 </div>
@@ -371,7 +372,7 @@
                         <div class="single-ticket-price">
                             <div class="part-feature">
                                 <span class="price">59</span>
-                                <h3>Stardard Pass</h3>
+                                <h3>Standard Pass</h3>
                                 <ul>
                                     <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Regular Seating</span></li>
                                     <li><span class="icon"><i class="fas fa-check"></i></span><span class="text">Confortable Seat</span>
@@ -447,21 +448,19 @@
                                     <div class="part-img">
                                         <%= image_tag 'new_look/blog-1.jpg', alt: '' %>
                                         <div class="date-on-img">
-                                            <span class="date">04 may</span>
+                                            <span class="date">19 sep</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
                                     <div class="part-text">
-                                        <h3>Web Design Principles and Best Prectics</h3>
-                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                        diam in posuere phasellus eget sem just the consequat gestass
-                                        facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                        diames posuere.</p>
-                                        <p class="last-line">Phasellus vehicula the justo eg
-                                            diam in posuere.<a href="blog-details.html">Read More!</a></p>
-                                        <span class="poster">Rex Rifat</span>
-                                        <span class="date">20.02.2019 Sunday, 10:30am</span>
+                                        <h3>Red Village Creative Festival 2026</h3>
+                                        <p>A full day of Zimbabwean music, art, and maker culture at Harare
+                                            Exhibition Park. Catch live sets, meet the artists, and shop the
+                                            marketplace — standard and VIP passes available.</p>
+                                        <p class="last-line">Plan your day.<a href="/events">Read More!</a></p>
+                                        <span class="poster">Red Village Team</span>
+                                        <span class="date">19 September 2026, 10:00am</span>
                                     </div>
                                 </div>
                             </div>
@@ -472,22 +471,20 @@
                             <div class="row">
                                 <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
                                     <div class="part-text">
-                                        <h3>15 Free Productive Design Tools</h3>
-                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                            diam in posuere phasellus eget sem just the consequat gestass
-                                            facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                            diames posuere.</p>
-                                        <p>Phasellus vehicula the justo eg
-                                            diam in posuere.<a href="blog-details.html">Read More!</a></p>
-                                        <span class="poster">Abu Ubaidah</span>
-                                        <span class="date">20.02.2019 Sunday, 10:30am</span>
+                                        <h3>Open Your Store on the Marketplace</h3>
+                                        <p>Makers like Artisan Corner list handwoven baskets, painted gourd lamps,
+                                            and Shona stone sculpture in one place. We handle the storefront so you
+                                            can focus on your craft.</p>
+                                        <p>Start selling.<a href="/stores">Read More!</a></p>
+                                        <span class="poster">Artisan Corner</span>
+                                        <span class="date">Featured Maker</span>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 order-xl-last order-lg-last order-first">
                                     <div class="part-img">
                                         <%= image_tag 'new_look/blog-2.jpg', alt: '' %>
                                         <div class="date-on-img">
-                                            <span class="date">04 may</span>
+                                            <span class="date">maker</span>
                                         </div>
                                     </div>
                                 </div>
@@ -501,21 +498,19 @@
                                     <div class="part-img">
                                         <%= image_tag 'new_look/blog-3.jpg', alt: '' %>
                                         <div class="date-on-img">
-                                            <span class="date">04 may</span>
+                                            <span class="date">music</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
                                     <div class="part-text">
-                                        <h3>Getting Start With Sketch App</h3>
-                                        <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                            diam in posuere phasellus eget sem just the consequat gestass
-                                            facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                            diames posuere.</p>
-                                        <p>Phasellus vehicula the justo eg
-                                            diam in posuere.<a href="blog-details.html">Read More!</a></p>
-                                        <span class="poster">Abir Khan</span>
-                                        <span class="date">20.02.2019 Sunday, 10:30am</span>
+                                        <h3>Meet the Artists</h3>
+                                        <p>From sculptors to painters, Red Village spotlights Zimbabwean creators.
+                                            Stream tracks like "Harare Nights" and follow the makers behind the
+                                            work.</p>
+                                        <p>Discover more.<a href="/artists">Read More!</a></p>
+                                        <span class="poster">Takudzwa Moyo</span>
+                                        <span class="date">Featured Artist</span>
                                     </div>
                                 </div>
                             </div>
@@ -547,8 +542,8 @@
                                     <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
                                         <div class="part-text">
                                             <div class="bio">
-                                                <span class="name">Alison Burgas</span>
-                                                <span class="position">CEO @google</span>
+                                                <span class="name">Takudzwa Moyo</span>
+                                                <span class="position">Sculptor &amp; Red Village Artist</span>
                                             </div>
                                             <div class="social">
                                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -558,11 +553,9 @@
                                                 <a href="#"><i class="fab fa-youtube"></i></a>
                                             </div>
                                             <div class="text">
-                                                <p>Phasellus vehicula the justo egdiam
-                                                    posu phase eget sem just the
-                                                    consequat gesta facilisis eleifend
-                                                    tempor metus. Phasellus vehicula is
-                                                    diames posuere sollicitu.</p>
+                                                <p>Red Village gave me a storefront to reach collectors across
+                                                    Zimbabwe. The Creative Festival is where I meet buyers face to
+                                                    face — it has changed how I sell my work.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -576,8 +569,8 @@
                                     <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
                                         <div class="part-text">
                                             <div class="bio">
-                                                <span class="name">Abu Ubaidah</span>
-                                                <span class="position">CEO @google</span>
+                                                <span class="name">Artisan Corner</span>
+                                                <span class="position">Maker Store on Red Village</span>
                                             </div>
                                             <div class="social">
                                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -587,11 +580,9 @@
                                                 <a href="#"><i class="fab fa-youtube"></i></a>
                                             </div>
                                             <div class="text">
-                                                <p>Phasellus vehicula the justo egdiam
-                                                    posu phase eget sem just the
-                                                    consequat gesta facilisis eleifend
-                                                    tempor metus. Phasellus vehicula is
-                                                    diames posuere sollicitu.</p>
+                                                <p>From handwoven baskets to Shona stone sculpture, we showcase
+                                                    Zimbabwean makers in one marketplace. Red Village handles the
+                                                    storefront so we can focus on our craft.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -657,15 +648,15 @@
                                     <h5>
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3"
                                             aria-expanded="false" aria-controls="collapse3">
-                                            Did you plan to open a branch in Dhaka?
+                                            Can I open my own store on Red Village?
                                         </button>
                                     </h5>
                                 </div>
                                 <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordionExample">
                                     <div class="card-body">
-                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
-                                        Digital need Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
-                                        Digital Marketing Agency all foundational tool need inbound success. With module there no need to go another day.
+                                        Yes. Any creator, maker, or label can open a storefront inside a Red Village
+                                        mall — list products, share your music, and sell tickets to your events. The
+                                        festival is the perfect launchpad to meet your audience.
                                     </div>
                                 </div>
                             </div>
@@ -740,7 +731,7 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-10 col-lg-10">
                         <div class="section-title text-center">
-                            <h2>Subscribe Our Newslatter</h2>
+                            <h2>Subscribe Our Newsletter</h2>
                         </div>
                     </div>
                 </div>
