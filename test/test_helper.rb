@@ -1,25 +1,16 @@
-ENV["RAILS_ENV"] = "test"
-require File.expand_path("../../config/environment", __FILE__)
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
 require "rails/test_help"
-require "minitest/rails"
-require "minitest/rails/capybara"
+require "minitest/spec"
 
-#require "minitest/pride"
-require 'minitest/reporters'
-#require 'minitest/focus'
-#require 'minitest/colorize'
-reporter_options = { color: true}
-Minitest::Reporters.use!( Minitest::Reporters::DefaultReporter.new(reporter_options), ENV, Minitest.backtrace_filter )
+module ActiveSupport
+  class TestCase
+    # Run tests in parallel disabled by default; enable with PARALLEL_WORKERS.
+    # Fixtures disabled: legacy fixtures reference dead tables (admin_users,
+    # music_banners) and stale schemas. Smoke/integration tests use factories
+    # or direct record creation instead.
+    # fixtures :all
 
-class ActiveSupport::TestCase
-  ActiveRecord::Migration.check_pending!
-
-  # -- they do not yet inherit this setting
-  fixtures :all
-
-  # Add more helper methods to be used by all tests here...
-  #
+    # Add more helper methods to be used by all tests here...
+  end
 end
-
-#Capybara driver
-Capybara.javascript_driver = :webkit

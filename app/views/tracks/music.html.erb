@@ -51,11 +51,11 @@
                 <div class="grid-item grid-sizer col-sm-4 servicebox albums_mixtapes">
                   <div class="servicebox-image">
                     <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="#" onclick="playSong()">
-                      <img alt="<%= track.title %>" src="<%= track.image_url(:thumb) %>">
+                      <img alt="<%= album.title %>" src="<%= album.image_url(:thumb) %>">
                     </a>
                   </div>
                   <div class="servicebox-inner">
-                    <p><%= track.title %></p>
+                    <p><%= album.title %></p>
                   </div>
                 </div>
               <% end %>

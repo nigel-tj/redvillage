@@ -1,7 +1,4 @@
 class DropUsers < ActiveRecord::Migration[7.2]
-  def change
-    drop_table :users
-class DropUsers < ActiveRecord::Migration[7.2]
   def up
     # Remove foreign key constraints first
     remove_foreign_key :vip_tickets, :users if foreign_key_exists?(:vip_tickets, :users)

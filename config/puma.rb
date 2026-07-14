@@ -32,3 +32,27 @@ plugin :tmp_restart
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+# Production-specific settings
+if ENV["RAILS_ENV"] == "production"
+  # Bind to all interfaces (needed for Docker)
+  bind "tcp://0.0.0.0:#{port}"
+  
+  # Number of worker processes (adjust based on CPU cores)
+  workers ENV.fetch("WEB_CONCURRENCY", 2).to_i
+  
+  # Preload the app for better performance
+  preload_app!
+  
+  # Logging
+  stdout_redirect "log/puma.stdout.log", "log/puma.stderr.log", true if ENV["RAILS_LOG_TO_STDOUT"] != "true"
+  
+  # Handle graceful shutdown
+  before_fork do
+    ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
+  end
+  
+  on_worker_boot do
+    ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+  end
+end

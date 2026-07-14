@@ -12,7 +12,7 @@ class TracksController < ApplicationController
 
   def music
     @tracks = Track.order('created_at DESC')
-    #@artists = Artist.all
+    @albums = Album.order('created_at DESC')
   end
 
   def admin_all_music    
@@ -94,13 +94,6 @@ class TracksController < ApplicationController
   end
 
   private
-  
-  def require_admin_or_artist
-    unless current_user&.admin? || current_user&.artist?
-      flash[:alert] = "You need to be an admin or artist to perform this action."
-      redirect_to root_path
-    end
-  end
   
   def track_params
     params.require(:track).permit(:title,:intro,:thumb,:track,:image,:category,:album_id, :artist_name, :tracks)

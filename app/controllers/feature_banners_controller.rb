@@ -1,4 +1,6 @@
 class FeatureBannersController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :require_banner_manager, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_feature_banner, only: [:show, :edit, :update, :destroy]
 
   # GET /feature_banners
@@ -62,6 +64,7 @@ class FeatureBannersController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_feature_banner
       @feature_banner = FeatureBanner.find(params[:id])

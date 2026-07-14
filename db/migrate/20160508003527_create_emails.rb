@@ -1,5 +1,4 @@
 class CreateEmails < ActiveRecord::Migration[7.2]
-class CreateEmails < ActiveRecord::Migration[7.2]
   def change
     create_table :emails do |t|
       t.string :from

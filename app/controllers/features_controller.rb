@@ -59,13 +59,6 @@ class FeaturesController < ApplicationController
   
   private
   
-  def require_curator_or_admin
-    unless current_user&.curator? || current_user&.admin? || current_user&.editor?
-      flash[:alert] = "You need curator, editor, or admin access to perform this action."
-      redirect_to root_path
-    end
-  end
-  
   def feature_params
     params.require(:feature).permit(:link,:image,:intro,:heading)
   end

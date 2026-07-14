@@ -1,4 +1,9 @@
 class ArtistsController < ApplicationController
+  include RoleBasedAccess
+
+  # Public: artist directory + individual artist pages are open.
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :require_curator_or_admin, only: [:new, :create, :edit, :update, :admin_artist_index]
   layout "admin", only: [:new, :create, :update, :admin_artist_index, :edit]
 
   def index

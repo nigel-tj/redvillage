@@ -1,5 +1,4 @@
 class CreateFeatureBanners < ActiveRecord::Migration[7.2]
-class CreateFeatureBanners < ActiveRecord::Migration[7.2]
   def change
     create_table :feature_banners do |t|
       t.string :name

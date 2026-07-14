@@ -1,4 +1,5 @@
 class StandardTicketsController < ApplicationController
+     before_action :authenticate_user!, only: [:create]
      def create
         if current_user 
           @event = Event.find_by_id(params[:event_id])

@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Malls</h1>
+  </div>
+
+  <% if @malls.any? %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% @malls.each do |mall| %>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title"><%= link_to mall.name, mall_path(mall), class: "text-decoration-none" %></h5>
+              <% if mall.description.present? %>
+                <p class="card-text text-muted"><%= truncate(mall.description, length: 140) %></p>
+              <% end %>
+              <p class="card-text"><small class="text-muted"><%= pluralize(mall.stores.active.count, "store") %></small></p>
+            </div>
+            <div class="card-footer bg-transparent">
+              <%= link_to "Visit mall", mall_path(mall), class: "btn btn-outline-primary btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-4">
+      <%= paginate @malls if respond_to?(:paginate) %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">No malls have been created yet.</div>
+  <% end %>
+</div>

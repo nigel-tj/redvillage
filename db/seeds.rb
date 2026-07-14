@@ -4,8 +4,10 @@
 # Clear existing users if reseeding (optional - comment out if you want to keep existing users)
 puts "Seeding demo users and roles..."
 
-# Demo password for all test users
-DEMO_PASSWORD = "password123"
+# Demo password for local demo users.
+# In production, ALWAYS supply DEMO_SEED_PASSWORD via ENV and rotate immediately
+# after first deploy — never ship a known password.
+DEMO_PASSWORD = ENV.fetch("DEMO_SEED_PASSWORD") { "password123" }
 
 # Helper method to create or update users
 def create_demo_user(email, name, role, attributes = {})
@@ -152,24 +154,63 @@ puts "\n=== Seed Summary ==="
 puts "Total users created: #{User.count}"
 puts "\nUsers by role:"
 User.group(:role).count.each do |role, count|
-  role_name = User.roles.key(role).humanize
+  role_name = role.is_a?(Integer) ? (User.roles.key(role)&.to_s&.humanize || "role(#{role})") : role.to_s.humanize
   puts "  #{role_name}: #{count}"
 end
 
-puts "\n=== Demo Login Credentials ==="
-puts "All demo users use password: #{DEMO_PASSWORD}"
-puts "\nAdmin accounts:"
-puts "  - admin@redvillage.test / #{DEMO_PASSWORD}"
-puts "  - superadmin@redvillage.test / #{DEMO_PASSWORD}"
-puts "\nBackstage users (can access admin area):"
-puts "  - DJ: dj@redvillage.test / #{DEMO_PASSWORD}"
-puts "  - Artist: artist@redvillage.test / #{DEMO_PASSWORD}"
-puts "  - Photographer: photographer@redvillage.test / #{DEMO_PASSWORD}"
-puts "  - Videographer: videographer@redvillage.test / #{DEMO_PASSWORD}"
-puts "  - Curator: curator@redvillage.test / #{DEMO_PASSWORD}"
-puts "  - Designer: designer@redvillage.test / #{DEMO_PASSWORD}"
-puts "  - Editor: editor@redvillage.test / #{DEMO_PASSWORD}"
-puts "\nRegular members:"
-puts "  - member@redvillage.test / #{DEMO_PASSWORD}"
-
 puts "\n✓ Seed data created successfully!"
+
+# ============================================================
+# DEMO CONTENT (mall / store / product / event)
+# ============================================================
+puts "\n=== Creating Demo Mall / Store / Product / Event ==="
+
+demo_user = User.find_by(email: "member@redvillage.test") || User.first
+raise "Seed aborted: no user available to own demo store" unless demo_user
+
+mall = Mall.find_or_create_by!(name: "Red Village Creative Mall") do |m|
+  m.contact_email = "mall@redvillage.test"
+end
+puts "  ✓ Mall: #{mall.name}"
+
+store = Store.find_or_initialize_by(name: "Artisan Corner")
+store.assign_attributes(
+  email: "artisan@redvillage.test",
+  description: "Handcrafted goods from Zimbabwean makers — art, decor, and apparel.",
+  user: demo_user,
+  mall: mall
+)
+store.save!
+store.build_storefront_settings(primary_color: "#a83232", accent_color: "#f0a500") unless store.storefront_settings
+store.save!
+puts "  ✓ Store: #{store.name} (owned by #{demo_user.email}, mall: #{mall.name})"
+
+products = [
+  { name: "Handwoven Wall Basket", price: 29.99, inventory_quantity: 25, sku: "AC-BSK-001", description: "Natural fibre wall basket, woven by rural artisans." },
+  { name: "Painted Gourd Lamp", price: 45.00, inventory_quantity: 12, sku: "AC-LMP-002", description: "Upcycled gourd lamp with hand-painted motifs." },
+  { name: "Shona Stone Sculpture", price: 89.50, inventory_quantity: 6, sku: "AC-SCL-003", description: "Authentic Shona-style soapstone sculpture." }
+]
+products.each do |attrs|
+  product = store.products.find_or_initialize_by(name: attrs[:name])
+  product.assign_attributes(attrs)
+  product.save!
+  puts "    ✓ Product: #{product.name} ($#{product.price})"
+end
+
+event = Event.find_or_initialize_by(name: "Red Village Creative Festival 2026")
+event.assign_attributes(
+  date: Date.new(2026, 9, 19),
+  start_time: "10:00",
+  venue: "Harare Exhibition Park",
+  summary: "A celebration of Zimbabwean music, art, and maker culture.",
+  standard_ticket_price: 15.00,
+  vip_ticket_price: 50.00,
+  currency: "USD",
+  featured: true
+)
+event.save!
+puts "  ✓ Event: #{event.name}"
+
+puts "\n=== Demo Content Summary ==="
+puts "  Malls: #{Mall.count} | Stores: #{Store.count} | Products: #{Product.count} | Events: #{Event.count}"
+

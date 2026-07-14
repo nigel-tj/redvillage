@@ -1,8 +1,10 @@
 class GalleriesController < ApplicationController
   include RoleBasedAccess
   
-  before_action :authenticate_user!, except: [:show_gallery]
+  # Public: browsing galleries is open to everyone.
+  before_action :authenticate_user!, except: [:index, :show, :show_gallery]
   before_action :require_photographer_or_admin, only: [:new, :create, :update, :edit, :destroy]
+  before_action :authorize_gallery, only: [:update, :edit, :destroy]
   layout "admin", only: [:new, :create, :update, :admin_show, :index, :show]
   
   def index
@@ -61,13 +63,10 @@ class GalleriesController < ApplicationController
 
   private
   
-  def require_photographer_or_admin
-    unless current_user&.photographer? || current_user&.admin? || current_user&.curator? || current_user&.editor?
-      flash[:alert] = "You need photographer, curator, editor, or admin access to perform this action."
-      redirect_to root_path
-    end
+  def authorize_gallery
+    authorize(@gallery || Gallery)
   end
-  
+
   def gallery_params
     params.require(:gallery).permit(:name,:category,:image)
   end

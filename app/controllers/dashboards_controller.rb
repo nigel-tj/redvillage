@@ -231,6 +231,8 @@ class DashboardsController < ApplicationController
   end
 
   # DJ dashboard
+  public
+
   def dj
     require_dj
     

@@ -66,13 +66,6 @@ class EventsController < ApplicationController
 
   private
   
-  def require_admin_or_dj
-    unless current_user&.admin? || current_user&.dj?
-      flash[:alert] = "You need to be an admin or DJ to perform this action."
-      redirect_to root_path
-    end
-  end
-  
   def event_params
     params.require(:event).permit(:name, :image, :summary, :date, :start_time, :venue, :featured, :standard_ticket_price, :vip_ticket_price, :currency)  
   end

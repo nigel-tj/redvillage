@@ -117,10 +117,6 @@ Rails.application.routes.draw do
   get 'visitors/stage'
   get 'visitors/show_gallery'
 
-  # Facebook callback
-  get "/callback" => "facebook#callback"
-  get "/facebook_profile" => "facebook#facebook_profile"
-
   # Custom named routes (e.g., for specific actions)
   get '/gallery', to: 'visitors#gallery'
   get '/gallery_new_look', to: 'visitors#gallery'

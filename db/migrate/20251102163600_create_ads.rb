@@ -5,7 +5,7 @@ class CreateAds < ActiveRecord::Migration[7.2]
       t.text :image
       t.text :image_data
       t.string :url
-      t.integer :ad_spot_id, null: false
+      t.bigint :ad_spot_id, null: false
       t.date :start_date
       t.date :end_date
       t.boolean :active, default: true, null: false

@@ -1,4 +1,7 @@
 class PaintingsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :require_gallery_manager
+
   def new
     @painting = Painting.new(:gallery_id => params[:gallery_id])
   end
@@ -46,6 +49,7 @@ class PaintingsController < ApplicationController
   end
 
   private
+
   def painting_params
     params.require(:painting).permit(:gallery_id, :name, :images, :remote_image_url)
   end

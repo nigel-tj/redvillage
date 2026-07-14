@@ -57,13 +57,6 @@ class VideosController < ApplicationController
 
   private
   
-  def require_videographer_or_admin
-    unless current_user&.videographer? || current_user&.admin? || current_user&.curator? || current_user&.editor?
-      flash[:alert] = "You need videographer, curator, editor, or admin access to perform this action."
-      redirect_to root_path
-    end
-  end
-
   def video_params
     params.require(:video).permit(:link,:category)
   end

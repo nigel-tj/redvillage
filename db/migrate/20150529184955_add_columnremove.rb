@@ -1,8 +1,4 @@
 class AddColumnremove < ActiveRecord::Migration[7.2]
-  def change
-    remove_column :users, :token, :string
-    remove_column :users, :uid, :string
-class AddColumnremove < ActiveRecord::Migration[7.2]
   def up
     remove_column :users, :token, :string if column_exists?(:users, :token)
     remove_column :users, :uid, :string if column_exists?(:users, :uid)

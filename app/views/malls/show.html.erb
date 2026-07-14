@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Malls", malls_path %></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= @mall.name %></li>
+    </ol>
+  </nav>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h1 class="card-title"><%= @mall.name %></h1>
+      <% if @mall.description.present? %>
+        <p class="card-text"><%= @mall.description %></p>
+      <% end %>
+      <p class="text-muted mb-0">
+        <% if @mall.address.present? %><i class="fas fa-map-marker-alt"></i> <%= @mall.address %><br><% end %>
+        <% if @mall.contact_email.present? %><i class="fas fa-envelope"></i> <%= mail_to @mall.contact_email %><% end %>
+      </p>
+    </div>
+  </div>
+
+  <h2 class="h4 mb-3">Stores in this mall</h2>
+  <% if @stores.any? %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% @stores.each do |store| %>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title"><%= link_to store.name, store_path(store), class: "text-decoration-none" %></h5>
+              <% if store.description.present? %>
+                <p class="card-text text-muted"><%= truncate(store.description, length: 120) %></p>
+              <% end %>
+            </div>
+            <div class="card-footer bg-transparent">
+              <%= link_to "Visit store", store_path(store), class: "btn btn-outline-primary btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-4">
+      <%= paginate @stores if respond_to?(:paginate) %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">No active stores in this mall yet.</div>
+  <% end %>
+</div>

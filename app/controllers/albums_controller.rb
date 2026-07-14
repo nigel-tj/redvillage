@@ -61,13 +61,6 @@ class AlbumsController < ApplicationController
 
   private
   
-  def require_admin_or_artist
-    unless current_user&.admin? || current_user&.artist?
-      flash[:alert] = "You need to be an admin or artist to perform this action."
-      redirect_to root_path
-    end
-  end
-  
   def album_params
     params.require(:album).permit(:name,:cover, :artist_name, :artist_id)
   end
