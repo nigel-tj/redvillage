@@ -1,8 +1,19 @@
 class Profile < ActiveRecord::Base
   belongs_to :user
-  
+
+  extend FriendlyId
+  friendly_id :user_name, use: [:slugged, :history, :finders]
+
   include ImageUploader::Attachment(:profile_picture) if defined?(ImageUploader)
   include ImageUploader::Attachment(:cover_image) if defined?(ImageUploader)
+
+  def user_name
+    user&.name || "profile"
+  end
+
+  def should_generate_new_friendly_id?
+    (user&.name_changed?) || slug.blank?
+  end
   
   validates :user_id, uniqueness: true
   

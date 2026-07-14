@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_03_000002) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_03_000005) do
   create_table "ad_spots", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "page", null: false
@@ -77,6 +77,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_03_000002) do
     t.datetime "updated_at", null: false
     t.integer "artist_id"
     t.string "artist_name"
+    t.json "image_data"
   end
 
   create_table "artists", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -89,6 +90,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_03_000002) do
     t.datetime "updated_at", null: false
     t.string "cover"
     t.string "profile_picture"
+    t.json "cover_data"
+    t.json "profile_picture_data"
+    t.string "slug"
+    t.index ["slug"], name: "index_artists_on_slug", unique: true
   end
 
   create_table "cart_items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -361,6 +366,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_03_000002) do
     t.datetime "updated_at", null: false
     t.text "profile_picture_data"
     t.text "cover_image_data"
+    t.string "slug"
+    t.index ["slug"], name: "index_profiles_on_slug", unique: true
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
@@ -439,6 +446,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_03_000002) do
     t.string "category"
     t.integer "album_id"
     t.string "artist_name"
+    t.json "image_data"
+    t.json "track_data"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
