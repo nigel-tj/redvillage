@@ -229,6 +229,22 @@ puts "  ✓ Artists: #{Artist.count} demo artist profiles"
 end
 puts "  ✓ Artist-user profiles created: #{Profile.joins(:user).where(users: { role: :artist }).count}"
 
+# --- Demo Music (populate /music marketplace page) ---
+album = Album.find_or_initialize_by(name: "Red Village Sessions Vol. 1")
+album.assign_attributes(artist_name: "Various Artists")
+album.save!
+puts "  ✓ Album: #{album.name}"
+
+track = Track.find_or_initialize_by(title: "Harare Nights")
+track.assign_attributes(
+  category: "rcv_playlist",
+  artist_name: "Takudzwa Moyo",
+  album: album,
+  intro: "A mellow groove recorded live in Harare."
+)
+track.save!
+puts "  ✓ Track: #{track.title}"
+
 puts "\n=== Demo Content Summary ==="
-puts "  Malls: #{Mall.count} | Stores: #{Store.count} | Products: #{Product.count} | Events: #{Event.count} | Artists: #{Artist.count}"
+puts "  Malls: #{Mall.count} | Stores: #{Store.count} | Products: #{Product.count} | Events: #{Event.count} | Artists: #{Artist.count} | Albums: #{Album.count} | Tracks: #{Track.count}"
 

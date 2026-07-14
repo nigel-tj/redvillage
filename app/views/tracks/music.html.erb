@@ -56,14 +56,14 @@
                   <div class="servicebox-image">
                     <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="#" onclick="playSong()">
                       <% if album.image.present? %>
-                        <img alt="<%= album.title %>" src="<%= album.image_url(:thumb) %>">
+                        <img alt="<%= album.name %>" src="<%= album.image_url(:thumb) %>">
                       <% else %>
-                        <img alt="<%= album.title %>" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%23888' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(album.title) %>%3C/text%3E%3C/svg%3E">
+                        <img alt="<%= album.name %>" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%23888' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(album.name) %>%3C/text%3E%3C/svg%3E">
                       <% end %>
                     </a>
                   </div>
                   <div class="servicebox-inner">
-                    <p><%= album.title %></p>
+                    <p><%= album.name %></p>
                   </div>
                 </div>
               <% end %>
