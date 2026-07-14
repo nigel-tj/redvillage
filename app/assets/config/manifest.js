@@ -14,6 +14,7 @@
 //= link application.js
 //= link application.css
 //= link admin/admin-styles.css
+//= link rv_theme.css
 //= link jquery.js
 
 // New Look Theme Assets

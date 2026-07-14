@@ -1,9 +1,7 @@
 <div class="container py-5">
-  <div class="row mb-4">
-    <div class="col-12 text-center">
-      <h1 class="fw-bold">About Red Village</h1>
-      <p class="text-muted">Zimbabwe's creative marketplace — for the makers, the musicians, and the fans.</p>
-    </div>
+  <div class="rv-hero text-center">
+    <h1 class="fw-bold">About Red Village</h1>
+    <p class="rv-sub mx-auto">Zimbabwe's creative marketplace — built for the makers, the musicians, and the fans who love them.</p>
   </div>
 
   <div class="row align-items-center mb-5">
@@ -16,31 +14,31 @@
       <p>Makers run their own storefronts inside shared malls, sell products and tickets,
         and publish their portfolios. Fans discover events, browse galleries, and stream
         local music, all in one place.</p>
-      <a href="/creators" class="btn btn-primary mt-2">Meet our creators</a>
+      <%= link_to "Meet our creators", "/creators", class: "btn btn-rv mt-2" %>
     </div>
     <div class="col-lg-6">
       <div class="row text-center g-3">
         <div class="col-6">
-          <div class="border rounded p-4 bg-white">
-            <div class="display-6 fw-bold text-primary"><%= @stats[:stores] %></div>
+          <div class="rv-stat p-4">
+            <div class="rv-stat-num"><%= @stats[:stores] %></div>
             <div class="text-muted small">Stores</div>
           </div>
         </div>
         <div class="col-6">
-          <div class="border rounded p-4 bg-white">
-            <div class="display-6 fw-bold text-primary"><%= @stats[:events] %></div>
+          <div class="rv-stat p-4">
+            <div class="rv-stat-num"><%= @stats[:events] %></div>
             <div class="text-muted small">Events</div>
           </div>
         </div>
         <div class="col-6">
-          <div class="border rounded p-4 bg-white">
-            <div class="display-6 fw-bold text-primary"><%= @stats[:artists] %></div>
+          <div class="rv-stat p-4">
+            <div class="rv-stat-num"><%= @stats[:artists] %></div>
             <div class="text-muted small">Artists</div>
           </div>
         </div>
         <div class="col-6">
-          <div class="border rounded p-4 bg-white">
-            <div class="display-6 fw-bold text-primary"><%= @stats[:creators] %></div>
+          <div class="rv-stat p-4">
+            <div class="rv-stat-num"><%= @stats[:creators] %></div>
             <div class="text-muted small">Creators</div>
           </div>
         </div>
@@ -50,28 +48,31 @@
 
   <div class="row mb-4">
     <div class="col-12">
-      <h2 class="h4 fw-semibold mb-3">How it works</h2>
+      <div class="rv-section-head">
+        <h2 class="rv-gradient-text">How it works</h2>
+        <hr class="rv-rule">
+      </div>
     </div>
     <div class="col-md-4 mb-3">
-      <div class="card h-100 shadow-sm">
+      <div class="card rv-card h-100">
         <div class="card-body">
-          <h3 class="h5 card-title"><i class="fas fa-store text-primary me-2"></i>Open a store</h3>
+          <h3 class="h5 card-title"><i class="fas fa-store text-purple me-2" style="color:#a730b2;"></i>Open a store</h3>
           <p class="card-text text-muted">Set up a storefront inside one of our malls and list your products, tracks, and art.</p>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-3">
-      <div class="card h-100 shadow-sm">
+      <div class="card rv-card h-100">
         <div class="card-body">
-          <h3 class="h5 card-title"><i class="fas fa-calendar-alt text-primary me-2"></i>Run events</h3>
+          <h3 class="h5 card-title"><i class="fas fa-calendar-alt me-2" style="color:#d34d94;"></i>Run events</h3>
           <p class="card-text text-muted">Publish events, sell tickets, and share your line-ups with the community.</p>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-3">
-      <div class="card h-100 shadow-sm">
+      <div class="card rv-card h-100">
         <div class="card-body">
-          <h3 class="h5 card-title"><i class="fas fa-users text-primary me-2"></i>Build a following</h3>
+          <h3 class="h5 card-title"><i class="fas fa-users me-2" style="color:#ff1493;"></i>Build a following</h3>
           <p class="card-text text-muted">Grow your audience with a public profile, portfolio, and gallery of your work.</p>
         </div>
       </div>

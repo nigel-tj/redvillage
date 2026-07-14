@@ -26,7 +26,7 @@
     .marketplace-nav .nav-link.active { color:#ff1493; }
   </style>
 </head>
-<body>
+<body class="marketplace-body">
   <nav class="navbar navbar-expand-lg marketplace-nav">
     <div class="container">
       <a class="navbar-brand" href="/">RED VILLAGE</a>
@@ -90,9 +90,41 @@
     <%= yield %>
   </main>
 
-  <footer class="bg-dark text-light py-4 mt-5">
-    <div class="container text-center">
-      <p class="mb-1"><strong>RED VILLAGE</strong> &mdash; Creative Marketplace</p>
+  <footer class="bg-dark text-light py-5 mt-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-5">
+          <p class="rv-footer-brand mb-1">RED VILLAGE</p>
+          <p class="text-muted small mb-0">Zimbabwe's creative marketplace — for the makers, the musicians, and the fans. Harare &middot; Est. creative community.</p>
+        </div>
+        <div class="col-6 col-md-3">
+          <h6 class="fw-bold mb-3">Explore</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><%= link_to "Malls", malls_path %></li>
+            <li class="mb-2"><%= link_to "Stores", stores_path %></li>
+            <li class="mb-2"><%= link_to "Events", events_path %></li>
+            <li class="mb-2"><%= link_to "Gallery", "/gallery" %></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md-2">
+          <h6 class="fw-bold mb-3">Creators</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><%= link_to "Top DJs", top_dj_path %></li>
+            <li class="mb-2"><%= link_to "Artists", artists_listing_path %></li>
+            <li class="mb-2"><%= link_to "Team", team_path %></li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-2">
+          <h6 class="fw-bold mb-3">Company</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><%= link_to "About", about_us_path %></li>
+            <li class="mb-2"><%= link_to "Blog", blog_path %></li>
+            <li class="mb-2"><%= link_to "FAQ", faq_path %></li>
+            <li class="mb-2"><%= link_to "Contact", contact_us_path %></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="border-secondary my-4">
       <p class="text-muted small mb-0">&copy; <%= Date.current.year %> Red Village. All rights reserved.</p>
     </div>
   </footer>

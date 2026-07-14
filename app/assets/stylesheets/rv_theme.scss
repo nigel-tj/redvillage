@@ -1,0 +1,198 @@
+// ===========================================================================
+//  Red Village — Front-end brand theme (light marketplace, "bold neon" accents)
+//  Light gray canvas, white cards, pink->purple gradient brand, gradient CTA
+//  buttons, gradient section titles, accent rules. Pure CSS, no image assets.
+// ===========================================================================
+
+// ---- Brand tokens --------------------------------------------------------
+$rv-pink:    #ff1493;
+$rv-magenta: #d34d94;
+$rv-purple:  #a730b2;
+$rv-violet:  #7c3aed;
+$rv-indigo:  #6366f1;
+$rv-ink:     #1a1033;
+$rv-canvas:  #f6f7fb;
+$rv-brand-grad: linear-gradient(135deg, #ff1493 0%, #d34d94 45%, #a730b2 100%);
+$rv-brand-grad-soft: linear-gradient(135deg, rgba(255,20,147,0.12) 0%, rgba(167,48,178,0.12) 100%);
+
+body.marketplace-body {
+  background: $rv-canvas;
+  color: #2b2840;
+}
+
+// ---- Gradient text (section + page titles) -------------------------------
+.rv-gradient-text {
+  background-image: $rv-brand-grad;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+}
+
+// ---- Section heading block ----------------------------------------------
+.rv-section-head {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.rv-section-head h1,
+.rv-section-head h2 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.rv-section-head .rv-sub {
+  color: #6b6880;
+  max-width: 640px;
+  margin: 0.5rem auto 0;
+}
+// accent rule under a heading
+.rv-rule {
+  width: 64px;
+  height: 4px;
+  border-radius: 4px;
+  background: $rv-brand-grad;
+  margin: 0.9rem auto 0;
+  border: 0;
+}
+.rv-rule-start {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+// ---- Buttons -------------------------------------------------------------
+.btn-rv {
+  background: $rv-brand-grad;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 0.7rem 1.4rem;
+  box-shadow: 0 10px 24px rgba(211, 77, 148, 0.28);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+.btn-rv:hover,
+.btn-rv:focus {
+  color: #fff;
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 16px 34px rgba(167, 48, 178, 0.4);
+}
+.btn-rv-sm { padding: 0.45rem 1rem; border-radius: 10px; font-size: 0.875rem; }
+
+.btn-outline-rv {
+  border: 1.5px solid $rv-magenta;
+  color: $rv-purple;
+  font-weight: 600;
+  border-radius: 12px;
+  background: transparent;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.btn-outline-rv:hover,
+.btn-outline-rv:focus {
+  background: $rv-brand-grad;
+  color: #fff;
+  border-color: transparent;
+}
+
+// Make the standard primary buttons match the brand instead of Bootstrap blue
+.btn-primary {
+  background: $rv-brand-grad;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(211, 77, 148, 0.25);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  color: #fff;
+  filter: brightness(1.05);
+}
+.btn-outline-secondary {
+  border-color: #d7d6e3;
+  color: #6b6880;
+}
+.btn-outline-secondary:hover {
+  background: #efeef5;
+  color: #2b2840;
+}
+
+// ---- Cards ---------------------------------------------------------------
+.card {
+  border-radius: 16px;
+}
+.card.rv-card {
+  border: none;
+  background: #fff;
+  box-shadow: 0 8px 26px rgba(26, 16, 51, 0.07);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.card.rv-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(167, 48, 178, 0.16);
+}
+.card.rv-card .card-body { padding: 1.4rem; }
+
+// image top of cards
+.rv-card .rv-img {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+.rv-thumb-placeholder {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $rv-brand-grad-soft;
+  color: $rv-magenta;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+// ---- Stat tiles (about page) --------------------------------------------
+.rv-stat {
+  border: none;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgba(26, 16, 51, 0.07);
+}
+.rv-stat .rv-stat-num {
+  font-weight: 800;
+  font-size: 2rem;
+  background-image: $rv-brand-grad;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// ---- Hero band (dark, ties front-end back to the home brand) -------------
+.rv-hero {
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 20, 147, 0.25), transparent 45%),
+    radial-gradient(circle at 88% 80%, rgba(124, 58, 237, 0.28), transparent 45%),
+    linear-gradient(135deg, #1a1033 0%, #2a1746 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  margin-bottom: 2.5rem;
+}
+.rv-hero h1 { font-weight: 800; letter-spacing: -0.02em; }
+.rv-hero .rv-sub { color: rgba(255, 255, 255, 0.78); max-width: 620px; }
+.rv-hero .btn-light { border-radius: 12px; font-weight: 700; }
+
+// ---- Accent nav pills (Creators dropdown highlight) ---------------------
+.marketplace-nav .nav-link.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+.dropdown-menu .dropdown-item.active,
+.dropdown-menu .dropdown-item:active {
+  background: $rv-brand-grad;
+  color: #fff;
+}
+
+// ---- Footer polish -------------------------------------------------------
+footer.bg-dark .rv-footer-brand { color: $rv-pink; font-weight: 800; letter-spacing: .5px; }
+footer.bg-dark a { color: #c9c6e0; text-decoration: none; }
+footer.bg-dark a:hover { color: $rv-pink; }

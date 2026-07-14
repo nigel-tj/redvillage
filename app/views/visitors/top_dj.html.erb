@@ -1,9 +1,7 @@
 <div class="container py-5">
-  <div class="row mb-4">
-    <div class="col-12 text-center">
-      <h1 class="fw-bold">Top DJs</h1>
-      <p class="text-muted">Zimbabwe's spins — browse public DJ profiles and their work.</p>
-    </div>
+  <div class="rv-hero text-center">
+    <h1 class="fw-bold">Top DJs</h1>
+    <p class="rv-sub mx-auto">Zimbabwe's spins — browse public DJ profiles and their work.</p>
   </div>
 
   <div class="row g-4 mb-5">
@@ -19,17 +17,20 @@
   </div>
 
   <% if @djs.any? %>
-    <h2 class="h4 fw-semibold mb-3">From Our Community</h2>
+    <div class="rv-section-head">
+      <h2 class="rv-gradient-text">From Our Community</h2>
+      <hr class="rv-rule">
+    </div>
     <div class="row g-4">
       <% @djs.first(3).each do |dj| %>
         <div class="col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card rv-card h-100">
             <div class="card-body">
               <h3 class="h5 card-title"><%= dj.name %></h3>
               <p class="text-muted small mb-2"><%= dj.profile&.role_display %></p>
               <p class="card-text"><%= truncate(dj.profile&.bio.presence || "Part of the Red Village creative community.", length: 160) %></p>
               <% if dj.profile.present? %>
-                <%= link_to "View Profile", profile_path(dj.profile), class: "btn btn-sm btn-primary mt-2" %>
+                <%= link_to "View Profile", profile_path(dj.profile), class: "btn btn-rv btn-rv-sm mt-2" %>
               <% end %>
             </div>
           </div>
@@ -38,13 +39,16 @@
     </div>
   <% end %>
 
-  <div class="row mt-5 align-items-center">
-    <div class="col-lg-6">
-      <h2 class="h4 fw-semibold">About Red Village</h2>
+  <div class="rv-section-head mt-5">
+    <h2 class="rv-gradient-text">About Red Village</h2>
+    <hr class="rv-rule rv-rule-start">
+  </div>
+  <div class="row mt-3 align-items-center">
+    <div class="col-lg-8">
       <p>Red Village is a creative marketplace for Zimbabwean music, art, and makers.
         From Harare's studios to the festival stage, we connect DJs, artists, photographers,
         videographers, curators, designers, and editors with the audiences who love their work.</p>
-      <a href="/creators" class="btn btn-outline-primary">Meet our creators</a>
+      <a href="/creators" class="btn btn-outline-rv">Meet our creators</a>
     </div>
   </div>
 </div>

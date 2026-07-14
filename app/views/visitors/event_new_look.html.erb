@@ -1,54 +1,53 @@
 <div class="container py-5">
   <% if @event.present? %>
-    <div class="row align-items-center mb-5">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <% if @event.image_url.present? %>
-          <%= image_tag @event.image_url, class: "img-fluid rounded shadow-sm", alt: @event.name.to_s %>
-        <% else %>
-          <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height:320px;">
-            <i class="fas fa-calendar-alt fa-4x text-muted"></i>
+    <div class="rv-hero">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <div class="d-flex align-items-center mb-2">
+            <h1 class="fw-bold mb-0 me-3"><%= @event.name.presence || "Featured Event" %></h1>
+            <% if @event.featured %><span class="badge rounded-pill" style="background:#ff1493;">Featured</span><% end %>
           </div>
-        <% end %>
-      </div>
-      <div class="col-lg-6">
-        <div class="d-flex align-items-center mb-2">
-          <h1 class="fw-bold mb-0 me-3"><%= @event.name.presence || "Featured Event" %></h1>
-          <% if @event.featured %><span class="badge bg-warning text-dark">Featured</span><% end %>
-        </div>
-        <p class="text-muted">
-          <i class="far fa-calendar me-1"></i>
-          <%= @event.date.present? ? @event.date.strftime("%B %d, %Y") : "Date TBA" %>
-          <% if @event.start_time.present? %><span class="ms-2"><i class="far fa-clock me-1"></i><%= @event.start_time %></span><% end %>
-        </p>
-        <% if @event.venue.present? %>
-          <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> <%= @event.venue %></p>
-        <% end %>
-        <% if @event.summary.present? %>
-          <p class="mb-4"><%= @event.summary %></p>
-        <% end %>
-        <div class="d-flex gap-2">
-          <% if @event.standard_ticket_price.present? %>
-            <span class="badge bg-secondary fs-6">Standard <%= number_to_currency(@event.standard_ticket_price, unit: @event.currency || "$") %></span>
+          <p class="rv-sub">
+            <i class="far fa-calendar me-1"></i>
+            <%= @event.date.present? ? @event.date.strftime("%B %d, %Y") : "Date TBA" %>
+            <% if @event.start_time.present? %><span class="ms-2"><i class="far fa-clock me-1"></i><%= @event.start_time %></span><% end %>
+            <% if @event.venue.present? %><span class="ms-2"><i class="fas fa-map-marker-alt me-1"></i><%= @event.venue %></span><% end %>
+          </p>
+          <% if @event.summary.present? %>
+            <p class="rv-sub"><%= @event.summary %></p>
           <% end %>
-          <% if @event.vip_ticket_price.present? %>
-            <span class="badge bg-primary fs-6">VIP <%= number_to_currency(@event.vip_ticket_price, unit: @event.currency || "$") %></span>
+          <div class="d-flex gap-2 flex-wrap">
+            <% if @event.standard_ticket_price.present? %>
+              <span class="badge rounded-pill fs-6" style="background:rgba(255,255,255,0.15);">Standard <%= number_to_currency(@event.standard_ticket_price, unit: @event.currency || "$") %></span>
+            <% end %>
+            <% if @event.vip_ticket_price.present? %>
+              <span class="badge rounded-pill fs-6" style="background:rgba(255,255,255,0.15);">VIP <%= number_to_currency(@event.vip_ticket_price, unit: @event.currency || "$") %></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-5 mt-4 mt-lg-0 text-center">
+          <% if @event.image_url.present? %>
+            <%= image_tag @event.image_url, class: "img-fluid rounded shadow", style: "max-height:280px;object-fit:cover;", alt: @event.name.to_s %>
+          <% else %>
+            <div class="rv-thumb-placeholder mx-auto" style="width:100%;max-width:320px;border-radius:16px;"><i class="fas fa-calendar-alt fa-4x"></i></div>
           <% end %>
         </div>
       </div>
     </div>
 
     <% if @other_events.any? %>
-      <h2 class="h4 fw-semibold mb-3">More Upcoming Events</h2>
+      <div class="rv-section-head">
+        <h2 class="rv-gradient-text">More Upcoming Events</h2>
+        <hr class="rv-rule">
+      </div>
       <div class="row g-4">
         <% @other_events.each do |event| %>
           <div class="col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card rv-card h-100">
               <% if event.image_url.present? %>
-                <%= image_tag event.image_url, class: "card-img-top", style: "height:160px;object-fit:cover;", alt: event.name.to_s %>
+                <%= image_tag event.image_url, class: "rv-img", alt: event.name.to_s %>
               <% else %>
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:160px;">
-                  <i class="fas fa-calendar-alt fa-2x text-muted"></i>
-                </div>
+                <div class="rv-thumb-placeholder"><i class="fas fa-calendar-alt fa-2x"></i></div>
               <% end %>
               <div class="card-body">
                 <h3 class="h6 card-title"><%= event.name.presence || "Untitled Event" %></h3>
