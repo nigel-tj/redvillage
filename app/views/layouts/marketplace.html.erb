@@ -36,13 +36,29 @@
       </button>
       <div class="collapse navbar-collapse" id="marketplaceNav">
         <ul class="navbar-nav me-auto">
-          <li class="nav-item"><%= link_to "Home", "/", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Home", "/", class: "nav-link #{'active' if current_page?('/')}" %></li>
           <li class="nav-item"><%= link_to "Malls", malls_path, class: "nav-link #{'active' if controller_name == 'malls'}" %></li>
           <li class="nav-item"><%= link_to "Stores", stores_path, class: "nav-link #{'active' if controller_name == 'stores'}" %></li>
-          <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Gallery", "/gallery", class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Artists", artists_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Music", "/music", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link #{'active' if controller_name == 'events'}" %></li>
+          <li class="nav-item"><%= link_to "Gallery", "/gallery", class: "nav-link #{'active' if current_page?('/gallery')}" %></li>
+          <li class="nav-item"><%= link_to "Artists", artists_path, class: "nav-link #{'active' if controller_name == 'artists'}" %></li>
+          <li class="nav-item"><%= link_to "Music", "/music", class: "nav-link #{'active' if current_page?('/music')}" %></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle #{'active' if controller_name == 'profiles_listings'}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Creators</a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Top DJs", top_dj_path, class: "dropdown-item #{'active' if current_page?(top_dj_path)}" %></li>
+              <li><%= link_to "DJs", djs_listing_path, class: "dropdown-item #{'active' if current_page?(djs_listing_path)}" %></li>
+              <li><%= link_to "Artists", artists_listing_path, class: "dropdown-item #{'active' if current_page?(artists_listing_path)}" %></li>
+              <li><%= link_to "Photographers", photographers_listing_path, class: "dropdown-item #{'active' if current_page?(photographers_listing_path)}" %></li>
+              <li><%= link_to "Videographers", videographers_listing_path, class: "dropdown-item #{'active' if current_page?(videographers_listing_path)}" %></li>
+              <li><%= link_to "All Creators", all_creators_listing_path, class: "dropdown-item #{'active' if current_page?(all_creators_listing_path)}" %></li>
+            </ul>
+          </li>
+          <li class="nav-item"><%= link_to "Team", team_path, class: "nav-link #{'active' if current_page?(team_path)}" %></li>
+          <li class="nav-item"><%= link_to "Schedule", schedule_path, class: "nav-link #{'active' if current_page?(schedule_path)}" %></li>
+          <li class="nav-item"><%= link_to "Blog", blog_path, class: "nav-link #{'active' if current_page?(blog_path)}" %></li>
+          <li class="nav-item"><%= link_to "FAQ", faq_path, class: "nav-link #{'active' if current_page?(faq_path)}" %></li>
+          <li class="nav-item"><%= link_to "Contact", contact_us_path, class: "nav-link #{'active' if current_page?(contact_us_path)}" %></li>
         </ul>
         <ul class="navbar-nav ms-auto">
           <% if user_signed_in? %>

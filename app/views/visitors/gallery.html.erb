@@ -1,75 +1,39 @@
-    <!-- breadcrump begin -->
-    <div class="breadcrump">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-6 col-lg-6">
-                    <%= render_breadcrumbs %>
-                </div>
-            </div>
-        </div>
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h1 class="fw-bold">Gallery</h1>
+      <p class="text-muted">A visual showcase from Zimbabwe's creative community.</p>
     </div>
-    <!-- breadcrump end -->
+  </div>
 
-    <!-- gallery begin -->
-    <div class="gallery">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-8 col-lg-8">
-                    <div class="add-space section-title text-center">
-                        <h2>Photo Gallery</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-img">
-                        <img src="new_look/assets/img/gallery-1.jpg" alt="">
-                        <div class="hover-effect">
-                            <a href="#"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>
-                    <div class="single-img">
-                        <img src="new_look/assets/img/gallery-5.jpg" alt="">
-                        <div class="hover-effect">
-                            <a href="#"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-sm-6">
-                    <div class="single-img">
-                        <img src="new_look/assets/img/gallery-2.jpg" alt="">
-                        <div class="hover-effect">
-                            <a href="#"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>
-                    <div class="single-img">
-                        <img src="new_look/assets/img/gallery-3.jpg" alt="">
-                        <div class="hover-effect">
-                            <a href="#"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>
-                    <div class="single-img">
-                        <img src="new_look/assets/img/gallery-6.jpg" alt="">
-                        <div class="hover-effect">
-                            <a href="#"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 d-xl-block d-lg-block d-none">
-                    <div class="single-img">
-                        <img src="new_look/assets/img/gallery-4.jpg" alt="">
-                        <div class="hover-effect">
-                            <a href="#"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>
-                    <div class="single-img">
-                        <img src="new_look/assets/img/gallery-7.jpg" alt="">
-                        <div class="hover-effect">
-                            <a href="#"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <% if @galleries.any? %>
+    <% @galleries.each do |gallery| %>
+      <div class="mb-5">
+        <h2 class="h4 fw-semibold mb-3"><%= gallery.name.presence || "Gallery" %><% if gallery.category.present? %> <small class="text-muted fw-normal">· <%= gallery.category %></small><% end %></h2>
+        <% if gallery.images.any? %>
+          <div class="row g-3">
+            <% gallery.images.each do |image| %>
+              <div class="col-6 col-md-4 col-lg-3">
+                <% if image.image_url.present? %>
+                  <%= image_tag image.image_url, class: "img-fluid rounded shadow-sm w-100", style: "height:200px;object-fit:cover;", alt: image.name.to_s %>
+                <% else %>
+                  <div class="bg-light rounded d-flex align-items-center justify-content-center w-100" style="height:200px;">
+                    <i class="fas fa-image fa-2x text-muted"></i>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% elsif gallery.image_url.present? %>
+          <%= image_tag gallery.image_url, class: "img-fluid rounded shadow-sm", alt: gallery.name.to_s %>
+        <% else %>
+          <p class="text-muted">No images in this gallery yet.</p>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="col-12">
+      <p class="text-center text-muted">The gallery is being curated. Check back soon!</p>
     </div>
-    <!-- gallery end -->
+  <% end %>
+</div>

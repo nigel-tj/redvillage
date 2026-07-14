@@ -1,5 +1,5 @@
 class ProfilesListingsController < ApplicationController
-  layout "new_look_layout"
+  layout "marketplace"
 
   # Public-facing profile listing pages.
   # NOTE: deliberately NOT gating on profile_picture presence — no seed user has

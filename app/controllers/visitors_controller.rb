@@ -1,5 +1,9 @@
 class VisitorsController < ApplicationController
-  layout "new_look_layout", only: [:index, :about_us, :event_new_look, :events_list_new_look, :gallery, :top_dj, :schedule, :blog, :blog_details, :faq, :contact_us, :team]
+  # The homepage (/) intentionally keeps the legacy Bootstrap 3 "new_look"
+  # skin. EVERY other front-end page uses the modern Bootstrap 5 marketplace
+  # skin so the public site shares ONE consistent look (this fixes the old bug
+  # where the home skin bled into About/Team/Schedule/Blog/FAQ/Contact/Gallery).
+  layout "marketplace", except: [:index]
 
   def index
     @banners = MainBanner.where(page: "home")
@@ -39,7 +43,7 @@ class VisitorsController < ApplicationController
   end
 
   def schedule
-    # Event schedule page
+    @events = Event.order(date: :asc)
   end
 
   def event_new_look
@@ -60,28 +64,33 @@ class VisitorsController < ApplicationController
   end
 
   def about_us
-    # About us page
+    @stats = {
+      stores: Store.count,
+      events: Event.count,
+      artists: User.artists.joins(:profile).count,
+      creators: User.content_creators.joins(:profile).count
+    }
   end
 
   def blog
-    # Blog listing page
+    @features = Feature.order(created_at: :desc)
   end
 
   def blog_details
-    # Individual blog post page
+    @features = Feature.order(created_at: :desc)
+    @feature = params[:id] ? Feature.find_by(id: params[:id]) : @features.first
   end
 
   def faq
-    # Frequently asked questions page
+    # Frequently asked questions page (static content in the view)
   end
 
   def contact_us
-    # Contact us page
+    # Contact us page (static content in the view)
   end
 
   def social
     # Social media integration page
-    # TODO: Implement modern social media integration
   end
 
   def news
@@ -91,7 +100,6 @@ class VisitorsController < ApplicationController
 
   def portfolio
     # Portfolio/download page
-    # render pdf: "public/docs/Proposal-template.pdf"
   end
 
   def gallery

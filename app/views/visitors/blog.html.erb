@@ -1,163 +1,35 @@
-
-    <!-- breadcrump begin -->
-    <div class="breadcrump">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-6 col-lg-6">
-                    <%= render_breadcrumbs %>
-                </div>
-            </div>
-        </div>
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h1 class="fw-bold">Blog & News</h1>
+      <p class="text-muted">Stories, releases, and updates from the Red Village creative community.</p>
     </div>
-    <!-- breadcrump end -->
+  </div>
 
-    <!-- blog begin -->
-    <div class="blog">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-8 col-lg-8">
-                    <div class="add-space section-title text-center">
-                        <h2>On The Blogs</h2>
-                    </div>
-                </div>
+  <div class="row g-4">
+    <% if @features.any? %>
+      <% @features.each do |feature| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <% if feature.image_url.present? %>
+              <%= image_tag feature.image_url, class: "card-img-top", style: "height:200px;object-fit:cover;", alt: feature.heading.to_s %>
+            <% else %>
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:200px;">
+                <i class="fas fa-newspaper fa-3x text-muted"></i>
+              </div>
+            <% end %>
+            <div class="card-body d-flex flex-column">
+              <h2 class="h5 card-title"><%= feature.heading.presence || "Red Village Update" %></h2>
+              <p class="card-text text-muted flex-grow-1"><%= truncate(feature.intro.presence || feature.link.to_s, length: 140) %></p>
+              <a href="<%= blog_details_path(id: feature.id) %>" class="btn btn-outline-primary mt-auto">Read more</a>
             </div>
-            <div class="row">
-                <div class="col-xl-12 col-lg-12">
-                    <div class="single-blog">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6">
-                                <div class="part-img">
-                                    <img src="new_look/assets/img/blog-1.jpg" alt="">
-                                    <div class="date-on-img">
-                                        <span class="date">04 may</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
-                                <div class="part-text">
-                                    <h3>Web Design Principles and Best Prectics</h3>
-                                    <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                        diam in posuere phasellus eget sem just the consequat gestass
-                                        facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                        diames posuere.</p>
-                                    <p>Phasellus vehicula the justo eg
-                                        diam in posuere.<a href="blog_details.html">Read More!</a></p>
-                                    <span class="poster">Rex Rifat</span>
-                                    <span class="date">20.02.2019 Sunday, 10:30am</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-12 col-lg-12">
-                    <div class="single-blog">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
-                                <div class="part-text">
-                                    <h3>15 Free Productive Design Tools</h3>
-                                    <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                        diam in posuere phasellus eget sem just the consequat gestass
-                                        facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                        diames posuere.</p>
-                                    <p>Phasellus vehicula the justo eg
-                                        diam in posuere.<a href="blog_details.html">Read More!</a></p>
-                                    <span class="poster">Abu Ubaidah</span>
-                                    <span class="date">20.02.2019 Sunday, 10:30am</span>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 order-xl-last order-lg-last order-first">
-                                <div class="part-img">
-                                    <img src="new_look/assets/img/blog-2.jpg" alt="">
-                                    <div class="date-on-img">
-                                        <span class="date">04 may</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-12 col-lg-12">
-                    <div class="single-blog">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6">
-                                <div class="part-img">
-                                    <img src="new_look/assets/img/blog-3.jpg" alt="">
-                                    <div class="date-on-img">
-                                        <span class="date">04 may</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
-                                <div class="part-text">
-                                    <h3>Getting Start With Sketch App</h3>
-                                    <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                        diam in posuere phasellus eget sem just the consequat gestass
-                                        facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                        diames posuere.</p>
-                                    <p>Phasellus vehicula the justo eg
-                                        diam in posuere.<a href="blog_details.html">Read More!</a></p>
-                                    <span class="poster">Abir Khan</span>
-                                    <span class="date">20.02.2019 Sunday, 10:30am</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-12 col-lg-12">
-                    <div class="single-blog">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
-                                <div class="part-text">
-                                    <h3>15 Free Productive Design Tools</h3>
-                                    <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                        diam in posuere phasellus eget sem just the consequat gestass
-                                        facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                        diames posuere.</p>
-                                    <p>Phasellus vehicula the justo eg
-                                        diam in posuere.<a href="blog_details.html">Read More!</a></p>
-                                    <span class="poster">Abu Ubaidah</span>
-                                    <span class="date">20.02.2019 Sunday, 10:30am</span>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 order-xl-last order-lg-last order-first">
-                                <div class="part-img">
-                                    <img src="new_look/assets/img/blog-4.jpg" alt="">
-                                    <div class="date-on-img">
-                                        <span class="date">04 may</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-12 col-lg-12">
-                    <div class="single-blog">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6">
-                                <div class="part-img">
-                                    <img src="new_look/assets/img/blog-5.jpg" alt="">
-                                    <div class="date-on-img">
-                                        <span class="date">04 may</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 d-xl-flex d-lg-flex align-items-center">
-                                <div class="part-text">
-                                    <h3>Getting Start With Sketch App</h3>
-                                    <p>Garcia, a versatil web designer. Phasellus vehicula the justo eg
-                                        diam in posuere phasellus eget sem just the consequat gestass
-                                        facilisis eleifend tempor metus. Phasellus vehicula justo egeted
-                                        diames posuere.</p>
-                                    <p>Phasellus vehicula the justo eg
-                                        diam in posuere.<a href="blog_details.html">Read More!</a></p>
-                                    <span class="poster">Abir Khan</span>
-                                    <span class="date">20.02.2019 Sunday, 10:30am</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
-    <!-- blog end -->
+      <% end %>
+    <% else %>
+      <div class="col-12">
+        <p class="text-center text-muted">No posts yet. Check back soon!</p>
+      </div>
+    <% end %>
+  </div>
+</div>
