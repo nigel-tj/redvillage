@@ -273,3 +273,230 @@ puts "  ✓ Track: #{track.title}"
 puts "\n=== Demo Content Summary ==="
 puts "  Malls: #{Mall.count} | Stores: #{Store.count} | Products: #{Product.count} | Events: #{Event.count} | Artists: #{Artist.count} | Albums: #{Album.count} | Tracks: #{Track.count}"
 
+# ============================================================
+# RICH REALISTIC DATASET (expanded marketplace content)
+# ============================================================
+puts "\n=== Expanding marketplace dataset ==="
+
+# --- Additional Mall ---
+mall2 = Mall.find_or_create_by!(name: "Mbare Arts Market Online") do |m|
+  m.contact_email = "mbare@redvillage.test"
+end
+puts "  ✓ Mall: #{mall2.name}"
+
+# --- Additional Stores (owned by existing demo users) ---
+extra_stores = [
+  { name: "Studio Zolile", owner: designer1, email: "zolile@redvillage.test",
+    description: "Bold screenprints and illustrative art by Visual Designer Zolile.",
+    primary: "#1d4ed8", accent: "#f59e0b" },
+  { name: "Lens & Light Photography", owner: photographer1, email: "lenslight@redvillage.test",
+    description: "Fine-art photographic prints of Harare life by Photo Snapper.",
+    primary: "#0f766e", accent: "#fcd34d" },
+  { name: "Clay & Co Ceramics", owner: designer2, email: "clayco@redvillage.test",
+    description: "Hand-thrown stoneware and glazed ceramics by Creative Designer.",
+    primary: "#9a3412", accent: "#fdba74" },
+  { name: "Weaving Women Co-op", owner: member2, email: "weaving@redvillage.test",
+    description: "Sisal baskets, placemats and wool throws made by a Harare women's cooperative.",
+    primary: "#7c3aed", accent: "#a7f3d0" },
+  { name: "Mbare Beats Records", owner: artist1, email: "beats@redvillage.test",
+    description: "Vinyl, tees and workshops from The Sound Artist.",
+    primary: "#be123c", accent: "#fda4af" }
+]
+extra_stores.each do |s|
+  st = Store.find_or_initialize_by(name: s[:name])
+  st.assign_attributes(email: s[:email], description: s[:description], user: s[:owner], mall: mall)
+  st.save!
+  st.build_storefront_settings(primary_color: s[:primary], accent_color: s[:accent]) unless st.storefront_settings
+  st.save!
+  puts "  ✓ Store: #{st.name} (owned by #{s[:owner].email})"
+end
+
+# --- More products across stores ---
+product_catalog = {
+  "Artisan Corner" => [
+    { name: "Kitenge Print Cushion", price: 24.00, inventory_quantity: 40, sku: "AC-CSH-004", description: "Vibrant kitenge fabric cushion cover, 45cm square." },
+    { name: "Beehive Storage Basket", price: 19.99, inventory_quantity: 30, sku: "AC-BSK-005", description: "Coiled beehive basket, natural fibres." },
+    { name: "Carved Wooden Mask", price: 54.00, inventory_quantity: 8, sku: "AC-MSK-006", description: "Hand-carved ceremonial mask by a Mutare carver." }
+  ],
+  "Studio Zolile" => [
+    { name: "Mbira Dreams Art Print", price: 35.00, inventory_quantity: 50, sku: "SZ-PRT-001", description: "A3 giclée print, signed." },
+    { name: "Harare Skyline Print", price: 40.00, inventory_quantity: 50, sku: "SZ-PRT-002", description: "Limited-edition cityscape print." },
+    { name: "Custom Logo Design", price: 60.00, inventory_quantity: 999, sku: "SZ-DSG-003", description: "Bespoke brand identity, delivered digitally." }
+  ],
+  "Lens & Light Photography" => [
+    { name: "Mbare Morning Print", price: 30.00, inventory_quantity: 25, sku: "LL-PRT-001", description: "A3 B&W photograph of a Mbare dawn." },
+    { name: "Street Vendor Print", price: 28.00, inventory_quantity: 25, sku: "LL-PRT-002", description: "Candid street photograph, framed." },
+    { name: "Portrait Session Voucher", price: 120.00, inventory_quantity: 20, sku: "LL-VCH-003", description: "One-hour studio portrait session in Harare." }
+  ],
+  "Clay & Co Ceramics" => [
+    { name: "Hand-thrown Mug", price: 18.00, inventory_quantity: 60, sku: "CC-MUG-001", description: "Speckled stoneware mug, 300ml." },
+    { name: "Glazed Serving Bowl", price: 45.00, inventory_quantity: 20, sku: "CC-BWL-002", description: "Reactive-glaze serving bowl, 28cm." },
+    { name: "Ceramic Planter", price: 22.00, inventory_quantity: 35, sku: "CC-PLT-003", description: "Minimalist planter with drainage tray." }
+  ],
+  "Weaving Women Co-op" => [
+    { name: "Sisal Placemat Set", price: 26.00, inventory_quantity: 45, sku: "WW-PMT-001", description: "Set of 4 handwoven sisal placemats." },
+    { name: "Telephone Wire Basket", price: 33.00, inventory_quantity: 30, sku: "WW-BSK-002", description: "Colourful woven telephone-wire basket." },
+    { name: "Wool Throw", price: 75.00, inventory_quantity: 15, sku: "WW-THR-003", description: "Hand-loomed wool throw, 130x180cm." }
+  ],
+  "Mbare Beats Records" => [
+    { name: "Harare Nights Vinyl", price: 25.00, inventory_quantity: 100, sku: "MB-VNL-001", description: "Limited pressing of the Harare Nights single." },
+    { name: "Artist Tee", price: 20.00, inventory_quantity: 80, sku: "MB-TEE-002", description: "Cotton tee with The Sound Artist artwork." },
+    { name: "Beatmaking Workshop", price: 50.00, inventory_quantity: 40, sku: "MB-WSH-003", description: "Two-hour intro to producing amapiano." }
+  ]
+}
+product_catalog.each do |store_name, items|
+  st = Store.find_by(name: store_name)
+  next unless st
+  items.each do |attrs|
+    p = st.products.find_or_initialize_by(name: attrs[:name])
+    p.assign_attributes(attrs.merge(status: "active"))
+    p.save!
+    puts "    ✓ Product: #{p.name} ($#{p.price})"
+  end
+end
+
+# --- More Events ---
+extra_events = [
+  { name: "Harare Jazz & Poetry Night", date: Date.new(2026, 8, 15), start_time: "19:00",
+    venue: "Book Café, Harare", summary: "An intimate evening of jazz and spoken word.",
+    standard: 10.00, vip: 30.00 },
+  { name: "Mbare Makers Christmas Market", date: Date.new(2026, 12, 5), start_time: "09:00",
+    venue: "Mbare Art Centre, Harare", summary: "A festive market of local makers and food.",
+    standard: 5.00, vip: 15.00 }
+]
+extra_events.each do |e|
+  ev = Event.find_or_initialize_by(name: e[:name])
+  ev.assign_attributes(date: e[:date], start_time: e[:start_time], venue: e[:venue],
+                       summary: e[:summary], standard_ticket_price: e[:standard],
+                       vip_ticket_price: e[:vip], currency: "USD", featured: false)
+  ev.save!
+  puts "  ✓ Event: #{ev.name}"
+end
+
+# --- More Artists (Artist model records for /artists directory) ---
+extra_artists = [
+  { name: "Farai Mutasa", category: "Photography", email: "farai@redvillage.test",
+    bio: "Farai Mutasa documents everyday Harare through street and documentary photography, with work shown at the Zimbabwe International Film Festival." },
+  { name: "Chiedza Mupfudza", category: "Textile Art", email: "chiedza@redvillage.test",
+    bio: "Chiedza Mupfudza creates large-scale textile installations using recycled kitenge, exploring identity and memory." },
+  { name: "Tatenda Mapfumo", category: "Music", email: "tatenda@redvillage.test",
+    bio: "Tatenda Mapfumo is a mbira virtuoso and composer fusing traditional Shona music with electronic production." },
+  { name: "Rumbidzai Choto", category: "Ceramics", email: "rumbidzai@redvillage.test",
+    bio: "Rumbidzai Choto throws functional stoneware inspired by Zimbabwean flora, running classes from her Harare studio." }
+]
+extra_artists.each do |a|
+  art = Artist.find_or_initialize_by(name: a[:name])
+  art.assign_attributes(email: a[:email], category: a[:category], bio: a[:bio])
+  art.save!
+  puts "  ✓ Artist: #{art.name} (#{art.category})"
+end
+
+# --- Public profiles for more creator-role users (populates /creators listings) ---
+creator_profiles = {
+  photographer1 => "Photo Snapper is a Harare-based photographer specialising in events and portraiture, with a decade behind the lens.",
+  videographer1 => "Video Producer tells brand and music stories through film, with credits on several local music videos.",
+  designer1     => "Visual Designer Zolile builds bold visual identities for Zimbabwean startups and artists.",
+  curator1      => "Content Curator shapes the Red Village editorial voice, championing emerging makers."
+}
+creator_profiles.each do |u, bio|
+  profile = u.profile || u.build_profile(name: u.name)
+  profile.assign_attributes(bio: bio, location: "Harare, Zimbabwe", public_profile: true,
+                            website: "https://redvillage.test/#{u.name.parameterize}")
+  profile.save!
+  puts "  ✓ Profile: #{profile.display_name}"
+end
+
+# --- Second Album + more Tracks ---
+album2 = Album.find_or_initialize_by(name: "Mbira Echoes")
+album2.assign_attributes(artist_name: "Tatenda Mapfumo")
+album2.save!
+puts "  ✓ Album: #{album2.name}"
+
+extra_tracks = [
+  { title: "Mbira Dreams", artist_name: "Tatenda Mapfumo", album: album2, category: "rcv_playlist", intro: "A meditative mbira-led groove." },
+  { title: "Dzimbahwe", artist_name: "Tatenda Mapfumo", album: album2, category: "rcv_playlist", intro: "Pride anthem blending Shona vocals." },
+  { title: "Skyline", artist_name: "The Sound Artist", album: album, category: "rcv_playlist", intro: "Late-night city pulse." },
+  { title: "River Song", artist_name: "Music Creator", album: album, category: "rcv_playlist", intro: "Acoustic reflection." },
+  { title: "Midnight Train", artist_name: "The Sound Artist", album: album, category: "rcv_playlist", intro: "Amapiano-infused instrumental." }
+]
+extra_tracks.each do |t|
+  tr = Track.find_or_initialize_by(title: t[:title])
+  tr.assign_attributes(artist_name: t[:artist_name], album: t[:album], category: t[:category], intro: t[:intro])
+  tr.save!
+  puts "    ✓ Track: #{tr.title}"
+end
+
+# --- Galleries + Images (art sections; attachments left nil, views guard) ---
+galleries = [
+  { name: "Contemporary Zimbabwean Painting", category: "Painting",
+    images: ["Harare Market Scene", "Mother and Child", "Urban Rhythm"] },
+  { name: "Springstone Sculpture", category: "Sculpture",
+    images: ["Family Unity", "The Thinker", "Spirit of the Land"] },
+  { name: "Harare Street Photography", category: "Photography",
+    images: ["Commuter Rush", "Corner Café", "Evening Trade"] }
+]
+galleries.each do |g|
+  gal = Gallery.find_or_create_by!(name: g[:name]) do |x|
+    x.category = g[:category]
+  end
+  g[:images].each do |img_name|
+    img = gal.images.find_or_initialize_by(name: img_name)
+    img.save! if img.new_record?
+  end
+  puts "  ✓ Gallery: #{gal.name} (#{gal.images.count} images)"
+end
+
+# --- Videos (real YouTube embed URLs; format-validated) ---
+videos = [
+  { title: "Red Village Festival Reel", link: "https://www.youtube.com/watch?v=jNQXAC9IVRw", category: "festival" },
+  { title: "Weaving a Sisal Basket", link: "https://www.youtube.com/watch?v=60ItHLz5WEA", category: "craft" },
+  { title: "Mbira Performance", link: "https://www.youtube.com/watch?v=kJQP7kiw5Fk", category: "music" },
+  { title: "Harare Studio Tour", link: "https://www.youtube.com/watch?v=9bZkp7q19f0", category: "behind-the-scenes" }
+]
+videos.each do |v|
+  vid = Video.find_or_initialize_by(title: v[:title])
+  vid.assign_attributes(link: v[:link], category: v[:category], published_at: Time.now)
+  vid.save!
+  puts "  ✓ Video: #{vid.title}"
+end
+
+# --- Features / News (blog) ---
+features = [
+  { heading: "Red Village Festival returns bigger in 2026",
+    intro: "Three stages, fifty makers and a night market — here's what to expect at this year's festival.",
+    link: "/events", thumb: "Festival crowds under string lights" },
+  { heading: "Meet the weavers of Mbare",
+    intro: "How a women's cooperative turned sisal weaving into a thriving creative business.",
+    link: "/stores", thumb: "Hands weaving a basket" },
+  { heading: "How Zimbabwean sculpture found the world",
+    intro: "From roadside workshops to international galleries, the springstone story.",
+    link: "/artists", thumb: "Polished stone sculpture" },
+  { heading: "Opening a store on Red Village: a guide",
+    intro: "Everything a maker needs to set up their first online storefront.",
+    link: "/stores", thumb: "Laptop on a studio desk" }
+]
+features.each do |f|
+  feat = Feature.find_or_initialize_by(heading: f[:heading])
+  feat.assign_attributes(intro: f[:intro], link: f[:link], thumb: f[:thumb])
+  feat.save!
+  puts "  ✓ Feature: #{feat.heading}"
+end
+
+# --- Lifestyles (editorial) ---
+lifestyles = [
+  { title: "Decorating with African textiles", category: "fashion", intro: "Five ways to style kitenge and sisal in a modern home.", link: "/stores" },
+  { title: "Starting your creative side-hustle", category: "healthyLiving", intro: "From hobby to income: a practical roadmap for makers.", link: "/stores" },
+  { title: "Photographing Harare like a local", category: "fashion", intro: "A walking route for capturing the city's character.", link: "/gallery" }
+]
+lifestyles.each do |l|
+  ls = Lifestyle.find_or_initialize_by(title: l[:title])
+  ls.assign_attributes(category: l[:category], intro: l[:intro], link: l[:link])
+  ls.save!
+  puts "  ✓ Lifestyle: #{ls.title}"
+end
+
+puts "\n=== Updated Demo Content Summary ==="
+puts "  Malls: #{Mall.count} | Stores: #{Store.count} | Products: #{Product.count} | Events: #{Event.count}"
+puts "  Artists: #{Artist.count} | Albums: #{Album.count} | Tracks: #{Track.count}"
+puts "  Galleries: #{Gallery.count} | Images: #{Image.count} | Videos: #{Video.count} | Features: #{Feature.count} | Lifestyles: #{Lifestyle.count}"
+
