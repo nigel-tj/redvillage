@@ -23,47 +23,7 @@
             <div class="row">
                 <% if @djs.any? %>
                     <% @djs.each do |dj| %>
-                        <div class="col-xl-4 col-lg-4 col-sm-6 mb-4">
-                            <div class="single-dj">
-                                <div class="part-img">
-                                    <% if dj.profile&.profile_picture_url.present? %>
-                                        <%= link_to profile_path(dj.profile) do %>
-                                            <%= image_tag dj.profile.profile_picture_url(:medium) || 'new_look/assets/img/dj-1.jpg', alt: dj.name, style: "width: 100%; height: 300px; object-fit: cover;" %>
-                                        <% end %>
-                                    <% else %>
-                                        <img src="new_look/assets/img/dj-1.jpg" alt="<%= dj.name %>" style="width: 100%; height: 300px; object-fit: cover;">
-                                    <% end %>
-                                    <div class="hover-effect">
-                                        <% if dj.profile.present? %>
-                                            <% social_links = dj.profile.social_links %>
-                                            <% if social_links[:twitter].present? %>
-                                                <a href="<%= social_links[:twitter] %>" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
-                                            <% end %>
-                                            <% if social_links[:facebook].present? %>
-                                                <a href="<%= social_links[:facebook] %>" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-                                            <% end %>
-                                            <% if social_links[:instagram].present? %>
-                                                <a href="<%= social_links[:instagram] %>" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-                                            <% end %>
-                                            <% if dj.profile.present? %>
-                                                <%= link_to profile_path(dj.profile), class: "profile-link" do %>
-                                                    <i class="fas fa-user-circle" title="View Profile"></i>
-                                                <% end %>
-                                            <% end %>
-                                        <% end %>
-                                    </div>
-                                </div>
-                                <div class="part-text text-center mt-3">
-                                    <h4><%= dj.name %></h4>
-                                    <% if dj.profile&.bio.present? %>
-                                        <p class="text-muted small"><%= truncate(dj.profile.bio, length: 100) %></p>
-                                    <% end %>
-                                    <% if dj.profile.present? %>
-                                        <%= link_to "View Profile", profile_path(dj.profile), class: "btn btn-sm btn-primary" %>
-                                    <% end %>
-                                </div>
-                            </div>
-                        </div>
+                        <%= render 'profiles_listings/profile_card', profile: dj.profile, user: dj %>
                     <% end %>
                 <% else %>
                     <div class="col-12">
@@ -81,73 +41,37 @@
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-8">
                     <div class="section-title text-center">
-                        <h2>Testimonials</h2>
+                        <h2>From Our Community</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-12 col-lg-12">
-                    <div class="testimonial-slider">
-                        <div class="single-testimonial">
-                            <div class="row no-gutters">
-                                <div class="col-xl-4 col-lg-4 col-sm-4 col-md-12 col-12">
-                                    <div class="part-img"></div>
-                                </div>
-                                <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
-                                    <div class="part-text">
-                                        <div class="bio">
-                                            <span class="name">Alison Burgas</span>
-                                            <span class="position">CEO @google</span>
-                                        </div>
-                                        <div class="social">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                            <a href="#"><i class="fab fa-youtube"></i></a>
-                                        </div>
-                                        <div class="text">
-                                            <p>Phasellus vehicula the justo egdiam
-                                                posu phase eget sem just the
-                                                consequat gesta facilisis eleifend
-                                                tempor metus. Phasellus vehicula is
-                                                diames posuere sollicitu.</p>
-                                        </div>
+                <% if @djs.any? %>
+                    <% @djs.first(3).each do |dj| %>
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-12 mb-4">
+                            <div class="single-testimonial p-4 border rounded bg-white h-100">
+                                <div class="part-text">
+                                    <div class="bio mb-2">
+                                        <span class="name font-weight-bold"><%= dj.name %></span>
+                                        <span class="position text-muted small d-block"><%= dj.profile&.role_display %></span>
                                     </div>
+                                    <div class="text">
+                                        <p class="mb-0"><%= truncate(dj.profile&.bio.presence || "Part of the Red Village creative community.", length: 160) %></p>
+                                    </div>
+                                    <% if dj.profile.present? %>
+                                        <div class="mt-3">
+                                            <%= link_to "View Profile", profile_path(dj.profile), class: "btn btn-sm btn-primary" %>
+                                        </div>
+                                    <% end %>
                                 </div>
                             </div>
                         </div>
-                        <div class="single-testimonial">
-                            <div class="row no-gutters">
-                                <div class="col-xl-4 col-lg-4 col-sm-4 col-md-12 col-12">
-                                    <div class="part-img two"></div>
-                                </div>
-                                <div class="col-xl-8 col-lg-8 col-sm-8 col-md-12 col-12">
-                                    <div class="part-text">
-                                        <div class="bio">
-                                            <span class="name">Abu Ubaidah</span>
-                                            <span class="position">CEO @google</span>
-                                        </div>
-                                        <div class="social">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                            <a href="#"><i class="fab fa-youtube"></i></a>
-                                        </div>
-                                        <div class="text">
-                                            <p>Phasellus vehicula the justo egdiam
-                                                posu phase eget sem just the
-                                                consequat gesta facilisis eleifend
-                                                tempor metus. Phasellus vehicula is
-                                                diames posuere sollicitu.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <% end %>
+                <% else %>
+                    <div class="col-12">
+                        <p class="text-center text-muted">No community stories yet. Check back soon!</p>
                     </div>
-                </div>
+                <% end %>
             </div>
         </div>
     </div>
@@ -162,15 +86,12 @@
                         <div class="row no-gutters">
                             <div class="col-xl-6 col-lg-6">
                                 <div class="part-text">
-                                    <h2>Hello There!</h2>
-                                    <p>Garcia, a versatil web designer. Phasellus vehicula the
-                                        justo eg diam in posuere sollicit tincidunt nulla. Curabitur
-                                        eleifend tempe gncelerisquest placerat velet phasellus
-                                        eget sem id just the consequat gestass facilisis eleifend
-                                        tempor metus.Phasellus vehicula justo egeted diames
-                                        posuere sollicitu tincidunt nulla.Curaeatbitur eleifend
-                                        tempeture.</p>
-                                    <a href="#">explore more</a>
+                                    <h2>About Red Village</h2>
+                                    <p>Red Village is a creative marketplace for Zimbabwean music,
+                                        art, and makers. From Harare's studios to the festival stage,
+                                        we connect DJs, artists, photographers, videographers, curators,
+                                        designers, and editors with the audiences who love their work.</p>
+                                    <a href="/creators">Meet our creators</a>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 d-xl-block d-lg-block d-none"></div>

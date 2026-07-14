@@ -28,10 +28,12 @@ class VisitorsController < ApplicationController
   end
 
   def top_dj
-    # Top DJ page - displays DJs with public profiles
+    # Top DJ page - displays DJs with public profiles.
+    # NOTE: deliberately NOT gating on profile_picture (same fix as /team and the
+    # profiles_listings pages — no seed user has an uploaded avatar). DJs render
+    # with the shared _profile_card partial for a consistent look across the site.
     @djs = User.djs.joins(:profile)
                 .where(profiles: { public_profile: true })
-                .where.not(profiles: { profile_picture: nil })
                 .order('profiles.updated_at DESC')
                 .limit(12)
   end
