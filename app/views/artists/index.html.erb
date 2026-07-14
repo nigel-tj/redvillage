@@ -1,120 +1,60 @@
-<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
-<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
-<script src="/scripts/isotope.init.js" type="text/javascript"></script>
-<div class="container">
-  <!-- start news tabs -->
-  <div id="gallery">
-    <!-- banner -->
-    <div class="row">
-      <div class="col-sm-12 banner">
-        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
-      </div>
+<div class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">Artists</h1>
+      <p class="text-muted mb-0">Discover the creators behind Red Village &mdash; musicians, painters, and makers.</p>
     </div>
-    <!-- banner end -->
-    <!-- start services -->
-    <div class="row">
-      <div class="col-sm-9 services">
-        <div class="row">
-          <div class="col-sm-12" id="gallery-content">
-            <div class="grid">
-              <% if defined?(@artists_model) %>
-                <% for artist in @artists_model %>
-                  <div class="grid-item grid-sizer col-sm-4 servicebox rcv_playlist">
-                    <div class="servicebox-image">
-                      <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="<%= artist_path(artist) %>">
-                        <% if artist.profile_picture.present? %>
-                          <img alt="<%= artist.name %>" src="<%= artist.profile_picture_url(:thumb) %>">
-                        <% else %>
-                          <img alt="<%= artist.name %>" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%23888' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(artist.name) %>%3C/text%3E%3C/svg%3E">
-                        <% end %>
-                      </a>
-                    </div>
-                    <div class="servicebox-inner">
-                      <p><%= artist.name %></p>
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-              
-              <% if defined?(@user_artists) && @user_artists.any? %>
-                <% for user_artist in @user_artists %>
-                  <% if user_artist.profile.present? %>
-                    <div class="grid-item grid-sizer col-sm-4 servicebox rcv_playlist">
-                      <div class="servicebox-image">
-                        <a class="vid-item pretty-photo" href="<%= profile_path(user_artist.profile) %>">
-                          <% if user_artist.profile.profile_picture_url.present? %>
-                            <img alt="<%= user_artist.name %>" src="<%= user_artist.profile.profile_picture_url(:thumb) %>">
-                          <% else %>
-                            <img alt="<%= user_artist.name %>" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%23888' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(user_artist.name) %>%3C/text%3E%3C/svg%3E">
-                          <% end %>
-                        </a>
-                      </div>
-                      <div class="servicebox-inner">
-                        <p>
-                          <%= user_artist.name %>
-                          <small class="d-block text-muted"><%= user_artist.role.titleize %></small>
-                        </p>
-                      </div>
-                    </div>
-                  <% end %>
-                <% end %>
-              <% end %>
+    <%= link_to "Browse the Marketplace", stores_path, class: "btn btn-outline-secondary" %>
+  </div>
 
-              <% if (!defined?(@artists_model) || @artists_model.empty?) && (!defined?(@user_artists) || @user_artists.empty?) %>
-                <div class="col-sm-12 text-center py-5">
-                  <p class="text-muted">No artists featured yet. Check back soon!</p>
-                </div>
-              <% end %>
-            </div>
+  <% artists = (@artists_model || []) + (@user_artists || []) %>
+
+  <% if artists.any? %>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <% artists.each do |artist| %>
+        <%
+          # Resolve a display name, profile link, and image for either an
+          # Artist model record or a User-with-profile artist.
+          if artist.is_a?(Artist)
+            name      = artist.name
+            link      = artist_path(artist)
+            picture   = artist.profile_picture
+            image_url = artist.profile_picture_url(:thumb)
+            subtitle  = artist.category.presence || "Artist"
+          else
+            name      = artist.name
+            link      = profile_path(artist.profile)
+            picture   = artist.profile&.profile_picture
+            image_url = artist.profile&.profile_picture_url(:thumb)
+            subtitle  = artist.role.to_s.titleize
+          end
+        %>
+        <div class="col">
+          <div class="card h-100 shadow-sm artist-card">
+            <a href="<%= link %>" class="text-decoration-none text-dark">
+              <div class="artist-thumb ratio ratio-1x1 bg-light">
+                <% if picture.present? && image_url.present? %>
+                  <img src="<%= image_url %>" alt="<%= CGI.escapeHTML(name) %>" class="card-img-top object-fit-cover">
+                <% else %>
+                  <img alt="<%= CGI.escapeHTML(name) %>" class="card-img-top object-fit-cover"
+                       src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Crect width='300' height='300' fill='%23e9ecef'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='%236c757d' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(name) %>%3C/text%3E%3C/svg%3E">
+                <% end %>
+              </div>
+              <div class="card-body text-center">
+                <h5 class="card-title mb-0"><%= name %></h5>
+                <small class="text-muted"><%= subtitle %></small>
+              </div>
+            </a>
           </div>
         </div>
-      </div>
-      <!-- Adverts -->
-      <div class="col-sm-3">
-        <div class="side-adverts">
-          <ul class="advert-image">
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
-            </li>
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- Adverts -->
-      <div class="col-sm-3">
-        <div class="side-adverts">
-          <ul class="advert-image">
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
-            </li>
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- Adverts -->
-      <div class="col-sm-3">
-        <div class="side-adverts">
-          <ul class="advert-image">
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
-            </li>
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
-            </li>
-          </ul>
-        </div>
-      </div>
+      <% end %>
     </div>
-  </div>
+  <% else %>
+    <div class="text-center py-5">
+      <div class="mb-3 text-muted" style="font-size:3rem;"><i class="fas fa-palette"></i></div>
+      <h2 class="h4">No artists featured yet</h2>
+      <p class="text-muted">Artists will appear here once they publish a public profile. In the meantime, explore the marketplace.</p>
+      <%= link_to "Browse Stores", stores_path, class: "btn btn-primary mt-2" %>
+    </div>
+  <% end %>
 </div>
-
-<script>
-  function playSong() {
-    document.getElementById("audio_player").src = "https://raw.githubusercontent.com/kolber/audiojs/master/mp3/bensound-dubstep.mp3";
-  }
-</script>
-

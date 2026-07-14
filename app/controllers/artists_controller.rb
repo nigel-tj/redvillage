@@ -5,13 +5,13 @@ class ArtistsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_curator_or_admin, only: [:new, :create, :edit, :update, :admin_artist_index]
   layout "admin", only: [:new, :create, :update, :admin_artist_index, :edit]
+  layout "marketplace", only: [:index, :show]
 
   def index
-    # Show both Artist model records and User artists with profiles
+    # Show both Artist model records and User artists with public profiles
     @artists_model = Artist.all
     @user_artists = User.artists.joins(:profile)
                         .where(profiles: { public_profile: true })
-                        .where.not(profiles: { profile_picture: nil })
                         .limit(20)
   end
 
