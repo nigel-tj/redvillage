@@ -211,6 +211,24 @@ event.assign_attributes(
 event.save!
 puts "  ✓ Event: #{event.name}"
 
+# --- Demo Artists (populate /artists marketplace page) ---
+Artist.find_or_initialize_by(name: "Takudzwa Moyo").tap do |a|
+  a.assign_attributes(email: "takudzwa@redvillage.test", category: "Sculpture")
+  a.save!
+end
+Artist.find_or_initialize_by(name: "Nyasha Chikowero").tap do |a|
+  a.assign_attributes(email: "nyasha@redvillage.test", category: "Painting")
+  a.save!
+end
+puts "  ✓ Artists: #{Artist.count} demo artist profiles"
+
+# Give the artist-role demo users a Profile so they surface on /artists
+[artist1, artist2].compact.each do |u|
+  next if u.profile.present?
+  u.build_profile(name: u.name).save!
+end
+puts "  ✓ Artist-user profiles created: #{Profile.joins(:user).where(users: { role: :artist }).count}"
+
 puts "\n=== Demo Content Summary ==="
-puts "  Malls: #{Mall.count} | Stores: #{Store.count} | Products: #{Product.count} | Events: #{Event.count}"
+puts "  Malls: #{Mall.count} | Stores: #{Store.count} | Products: #{Product.count} | Events: #{Event.count} | Artists: #{Artist.count}"
 

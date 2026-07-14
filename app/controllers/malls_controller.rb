@@ -1,4 +1,6 @@
 class MallsController < ApplicationController
+  layout "marketplace"
+
   before_action :set_mall, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   

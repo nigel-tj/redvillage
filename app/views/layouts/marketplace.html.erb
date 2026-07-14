@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <!-- Bootstrap 5 CSS -->
+  <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+        integrity: 'sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH',
+        crossorigin: 'anonymous' %>
+  <!-- Font Awesome -->
+  <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+        integrity: 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==',
+        crossorigin: 'anonymous', referrerpolicy: 'no-referrer' %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+
+  <title><%= content_for?(:title) ? yield(:title) : "Red Village Marketplace" %></title>
+  <style>
+    body { background:#f6f7fb; }
+    .marketplace-nav { background:#1a1033; }
+    .marketplace-nav .navbar-brand { color:#ff1493; font-weight:700; letter-spacing:.5px; }
+    .marketplace-nav .nav-link { color:#e9e9f0; }
+    .marketplace-nav .nav-link:hover { color:#ff1493; }
+    .marketplace-nav .nav-link.active { color:#ff1493; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg marketplace-nav">
+    <div class="container">
+      <a class="navbar-brand" href="/">RED VILLAGE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#marketplaceNav"
+              aria-controls="marketplaceNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter:invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="marketplaceNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><%= link_to "Home", "/", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Malls", malls_path, class: "nav-link #{'active' if controller_name == 'malls'}" %></li>
+          <li class="nav-item"><%= link_to "Stores", stores_path, class: "nav-link #{'active' if controller_name == 'stores'}" %></li>
+          <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Gallery", "/gallery", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Artists", artists_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Music", "/music", class: "nav-link" %></li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <% if user_signed_in? %>
+            <li class="nav-item"><%= link_to "My Stores", my_stores_path, class: "nav-link" %></li>
+            <li class="nav-item">
+              <%= link_to destroy_user_session_path, method: :delete, class: "nav-link" do %>
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+              <% end %>
+            </li>
+          <% else %>
+            <li class="nav-item"><%= link_to "Login", new_user_session_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Register", new_user_registration_path, class: "nav-link" %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <% flash.each do |name, msg| %>
+    <% if msg.is_a?(String) %>
+      <div class="alert alert-<%= name == 'notice' ? 'success' : 'danger' %> alert-dismissible fade show m-3" role="alert">
+        <%= msg %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+  <% end %>
+
+  <main class="py-4">
+    <%= yield %>
+  </main>
+
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-1"><strong>RED VILLAGE</strong> &mdash; Creative Marketplace</p>
+      <p class="text-muted small mb-0">&copy; <%= Date.current.year %> Red Village. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+        integrity: 'sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz',
+        crossorigin: 'anonymous', defer: true %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+</body>
+</html>

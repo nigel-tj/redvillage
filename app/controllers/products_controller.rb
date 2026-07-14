@@ -95,14 +95,14 @@ class ProductsController < ApplicationController
     when 'new', 'create', 'edit', 'update', 'destroy'
       'admin'
     when 'index', 'show'
-      # Use admin layout if user is owner or admin, otherwise use application layout
+      # Owner/admin get the admin chrome; everyone else gets marketplace chrome.
       if user_signed_in? && (@store&.owner?(current_user) || current_user&.admin?)
         'admin'
       else
-        'application'
+        'marketplace'
       end
     else
-      'application'
+      'marketplace'
     end
   end
 

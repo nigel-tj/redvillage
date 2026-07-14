@@ -90,14 +90,14 @@ class StoresController < ApplicationController
     when 'new', 'create', 'edit', 'update', 'destroy', 'my_stores', 'activate', 'deactivate'
       'admin'
     when 'show'
-      # Use admin layout if user is owner or admin, otherwise use application layout
+      # Owner/admin get the admin chrome (manage buttons); everyone else gets marketplace chrome.
       if user_signed_in? && (@store&.owner?(current_user) || current_user.admin?)
         'admin'
       else
-        'application'
+        'marketplace'
       end
     else
-      'application'
+      'marketplace'
     end
   end
 
