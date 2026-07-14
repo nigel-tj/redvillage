@@ -18,12 +18,14 @@
 
   <title><%= content_for?(:title) ? yield(:title) : "Red Village Marketplace" %></title>
   <style>
-    body { background:#f6f7fb; }
-    .marketplace-nav { background:#1a1033; }
-    .marketplace-nav .navbar-brand { color:#ff1493; font-weight:700; letter-spacing:.5px; }
+    .marketplace-nav { background:#03111e; border-bottom:1px solid rgba(255,255,255,0.08); }
     .marketplace-nav .nav-link { color:#e9e9f0; }
-    .marketplace-nav .nav-link:hover { color:#ff1493; }
-    .marketplace-nav .nav-link.active { color:#ff1493; }
+    .marketplace-nav .nav-link:hover { color:#ff6975; }
+    .marketplace-nav .nav-link.active { color:#ff6975; }
+    .navbar-toggler { border-color: rgba(255,255,255,0.3); }
+    .dropdown-menu { background:#0b1d2e; border:1px solid rgba(255,255,255,0.08); }
+    .dropdown-menu .dropdown-item { color:#e9e9f0; }
+    .dropdown-menu .dropdown-item:hover { background:#ff6975; color:#fff; }
   </style>
 </head>
 <body class="marketplace-body">
@@ -90,7 +92,7 @@
     <%= yield %>
   </main>
 
-  <footer class="bg-dark text-light py-5 mt-5">
+  <footer class="rv-footer text-light py-5 mt-5">
     <div class="container">
       <div class="row g-4">
         <div class="col-md-5">

@@ -1,24 +1,38 @@
 // ===========================================================================
-//  Red Village — Front-end brand theme (light marketplace, "bold neon" accents)
-//  Light gray canvas, white cards, pink->purple gradient brand, gradient CTA
-//  buttons, gradient section titles, accent rules. Pure CSS, no image assets.
+//  Red Village — Unified front-end theme (matches the home / new_look look)
+//  Navy canvas (#03111e) + coral->magenta->purple brand gradient
+//  (#ff6975 -> #d34d94 -> #a730b2), exactly like the home page. Dark glass
+//  cards, gradient section titles + CTA buttons, accent rules. Pure CSS.
 // ===========================================================================
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap");
 
-// ---- Brand tokens --------------------------------------------------------
-$rv-pink:    #ff1493;
-$rv-magenta: #d34d94;
-$rv-purple:  #a730b2;
-$rv-violet:  #7c3aed;
-$rv-indigo:  #6366f1;
-$rv-ink:     #1a1033;
-$rv-canvas:  #f6f7fb;
-$rv-brand-grad: linear-gradient(135deg, #ff1493 0%, #d34d94 45%, #a730b2 100%);
-$rv-brand-grad-soft: linear-gradient(135deg, rgba(255,20,147,0.12) 0%, rgba(167,48,178,0.12) 100%);
+// ---- Brand tokens (home-matched) -----------------------------------------
+$navy-900: #020c16;
+$navy-800: #03111e;
+$navy-700: #0b1d2e;
+$navy-600: #122a40;
+$ink:      #1a1033;
+
+$brand-pink:    #ff6975;
+$brand-magenta: #d34d94;
+$brand-purple:  #a730b2;
+
+$rv-brand-grad: linear-gradient(135deg, #ff6975 0%, #d34d94 56%, #a730b2 100%);
+$rv-brand-grad-soft: linear-gradient(135deg, rgba(255,105,117,0.14) 0%, rgba(167,48,178,0.14) 100%);
+
+$rv-text:       #e9e9f0;
+$rv-text-muted: #a9a6c4;
 
 body.marketplace-body {
-  background: $rv-canvas;
-  color: #2b2840;
+  background: $navy-800;
+  color: $rv-text;
+  font-family: "Open Sans", sans-serif;
 }
+
+h1, h2, h3, h4, h5, h6 { font-family: "Poppins", sans-serif; color: #fbf9ff; }
+
+body.marketplace-body .text-muted { color: $rv-text-muted !important; }
+body.marketplace-body a.text-dark { color: #fbf9ff !important; }
 
 // ---- Gradient text (section + page titles) -------------------------------
 .rv-gradient-text {
@@ -31,168 +45,124 @@ body.marketplace-body {
 }
 
 // ---- Section heading block ----------------------------------------------
-.rv-section-head {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-.rv-section-head h1,
-.rv-section-head h2 {
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-.rv-section-head .rv-sub {
-  color: #6b6880;
-  max-width: 640px;
-  margin: 0.5rem auto 0;
-}
-// accent rule under a heading
+.rv-section-head { text-align: center; margin-bottom: 2.5rem; }
+.rv-section-head h1, .rv-section-head h2 { font-weight: 800; letter-spacing: -0.02em; }
+.rv-section-head .rv-sub { color: $rv-text-muted; max-width: 640px; margin: 0.5rem auto 0; }
 .rv-rule {
-  width: 64px;
-  height: 4px;
-  border-radius: 4px;
-  background: $rv-brand-grad;
-  margin: 0.9rem auto 0;
-  border: 0;
+  width: 64px; height: 4px; border-radius: 4px;
+  background: $rv-brand-grad; margin: 0.9rem auto 0; border: 0;
 }
-.rv-rule-start {
-  margin-left: 0;
-  margin-right: auto;
-}
+.rv-rule-start { margin-left: 0; margin-right: auto; }
 
 // ---- Buttons -------------------------------------------------------------
 .btn-rv {
   background: $rv-brand-grad;
-  border: none;
-  color: #fff;
-  font-weight: 700;
-  border-radius: 12px;
-  padding: 0.7rem 1.4rem;
-  box-shadow: 0 10px 24px rgba(211, 77, 148, 0.28);
+  border: none; color: #fff; font-weight: 700;
+  border-radius: 12px; padding: 0.7rem 1.4rem;
+  box-shadow: 0 10px 24px rgba(211, 77, 148, 0.35);
   transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
-.btn-rv:hover,
-.btn-rv:focus {
-  color: #fff;
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-  box-shadow: 0 16px 34px rgba(167, 48, 178, 0.4);
-}
+.btn-rv:hover, .btn-rv:focus { color: #fff; transform: translateY(-2px); filter: brightness(1.06); box-shadow: 0 16px 34px rgba(167,48,178,0.5); }
 .btn-rv-sm { padding: 0.45rem 1rem; border-radius: 10px; font-size: 0.875rem; }
 
 .btn-outline-rv {
-  border: 1.5px solid $rv-magenta;
-  color: $rv-purple;
-  font-weight: 600;
-  border-radius: 12px;
-  background: transparent;
+  border: 1.5px solid $brand-magenta; color: #ff8fbf; font-weight: 600;
+  border-radius: 12px; background: transparent;
   transition: background 0.18s ease, color 0.18s ease;
 }
-.btn-outline-rv:hover,
-.btn-outline-rv:focus {
-  background: $rv-brand-grad;
-  color: #fff;
-  border-color: transparent;
-}
+.btn-outline-rv:hover, .btn-outline-rv:focus { background: $rv-brand-grad; color: #fff; border-color: transparent; }
 
-// Make the standard primary buttons match the brand instead of Bootstrap blue
-.btn-primary {
-  background: $rv-brand-grad;
-  border: none;
-  font-weight: 600;
-  box-shadow: 0 8px 20px rgba(211, 77, 148, 0.25);
-}
-.btn-primary:hover,
-.btn-primary:focus {
-  color: #fff;
-  filter: brightness(1.05);
-}
-.btn-outline-secondary {
-  border-color: #d7d6e3;
-  color: #6b6880;
-}
-.btn-outline-secondary:hover {
-  background: #efeef5;
-  color: #2b2840;
-}
+.btn-primary { background: $rv-brand-grad; border: none; font-weight: 600; box-shadow: 0 8px 20px rgba(211,77,148,0.3); }
+.btn-primary:hover, .btn-primary:focus { color: #fff; filter: brightness(1.06); }
 
-// ---- Cards ---------------------------------------------------------------
-.card {
-  border-radius: 16px;
-}
+.btn-outline-secondary { border-color: rgba(255,255,255,0.18); color: $rv-text-muted; }
+.btn-outline-secondary:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+// ---- Cards (dark glass) --------------------------------------------------
+.card { border-radius: 16px; }
 .card.rv-card {
-  border: none;
-  background: #fff;
-  box-shadow: 0 8px 26px rgba(26, 16, 51, 0.07);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: $navy-700;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 .card.rv-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 18px 42px rgba(167, 48, 178, 0.16);
+  border-color: rgba(211,77,148,0.5);
+  box-shadow: 0 18px 44px rgba(167,48,178,0.28);
 }
-.card.rv-card .card-body { padding: 1.4rem; }
+.card.rv-card .card-body { padding: 1.4rem; color: $rv-text; }
+.card.rv-card .card-title { color: #fbf9ff; }
 
-// image top of cards
-.rv-card .rv-img {
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  height: 200px;
-  object-fit: cover;
-  width: 100%;
-}
+.rv-card .rv-img { border-top-left-radius: 16px; border-top-right-radius: 16px; height: 200px; object-fit: cover; width: 100%; }
 .rv-thumb-placeholder {
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: $rv-brand-grad-soft;
-  color: $rv-magenta;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  height: 200px; display: flex; align-items: center; justify-content: center;
+  background: $rv-brand-grad-soft; color: $brand-pink;
+  border-top-left-radius: 16px; border-top-right-radius: 16px;
 }
 
 // ---- Stat tiles (about page) --------------------------------------------
-.rv-stat {
-  border: none;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 8px 26px rgba(26, 16, 51, 0.07);
-}
+.rv-stat { border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; background: $navy-700; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
 .rv-stat .rv-stat-num {
-  font-weight: 800;
-  font-size: 2rem;
+  font-weight: 800; font-size: 2rem;
   background-image: $rv-brand-grad;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
 
-// ---- Hero band (dark, ties front-end back to the home brand) -------------
+// ---- Hero band (matches home navy + brand glow) --------------------------
 .rv-hero {
   background:
-    radial-gradient(circle at 12% 20%, rgba(255, 20, 147, 0.25), transparent 45%),
-    radial-gradient(circle at 88% 80%, rgba(124, 58, 237, 0.28), transparent 45%),
-    linear-gradient(135deg, #1a1033 0%, #2a1746 100%);
-  color: #fff;
-  border-radius: 20px;
-  padding: 3rem 2rem;
-  margin-bottom: 2.5rem;
+    radial-gradient(circle at 12% 20%, rgba(255,105,117,0.22), transparent 45%),
+    radial-gradient(circle at 88% 80%, rgba(167,48,178,0.30), transparent 45%),
+    linear-gradient(135deg, #03111e 0%, #0a1f33 100%);
+  color: #fff; border-radius: 20px; padding: 3rem 2rem; margin-bottom: 2.5rem;
+  border: 1px solid rgba(255,255,255,0.06);
 }
-.rv-hero h1 { font-weight: 800; letter-spacing: -0.02em; }
-.rv-hero .rv-sub { color: rgba(255, 255, 255, 0.78); max-width: 620px; }
+.rv-hero h1 {
+  font-weight: 800; letter-spacing: -0.02em;
+  background-image: $rv-brand-grad;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  display: inline-block;
+}
+.rv-hero .rv-sub { color: rgba(255,255,255,0.82); max-width: 620px; }
 .rv-hero .btn-light { border-radius: 12px; font-weight: 700; }
 
-// ---- Accent nav pills (Creators dropdown highlight) ---------------------
-.marketplace-nav .nav-link.active {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+// ---- Forms on dark -------------------------------------------------------
+body.marketplace-body .form-control {
+  background: $navy-700; border-color: rgba(255,255,255,0.12); color: $rv-text;
 }
-.dropdown-menu .dropdown-item.active,
-.dropdown-menu .dropdown-item:active {
-  background: $rv-brand-grad;
-  color: #fff;
-}
+body.marketplace-body .form-control:focus { background: $navy-600; border-color: $brand-magenta; color: #fff; box-shadow: 0 0 0 0.2rem rgba(211,77,148,0.25); }
+body.marketplace-body .form-control::placeholder { color: rgba(169,166,196,0.6); }
 
-// ---- Footer polish -------------------------------------------------------
-footer.bg-dark .rv-footer-brand { color: $rv-pink; font-weight: 800; letter-spacing: .5px; }
-footer.bg-dark a { color: #c9c6e0; text-decoration: none; }
-footer.bg-dark a:hover { color: $rv-pink; }
+// ---- Accordion (FAQ) on dark --------------------------------------------
+body.marketplace-body .accordion-item { background: $navy-700; color: $rv-text; border: 1px solid rgba(255,255,255,0.06) !important; }
+body.marketplace-body .accordion-button { background: $navy-700; color: #fbf9ff; font-weight: 600; }
+body.marketplace-body .accordion-button:not(.collapsed) { background: rgba(211,77,148,0.12); color: #fff; }
+body.marketplace-body .accordion-button:focus { box-shadow: 0 0 0 0.2rem rgba(211,77,148,0.25); }
+body.marketplace-body .accordion-body { color: $rv-text-muted; }
+
+// ---- Nav (matches home navy header) -------------------------------------
+.marketplace-nav .navbar-brand {
+  font-weight: 800; letter-spacing: 0.5px;
+  background-image: $rv-brand-grad;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+}
+.marketplace-nav .nav-link.active { color: $brand-pink; }
+.dropdown-menu .dropdown-item.active, .dropdown-menu .dropdown-item:active { background: $rv-brand-grad; color: #fff; }
+
+// ---- Shared profile card (creators) unified to dark ----------------------
+.profile-card { background: $navy-700 !important; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.profile-card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(167,48,178,0.28); }
+.profile-card .card-title a { color: #fbf9ff !important; }
+.profile-card .card-footer { background: transparent !important; border-top: 1px solid rgba(255,255,255,0.08) !important; }
+
+// ---- Footer (deep navy, matches home) -----------------------------------
+.rv-footer { background: $navy-900; color: #c9c6e0; }
+.rv-footer .rv-footer-brand {
+  font-weight: 800; letter-spacing: 0.5px; font-size: 1.15rem;
+  background-image: $rv-brand-grad;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  display: inline-block;
+}
+.rv-footer a { color: #a9a6c4; text-decoration: none; }
+.rv-footer a:hover { color: #ff8fbf; }
