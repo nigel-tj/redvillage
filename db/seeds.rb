@@ -213,19 +213,44 @@ puts "  ✓ Event: #{event.name}"
 
 # --- Demo Artists (populate /artists marketplace page) ---
 Artist.find_or_initialize_by(name: "Takudzwa Moyo").tap do |a|
-  a.assign_attributes(email: "takudzwa@redvillage.test", category: "Sculpture")
+  a.assign_attributes(
+    email: "takudzwa@redvillage.test",
+    category: "Sculpture",
+    bio: "Takudzwa Moyo is a Harare-based sculptor working in springstone and recycled metal. " \
+         "His pieces explore the tension between tradition and modern Zimbabwean life, and have " \
+         "been exhibited at the National Gallery and several regional art fairs."
+  )
   a.save!
 end
 Artist.find_or_initialize_by(name: "Nyasha Chikowero").tap do |a|
-  a.assign_attributes(email: "nyasha@redvillage.test", category: "Painting")
+  a.assign_attributes(
+    email: "nyasha@redvillage.test",
+    category: "Painting",
+    bio: "Nyasha Chikowero paints vibrant acrylic landscapes and portraits inspired by everyday " \
+         "life in Zimbabwe. A self-taught artist, she runs community workshops for young painters " \
+         "and sells her work through Artisan Corner on Red Village."
+  )
   a.save!
 end
 puts "  ✓ Artists: #{Artist.count} demo artist profiles"
 
 # Give the artist-role demo users a Profile so they surface on /artists
+artist_bios = {
+  artist1 => "The Sound Artist is a producer and DJ crafting Afro-house and amapiano sets for the " \
+             "Red Village Creative Festival stage. When not in the studio, he mentors up-and-coming " \
+             "beatmakers from Harare.",
+  artist2 => "Music Creator is a singer-songwriter and multi-instrumentalist blending Shona melodies " \
+             "with contemporary R&B. Her debut EP was recorded entirely at home during the 2025 lockdown."
+}
 [artist1, artist2].compact.each do |u|
-  next if u.profile.present?
-  u.build_profile(name: u.name).save!
+  profile = u.profile || u.build_profile(name: u.name)
+  profile.assign_attributes(
+    bio: artist_bios[u] || "Creative member of the Red Village community.",
+    location: "Harare, Zimbabwe",
+    public_profile: true,
+    website: "https://redvillage.test/#{u.name.parameterize}"
+  )
+  profile.save!
 end
 puts "  ✓ Artist-user profiles created: #{Profile.joins(:user).where(users: { role: :artist }).count}"
 

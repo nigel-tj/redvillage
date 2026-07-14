@@ -81,11 +81,12 @@ class ProfilesController < ApplicationController
   end
 
   def determine_layout
-    # Use admin layout for backstage users viewing their own profile, public layout for others
+    # Use admin layout for backstage users viewing their own profile, marketplace
+    # layout for public/visitor viewing so it matches the rest of the marketplace.
     if user_signed_in? && current_user.can_access_backend? && current_user == @user
       'admin'
     else
-      'new_look_layout'
+      'marketplace'
     end
   end
 end
