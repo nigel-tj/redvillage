@@ -99,23 +99,27 @@
     </div>
   <% end %>
 
-  <!-- Call to Action -->
-  <div class="row mt-5">
-    <div class="col-12 text-center">
-      <div class="bg-gradient-primary text-white rounded-lg p-5">
-        <h3 class="mb-3">Join Our Team</h3>
-        <p class="mb-4">We're always looking for talented individuals to join our growing community</p>
-        <a href="<%= contact_us_path %>" class="btn btn-light btn-lg font-weight-bold px-4">Get In Touch</a>
+</div>
+
+<%= render "visitors/testimonials" %>
+
+  <!-- Call to Action (after social proof) -->
+  <div class="container py-5">
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <div class="rv-cta text-white rounded-3 p-5">
+          <h3 class="mb-3">Join Our Team</h3>
+          <p class="mb-4">We're always looking for talented individuals to join our growing community</p>
+          <a href="<%= contact_us_path %>" class="btn btn-light btn-lg font-weight-bold px-4">Get In Touch</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 <style>
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.rv-cta {
+  background: $rv-brand-grad;
 }
-
 .card:hover {
   transform: translateY(-5px);
   transition: all 0.3s ease;

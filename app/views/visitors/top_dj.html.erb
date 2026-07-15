@@ -16,34 +16,11 @@
     <% end %>
   </div>
 
-  <% if @djs.any? %>
-    <div class="rv-section-head">
-      <h2 class="rv-gradient-text">From Our Community</h2>
-      <hr class="rv-rule">
-    </div>
-    <div class="row g-4">
-      <% @djs.first(3).each do |dj| %>
-        <div class="col-md-4">
-          <div class="card rv-card h-100">
-            <div class="card-body">
-              <h3 class="h5 card-title"><%= dj.name %></h3>
-              <p class="text-muted small mb-2"><%= dj.profile&.role_display %></p>
-              <p class="card-text"><%= truncate(dj.profile&.bio.presence || "Part of the Red Village creative community.", length: 160) %></p>
-              <% if dj.profile.present? %>
-                <%= link_to "View Profile", profile_path(dj.profile), class: "btn btn-rv btn-rv-sm mt-2" %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-
-  <div class="rv-section-head mt-5">
+  <div class="rv-section-head mt-4">
     <h2 class="rv-gradient-text">About Red Village</h2>
     <hr class="rv-rule rv-rule-start">
   </div>
-  <div class="row mt-3 align-items-center">
+  <div class="row mt-3 align-items-center mb-4">
     <div class="col-lg-8">
       <p>Red Village is a creative marketplace for Zimbabwean music, art, and makers.
         From Harare's studios to the festival stage, we connect DJs, artists, photographers,
@@ -52,3 +29,5 @@
     </div>
   </div>
 </div>
+
+<%= render "visitors/testimonials" %>

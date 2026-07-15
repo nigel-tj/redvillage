@@ -190,6 +190,24 @@ body.marketplace-body .accordion-body { color: $rv-text-muted; }
 .rv-t-stars { color: #ffc857; letter-spacing: 2px; font-size: 1rem; }
 .rv-t-quote { color: $rv-text; line-height: 1.55; }
 
+// ---- Creators grid: fixed-width cards so orphan rows center cleanly ----
+.creator-flex { display: flex; flex-wrap: wrap; justify-content: center; }
+.creator-flex > .col-xl-4,
+.creator-flex > .col-lg-4,
+.creator-flex > .col-sm-6 {
+  flex: 0 0 auto;
+  width: 33.3333%;
+  max-width: 33.3333%;
+}
+@media (max-width: 991.98px) {
+  .creator-flex > .col-lg-4 { width: 50%; max-width: 50%; }
+}
+@media (max-width: 575.98px) {
+  .creator-flex > .col-sm-6,
+  .creator-flex > .col-lg-4,
+  .creator-flex > .col-xl-4 { width: 100%; max-width: 100%; }
+}
+
 // ---- Footer (deep navy, matches home) -----------------------------------
 .rv-footer { background: $navy-900; color: #c9c6e0; }
 .rv-footer .rv-footer-brand {
@@ -201,8 +219,15 @@ body.marketplace-body .accordion-body { color: $rv-text-muted; }
 .rv-footer a { color: #a9a6c4; text-decoration: none; }
 .rv-footer a:hover { color: #ff8fbf; }
 
-// ---- Unify legacy mall/store/team components into the dark theme ----------
-// These templates predate the rv-card system and used default Bootstrap white
+// ---- Brand CTA band (Join Our Team on /team) ----------------------------
+.rv-cta {
+  background: $rv-brand-grad;
+  box-shadow: 0 18px 50px rgba(167,48,178,0.35);
+}
+.rv-cta .btn-light { color: #2a0f33; font-weight: 700; }
+
+// ---- Unify legacy mall/store/team components into the dark theme ---------
+// These templates predated the rv-card system and used default Bootstrap white
 // cards + blue buttons. Recolor them globally without touching markup.
 body.marketplace-body .card:not(.rv-card) {
   background: $navy-700;
@@ -216,6 +241,18 @@ body.marketplace-body .card:not(.rv-card) .card-title a { color: #fbf9ff; }
 body.marketplace-body .card:not(.rv-card) .text-muted { color: $rv-text-muted !important; }
 body.marketplace-body .btn-outline-primary {
   border-color: $brand-magenta; color: #ff8fbf; background: transparent;
+}
+body.marketplace-body .btn-outline-primary:hover {
+  background: $rv-brand-grad; color: #fff; border-color: transparent;
+}
+body.marketplace-body .text-primary,
+body.marketplace-body .breadcrumb a { color: #ff8fbf !important; }
+// team page legacy heading (text-dark on dark bg) -> brand gradient
+body.marketplace-body h1.display-4.text-dark {
+  color: transparent;
+  background-image: $rv-brand-grad;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 body.marketplace-body .btn-outline-primary:hover {
   background: $rv-brand-grad; color: #fff; border-color: transparent;

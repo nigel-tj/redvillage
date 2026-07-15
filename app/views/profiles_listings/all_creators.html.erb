@@ -21,9 +21,9 @@
                 </div>
             </div>
         </div>
-        
+
         <% if @creators.any? %>
-            <div class="row">
+            <div class="row creator-flex g-4">
                 <% @creators.each do |creator| %>
                     <%= render 'profile_card', profile: creator.profile, user: creator %>
                 <% end %>
@@ -39,3 +39,4 @@
 </div>
 <!-- All Creators listing end -->
 
+<%= render "visitors/testimonials" %>
