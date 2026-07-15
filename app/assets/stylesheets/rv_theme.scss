@@ -154,6 +154,9 @@ body.marketplace-body .accordion-body { color: $rv-text-muted; }
 .profile-card { background: $navy-700 !important; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
 .profile-card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(167,48,178,0.28); }
 .profile-card .card-title a { color: #fbf9ff !important; }
+.profile-card-title { color: #fbf9ff !important; }
+// clamp bio so long copy wraps instead of overflowing the card
+.profile-bio { display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .profile-card .card-footer { background: transparent !important; border-top: 1px solid rgba(255,255,255,0.08) !important; }
 
 // ---- Footer (deep navy, matches home) -----------------------------------
@@ -166,3 +169,32 @@ body.marketplace-body .accordion-body { color: $rv-text-muted; }
 }
 .rv-footer a { color: #a9a6c4; text-decoration: none; }
 .rv-footer a:hover { color: #ff8fbf; }
+
+// ---- Unify legacy mall/store/team components into the dark theme ----------
+// These templates predate the rv-card system and used default Bootstrap white
+// cards + blue buttons. Recolor them globally without touching markup.
+body.marketplace-body .card:not(.rv-card) {
+  background: $navy-700;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: $rv-text;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+body.marketplace-body .card:not(.rv-card) .card-body { color: $rv-text; }
+body.marketplace-body .card:not(.rv-card) .card-title,
+body.marketplace-body .card:not(.rv-card) .card-title a { color: #fbf9ff; }
+body.marketplace-body .card:not(.rv-card) .text-muted { color: $rv-text-muted !important; }
+body.marketplace-body .btn-outline-primary {
+  border-color: $brand-magenta; color: #ff8fbf; background: transparent;
+}
+body.marketplace-body .btn-outline-primary:hover {
+  background: $rv-brand-grad; color: #fff; border-color: transparent;
+}
+body.marketplace-body .text-primary,
+body.marketplace-body .breadcrumb a { color: #ff8fbf !important; }
+// team page legacy heading (text-dark on dark bg) -> brand gradient
+body.marketplace-body h1.display-4.text-dark {
+  color: transparent;
+  background-image: $rv-brand-grad;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

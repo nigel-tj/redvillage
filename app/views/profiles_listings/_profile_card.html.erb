@@ -19,7 +19,7 @@
       
       <div class="card-body">
         <h5 class="card-title">
-          <%= link_to profile_obj.display_name, profile_path(profile_obj), class: "text-decoration-none text-dark" %>
+          <%= link_to profile_obj.display_name, profile_path(profile_obj), class: "text-decoration-none profile-card-title" %>
         </h5>
         <p class="card-text mb-2">
           <small class="text-muted"><%= profile_obj.role_display %></small>
@@ -29,7 +29,7 @@
         </p>
         
         <% if profile_obj.bio.present? %>
-          <p class="card-text small text-muted"><%= truncate(profile_obj.bio, length: 120) %></p>
+          <p class="card-text small text-muted profile-bio"><%= profile_obj.bio %></p>
         <% end %>
         
         <% if profile_obj.has_social_links? %>
