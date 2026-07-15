@@ -159,6 +159,37 @@ body.marketplace-body .accordion-body { color: $rv-text-muted; }
 .profile-bio { display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .profile-card .card-footer { background: transparent !important; border-top: 1px solid rgba(255,255,255,0.08) !important; }
 
+// ---- Testimonials (ported from legacy home, themed) --------------------
+.rv-testimonial {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1rem;
+  padding: 1.6rem 1.6rem 1.4rem;
+  height: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.rv-testimonial::before {
+  content: "\201C";
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 3.4rem;
+  line-height: 0.6;
+  color: $brand-magenta;
+  display: block;
+  margin-bottom: 0.4rem;
+  opacity: 0.8;
+}
+.rv-t-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.3rem; color: #fff;
+  background: $rv-brand-grad;
+  box-shadow: 0 6px 18px rgba(167,48,178,0.45);
+}
+.rv-t-name { font-weight: 700; color: #fbf9ff; }
+.rv-t-role { font-size: 0.82rem; color: $rv-text-muted; }
+.rv-t-stars { color: #ffc857; letter-spacing: 2px; font-size: 1rem; }
+.rv-t-quote { color: $rv-text; line-height: 1.55; }
+
 // ---- Footer (deep navy, matches home) -----------------------------------
 .rv-footer { background: $navy-900; color: #c9c6e0; }
 .rv-footer .rv-footer-brand {

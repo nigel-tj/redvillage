@@ -1,0 +1,31 @@
+<section class="container py-5">
+  <div class="rv-section-head">
+    <h2 class="rv-gradient-text">What our community says</h2>
+    <hr class="rv-rule">
+  </div>
+  <div class="row g-4">
+    <% testimonials = [
+         { initial: "T", name: "Takudzwa Moyo", role: "Sculptor & Red Village Artist",
+           quote: "Red Village gave me a storefront to reach collectors across Zimbabwe. The Creative Festival is where I meet buyers face to face — it has changed how I sell my work." },
+         { initial: "A", name: "Artisan Corner", role: "Maker Store on Red Village",
+           quote: "From handwoven baskets to Shona stone sculpture, we showcase Zimbabwean makers in one marketplace. Red Village handles the storefront so we can focus on our craft." },
+         { initial: "M", name: "DJ MixMaster", role: "Resident DJ, Harare",
+           quote: "Spinning at the Red Village Creative Festival put my sets in front of a real crowd. The marketplace lets fans find my mixes long after the night ends." }
+       ] %>
+    <% testimonials.each do |t| %>
+      <div class="col-lg-4 col-md-6">
+        <div class="rv-testimonial">
+          <div class="d-flex align-items-center mb-3">
+            <div class="rv-t-avatar me-3"><%= t[:initial] %></div>
+            <div>
+              <div class="rv-t-name"><%= t[:name] %></div>
+              <div class="rv-t-role"><%= t[:role] %></div>
+            </div>
+          </div>
+          <div class="rv-t-stars mb-2" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="rv-t-quote mb-0">&ldquo;<%= t[:quote] %>&rdquo;</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
