@@ -54,3 +54,5 @@ gem 'activemerchant', '~> 1.130' # Payment gateway abstraction
 gem 'money-rails', '~> 1.15' # Money handling and currency conversion
 
 
+
+gem "dockerfile-rails", ">= 1.7", group: :development
