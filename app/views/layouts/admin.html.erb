@@ -9,6 +9,10 @@
     <!-- favicon -->
     <%= favicon_link_tag 'favicon.ico' %>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
     <!-- Admin Styles -->
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
     <%= stylesheet_link_tag 'admin/admin-styles', media: 'all' %>
@@ -49,12 +53,12 @@
     <% else %>
       <main class="admin-main-content">
         <% flash.each do |name, msg| %>
-          <% if msg.is_a?(String) %>
-            <div class="alert <%= name == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show" role="alert">
-              <%= msg %>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          <% end %>
+          <% next unless msg.is_a?(String) %>
+          <% next if msg.to_s.downcase.include?("already signed in") %>
+          <div class="alert <%= name == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show" role="alert">
+            <%= msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
         <% end %>
         <%= yield %>
         

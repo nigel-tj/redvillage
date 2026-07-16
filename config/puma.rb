@@ -23,8 +23,10 @@
 threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
-# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-port ENV.fetch("PORT", 3000)
+# Fly.io sets PORT (typically 8080). Default to 3000 for local/dev.
+app_port = Integer(ENV.fetch("PORT", 3000))
+port app_port
+bind "tcp://0.0.0.0:#{app_port}"
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
@@ -35,23 +37,20 @@ pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
 # Production-specific settings
 if ENV["RAILS_ENV"] == "production"
-  # Bind to all interfaces (needed for Docker)
-  bind "tcp://0.0.0.0:#{port}"
-  
-  # Number of worker processes (adjust based on CPU cores)
-  workers ENV.fetch("WEB_CONCURRENCY", 2).to_i
-  
+  # Keep worker count low on small Fly VMs (override with WEB_CONCURRENCY)
+  workers ENV.fetch("WEB_CONCURRENCY", 1).to_i
+
   # Preload the app for better performance
   preload_app!
-  
+
   # Logging
   stdout_redirect "log/puma.stdout.log", "log/puma.stderr.log", true if ENV["RAILS_LOG_TO_STDOUT"] != "true"
-  
+
   # Handle graceful shutdown
   before_fork do
     ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
   end
-  
+
   on_worker_boot do
     ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
   end

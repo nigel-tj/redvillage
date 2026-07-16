@@ -1,0 +1,10 @@
+<%#
+  locals: label, value, icon (Font Awesome class, optional)
+%>
+<div class="dash-stat">
+  <% if local_assigns[:icon].present? %>
+    <div class="dash-stat__icon"><i class="<%= icon %>"></i></div>
+  <% end %>
+  <div class="dash-stat__label"><%= label %></div>
+  <p class="dash-stat__value"><%= value %></p>
+</div>

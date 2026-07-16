@@ -1,4 +1,4 @@
-<div class="container-fluid mt-4">
+<div class="dash">
   <% if defined?(impersonating?) && impersonating? %>
     <div class="alert alert-warning alert-dismissible fade show">
       <strong>Impersonating:</strong>
@@ -9,516 +9,232 @@
     </div>
   <% end %>
 
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <h1 class="mb-4">Admin Dashboard</h1>
-      <p>Welcome to the Red Cup Village Admin Panel</p>
-      <% if defined?(impersonating?) && impersonating? && original_user %>
-        <small class="text-muted">
-          Logged in as: <%= original_user.name %> (Admin)
-          <% if impersonating? %>
-            | Impersonating: <%= current_user.name %>
-          <% end %>
-        </small>
+  <%= render "dashboards/header",
+        title: "Admin Dashboard",
+        eyebrow: "Command center",
+        subtitle: "Welcome to the Red Cup Village admin panel. Monitor users, content, ads, and marketplace activity.",
+        primary_path: users_path,
+        primary_label: "Manage Users",
+        primary_icon: "fas fa-users",
+        user: current_user %>
+
+  <div class="dash-stats dash-stats--auto">
+    <%= render "dashboards/stat_card", label: "Total Users", value: @stats[:total_users], icon: "fas fa-users" %>
+    <%= render "dashboards/stat_card", label: "DJs", value: @stats[:djs], icon: "fas fa-compact-disc" %>
+    <%= render "dashboards/stat_card", label: "Artists", value: @stats[:artists], icon: "fas fa-microphone" %>
+    <%= render "dashboards/stat_card", label: "Photographers", value: @stats[:photographers], icon: "fas fa-camera" %>
+    <%= render "dashboards/stat_card", label: "Videographers", value: @stats[:videographers], icon: "fas fa-video" %>
+    <%= render "dashboards/stat_card", label: "Members", value: @stats[:members], icon: "fas fa-user" %>
+  </div>
+
+  <div class="dash-stats dash-stats--auto">
+    <%= render "dashboards/stat_card", label: "Curators", value: @stats[:curators], icon: "fas fa-bookmark" %>
+    <%= render "dashboards/stat_card", label: "Designers", value: @stats[:designers], icon: "fas fa-palette" %>
+    <%= render "dashboards/stat_card", label: "Editors", value: @stats[:editors], icon: "fas fa-pen" %>
+    <%= render "dashboards/stat_card", label: "Creators", value: @stats[:djs] + @stats[:artists] + @stats[:photographers] + @stats[:videographers] + @stats[:curators] + @stats[:designers] + @stats[:editors], icon: "fas fa-star" %>
+  </div>
+
+  <div class="dash-stats">
+    <%= render "dashboards/stat_card", label: "Galleries", value: @stats[:galleries_count], icon: "fas fa-images" %>
+    <%= render "dashboards/stat_card", label: "News", value: @stats[:features_count], icon: "fas fa-newspaper" %>
+    <%= render "dashboards/stat_card", label: "Videos", value: @stats[:videos_count], icon: "fas fa-film" %>
+    <%= render "dashboards/stat_card", label: "Tracks", value: @stats[:tracks_count], icon: "fas fa-music" %>
+  </div>
+
+  <div class="dash-stats dash-stats--auto">
+    <%= render "dashboards/stat_card", label: "Albums", value: @stats[:albums_count], icon: "fas fa-layer-group" %>
+    <%= render "dashboards/stat_card", label: "Artists Profiles", value: @stats[:artists_count], icon: "fas fa-id-badge" %>
+    <%= render "dashboards/stat_card", label: "Lifestyle", value: @stats[:lifestyles_count], icon: "fas fa-heart" %>
+    <%= render "dashboards/stat_card", label: "Events", value: @stats[:events_count], icon: "fas fa-calendar" %>
+    <%= render "dashboards/stat_card", label: "Banners", value: @stats[:banners_count], icon: "fas fa-image" %>
+  </div>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Advertising Revenue",
+        action: link_to("Full Analytics", ad_revenue_dashboard_path, class: "btn-dash"),
+        padded: true
+      } do %>
+    <div class="dash-stats mb-0">
+      <%= render "dashboards/stat_card", label: "Potential Revenue", value: "$#{sprintf('%.2f', @ad_stats[:potential_revenue])}", icon: "fas fa-dollar-sign" %>
+      <%= render "dashboards/stat_card", label: "Active Ads", value: @ad_stats[:active_ads], icon: "fas fa-ad" %>
+      <%= render "dashboards/stat_card", label: "Impressions", value: number_with_delimiter(@ad_stats[:total_impressions]), icon: "fas fa-eye" %>
+      <%= render "dashboards/stat_card", label: "Clicks", value: number_with_delimiter(@ad_stats[:total_clicks]), icon: "fas fa-mouse-pointer" %>
+    </div>
+  <% end %>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Ticket Marketplace",
+        action: link_to("View Marketplace", ticket_listings_path, class: "btn-dash"),
+        padded: true
+      } do %>
+    <div class="dash-stats mb-0">
+      <%= render "dashboards/stat_card", label: "Total Listings", value: @stats[:ticket_listings_count], icon: "fas fa-ticket-alt" %>
+      <%= render "dashboards/stat_card", label: "Available", value: @stats[:available_tickets_count], icon: "fas fa-check" %>
+      <%= render "dashboards/stat_card", label: "Sold", value: @stats[:sold_tickets_count], icon: "fas fa-shopping-bag" %>
+      <%= render "dashboards/stat_card", label: "Revenue", value: "$#{sprintf('%.2f', @stats[:total_revenue])}", icon: "fas fa-coins" %>
+    </div>
+  <% end %>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <%= render layout: "dashboards/panel", locals: { title: "Recent Users", padded: true } do %>
+        <% if @stats[:recent_users].any? %>
+          <ul class="dash-feed">
+            <% @stats[:recent_users].each do |user| %>
+              <li>
+                <div>
+                  <%= link_to user.name, user_path(user) %>
+                  <span class="dash-badge ms-1"><%= user.role.titleize %></span>
+                  <small class="text-muted d-block"><%= time_ago_in_words(user.created_at) %> ago</small>
+                  <% if user_signed_in? && current_user.admin? && user != current_user %>
+                    <%= button_to "Impersonate", impersonate_path(user), method: :post, class: "btn-dash-outline btn-sm mt-1" %>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No users yet.</p>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <%= render layout: "dashboards/panel", locals: { title: "Recent Galleries", padded: true } do %>
+        <% if @recent_galleries.any? %>
+          <ul class="dash-feed">
+            <% @recent_galleries.each do |gallery| %>
+              <li>
+                <%= link_to gallery.name, gallery_path(gallery) %>
+                <small class="text-muted"><%= time_ago_in_words(gallery.created_at) %> ago</small>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No galleries yet.</p>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <%= render layout: "dashboards/panel", locals: { title: "Recent News", padded: true } do %>
+        <% if @recent_features.any? %>
+          <ul class="dash-feed">
+            <% @recent_features.each do |feature| %>
+              <li>
+                <%= link_to feature.heading, feature_path(feature) %>
+                <small class="text-muted"><%= time_ago_in_words(feature.created_at) %> ago</small>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No news articles yet.</p>
+        <% end %>
       <% end %>
     </div>
   </div>
 
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <h5 class="mb-3">User Statistics</h5>
-    </div>
-  </div>
-  <div class="row mb-4">
-    <div class="col-md-2">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Total Users</h5>
-          <h2><%= @stats[:total_users] %></h2>
-          <a href="<%= users_path %>" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">DJs</h5>
-          <h2><%= @stats[:djs] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:djs], 'DJ') %></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Artists</h5>
-          <h2><%= @stats[:artists] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:artists], 'Artist') %></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Photographers</h5>
-          <h2><%= @stats[:photographers] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:photographers], 'Photographer') %></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Videographers</h5>
-          <h2><%= @stats[:videographers] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:videographers], 'Videographer') %></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Members</h5>
-          <h2><%= @stats[:members] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:members], 'Member') %></small>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row mb-4">
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Curators</h5>
-          <h2><%= @stats[:curators] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:curators], 'Curator') %></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Designers</h5>
-          <h2><%= @stats[:designers] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:designers], 'Designer') %></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Editors</h5>
-          <h2><%= @stats[:editors] %></h2>
-          <small class="text-muted"><%= pluralize(@stats[:editors], 'Editor') %></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Content Creators</h5>
-          <h2><%= @stats[:djs] + @stats[:artists] + @stats[:photographers] + @stats[:videographers] + @stats[:curators] + @stats[:designers] + @stats[:editors] %></h2>
-          <small class="text-muted">Total creators</small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4">
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Galleries</h5>
-          <h2><%= @stats[:galleries_count] %></h2>
-          <a href="<%= galleries_path %>" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">News Articles</h5>
-          <h2><%= @stats[:features_count] %></h2>
-          <a href="/admin_index" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Videos</h5>
-          <h2><%= @stats[:videos_count] %></h2>
-          <a href="<%= all_videos_path %>" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Music Tracks</h5>
-          <h2><%= @stats[:tracks_count] %></h2>
-          <a href="/admin_all_music" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4">
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Albums</h5>
-          <h2><%= @stats[:albums_count] %></h2>
-          <a href="/admin_album_index" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Artists</h5>
-          <h2><%= @stats[:artists_count] %></h2>
-          <a href="/admin_artist_index" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Lifestyle</h5>
-          <h2><%= @stats[:lifestyles_count] %></h2>
-          <a href="/lifestyle_admin_index" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Events</h5>
-          <h2><%= @stats[:events_count] %></h2>
-          <a href="<%= admin_all_events_path %>" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Banners</h5>
-          <h2><%= @stats[:banners_count] %></h2>
-          <a href="<%= banners_index_path %>" class="btn btn-primary btn-sm">Manage</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Ad Revenue Section -->
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">
-          <i class="fas fa-ad text-success"></i> Advertising Revenue
-        </h5>
-        <%= link_to ad_revenue_dashboard_path, class: "btn btn-sm btn-success" do %>
-          <i class="fas fa-chart-line"></i> View Full Analytics
+  <div class="row g-3 mt-1">
+    <div class="col-md-6">
+      <%= render layout: "dashboards/panel", locals: { title: "Recent Tracks", padded: true } do %>
+        <% if @recent_tracks.any? %>
+          <ul class="dash-feed">
+            <% @recent_tracks.each do |track| %>
+              <li>
+                <%= link_to track.title, track_path(track) %>
+                <small class="text-muted"><%= time_ago_in_words(track.created_at) %> ago</small>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No tracks yet.</p>
         <% end %>
-      </div>
+      <% end %>
     </div>
-  </div>
-  <div class="row mb-4">
-    <div class="col-md-3">
-      <div class="card text-center border-success">
-        <div class="card-body">
-          <h5 class="card-title">Potential Revenue</h5>
-          <h2 class="text-success">$<%= sprintf('%.2f', @ad_stats[:potential_revenue]) %></h2>
-          <small class="text-muted">From active ad spots</small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center border-info">
-        <div class="card-body">
-          <h5 class="card-title">Active Ads</h5>
-          <h2 class="text-info"><%= @ad_stats[:active_ads] %></h2>
-          <small class="text-muted"><%= @ad_stats[:current_ads] %> currently running</small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center border-primary">
-        <div class="card-body">
-          <h5 class="card-title">Total Impressions</h5>
-          <h2 class="text-primary"><%= number_with_delimiter(@ad_stats[:total_impressions]) %></h2>
-          <small class="text-muted">Ad views</small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center border-warning">
-        <div class="card-body">
-          <h5 class="card-title">Total Clicks</h5>
-          <h2 class="text-warning"><%= number_with_delimiter(@ad_stats[:total_clicks]) %></h2>
-          <small class="text-muted">CTR: <%= @ad_stats[:overall_ctr] %>%</small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Ticket Marketplace Section -->
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <h5 class="mb-3">
-        <i class="fas fa-ticket-alt text-primary"></i> Ticket Marketplace
-      </h5>
-    </div>
-  </div>
-  <div class="row mb-4">
-    <div class="col-md-3">
-      <div class="card text-center border-primary">
-        <div class="card-body">
-          <h5 class="card-title">Total Listings</h5>
-          <h2 class="text-primary"><%= @stats[:ticket_listings_count] %></h2>
-          <a href="<%= ticket_listings_path %>" class="btn btn-primary btn-sm">View Marketplace</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center border-success">
-        <div class="card-body">
-          <h5 class="card-title">Available</h5>
-          <h2 class="text-success"><%= @stats[:available_tickets_count] %></h2>
-          <small class="text-muted">Active listings</small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center border-danger">
-        <div class="card-body">
-          <h5 class="card-title">Sold</h5>
-          <h2 class="text-danger"><%= @stats[:sold_tickets_count] %></h2>
-          <small class="text-muted">Completed sales</small>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center border-warning">
-        <div class="card-body">
-          <h5 class="card-title">Total Revenue</h5>
-          <h2 class="text-warning">$<%= sprintf('%.2f', @stats[:total_revenue]) %></h2>
-          <small class="text-muted">Platform revenue</small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">Recent Users</div>
-        <div class="card-body">
-          <% if @stats[:recent_users].any? %>
-            <ul class="list-group list-group-flush">
-              <% @stats[:recent_users].each do |user| %>
-                <li class="list-group-item">
-                  <%= link_to user.name, user_path(user) %>
-                  <span class="badge bg-<%= user.admin? ? 'danger' : user.dj? ? 'info' : user.artist? ? 'success' : 'secondary' %>">
-                    <%= user.role.titleize %>
-                  </span>
-                  <small class="text-muted d-block"><%= time_ago_in_words(user.created_at) %> ago</small>
-                  <% if user_signed_in? && current_user.admin? && user != current_user %>
-                    <%= button_to "Impersonate", impersonate_path(user), method: :post, class: "btn btn-sm btn-outline-primary mt-1" %>
-                  <% end %>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p class="text-muted">No users yet.</p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">Recent Galleries</div>
-        <div class="card-body">
-          <% if @recent_galleries.any? %>
-            <ul class="list-group list-group-flush">
-              <% @recent_galleries.each do |gallery| %>
-                <li class="list-group-item">
-                  <%= link_to gallery.name, gallery_path(gallery) %>
-                  <small class="text-muted d-block"><%= time_ago_in_words(gallery.created_at) %> ago</small>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p class="text-muted">No galleries yet.</p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">Recent News</div>
-        <div class="card-body">
-          <% if @recent_features.any? %>
-            <ul class="list-group list-group-flush">
-              <% @recent_features.each do |feature| %>
-                <li class="list-group-item">
-                  <%= link_to feature.heading, feature_path(feature) %>
-                  <small class="text-muted d-block"><%= time_ago_in_words(feature.created_at) %> ago</small>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p class="text-muted">No news articles yet.</p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mt-4">
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">Recent Tracks</div>
-        <div class="card-body">
-          <% if @recent_tracks.any? %>
-            <ul class="list-group list-group-flush">
-              <% @recent_tracks.each do |track| %>
-                <li class="list-group-item">
-                  <%= link_to track.title, track_path(track) %>
-                  <small class="text-muted d-block"><%= time_ago_in_words(track.created_at) %> ago</small>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p class="text-muted">No tracks yet.</p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">Recent Events</div>
-        <div class="card-body">
-          <% if @recent_events.any? %>
-            <ul class="list-group list-group-flush">
-              <% @recent_events.each do |event| %>
-                <li class="list-group-item">
+      <%= render layout: "dashboards/panel", locals: { title: "Recent Events", padded: true } do %>
+        <% if @recent_events.any? %>
+          <ul class="dash-feed">
+            <% @recent_events.each do |event| %>
+              <li>
+                <div>
                   <%= link_to event.name, event_path(event) %>
                   <small class="text-muted d-block">
                     <%= event.date.strftime("%B %d, %Y") if event.date %>
-                    <%= " - " + time_ago_in_words(event.created_at) + " ago" if event.date %>
                   </small>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p class="text-muted">No events yet.</p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mt-4">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <div class="d-flex justify-content-between align-items-center">
-            <span>Recent Ticket Listings</span>
-            <div>
-              <%= link_to ticket_listings_path, class: "btn btn-sm btn-outline-primary" do %>
-                <i class="fas fa-eye"></i> View All
-              <% end %>
-              <%= link_to new_ticket_listing_path, class: "btn btn-sm btn-primary" do %>
-                <i class="fas fa-plus"></i> Create Listing
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <% if @recent_ticket_listings.any? %>
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Event</th>
-                    <th>Seller</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                    <th>Created</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% @recent_ticket_listings.each do |listing| %>
-                    <tr>
-                      <td>
-                        <strong><%= listing.event.name %></strong>
-                        <br>
-                        <small class="text-muted">
-                          <% if listing.event.date %>
-                            <%= listing.event.date.strftime("%b %d, %Y") %>
-                          <% end %>
-                        </small>
-                      </td>
-                      <td>
-                        <%= link_to listing.user.name, user_path(listing.user), class: "text-decoration-none" %>
-                      </td>
-                      <td>
-                        <% if listing.ticket_type == 'vip' %>
-                          <span class="badge bg-warning text-dark">VIP</span>
-                        <% else %>
-                          <span class="badge bg-primary">Standard</span>
-                        <% end %>
-                      </td>
-                      <td><strong><%= listing.formatted_price %></strong></td>
-                      <td>
-                        <span class="<%= listing.is_available? ? 'text-success' : 'text-danger' %>">
-                          <%= listing.available_quantity %>/<%= listing.quantity %>
-                        </span>
-                      </td>
-                      <td>
-                        <% case listing.status %>
-                        <% when 'available' %>
-                          <span class="badge bg-success">Available</span>
-                        <% when 'sold' %>
-                          <span class="badge bg-danger">Sold</span>
-                        <% when 'pending' %>
-                          <span class="badge bg-warning text-dark">Pending</span>
-                        <% else %>
-                          <span class="badge bg-secondary"><%= listing.status.titleize %></span>
-                        <% end %>
-                      </td>
-                      <td>
-                        <small class="text-muted">
-                          <%= time_ago_in_words(listing.created_at) %> ago
-                        </small>
-                      </td>
-                      <td>
-                        <%= link_to ticket_listing_path(listing), class: "btn btn-sm btn-outline-primary", title: "View" do %>
-                          <i class="fas fa-eye"></i>
-                        <% end %>
-                      </td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
-          <% else %>
-            <p class="text-muted">No ticket listings yet.</p>
-            <%= link_to new_ticket_listing_path, class: "btn btn-primary" do %>
-              <i class="fas fa-plus"></i> Create First Listing
+                </div>
+              </li>
             <% end %>
-          <% end %>
-        </div>
-      </div>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No events yet.</p>
+        <% end %>
+      <% end %>
     </div>
   </div>
-</div>
 
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Recent Ticket Listings",
+        action: safe_join([
+          link_to("View All", ticket_listings_path, class: "btn-dash-outline me-1"),
+          link_to("Create Listing", new_ticket_listing_path, class: "btn-dash")
+        ])
+      } do %>
+    <% if @recent_ticket_listings.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Seller</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @recent_ticket_listings.each do |listing| %>
+              <tr>
+                <td>
+                  <strong><%= listing.event.name %></strong>
+                  <% if listing.event.date %>
+                    <br><small class="text-muted"><%= listing.event.date.strftime("%b %d, %Y") %></small>
+                  <% end %>
+                </td>
+                <td><%= link_to listing.user.name, user_path(listing.user) %></td>
+                <td>
+                  <% if listing.ticket_type == 'vip' %>
+                    <span class="dash-badge">VIP</span>
+                  <% else %>
+                    <span class="dash-badge">Standard</span>
+                  <% end %>
+                </td>
+                <td><strong><%= listing.formatted_price %></strong></td>
+                <td><%= listing.available_quantity %>/<%= listing.quantity %></td>
+                <td>
+                  <% if listing.status == 'available' %>
+                    <span class="badge bg-success">Available</span>
+                  <% elsif listing.status == 'sold' %>
+                    <span class="badge bg-danger">Sold</span>
+                  <% elsif listing.status == 'pending' %>
+                    <span class="badge bg-warning text-dark">Pending</span>
+                  <% else %>
+                    <span class="badge bg-secondary"><%= listing.status.titleize %></span>
+                  <% end %>
+                </td>
+                <td><small class="text-muted"><%= time_ago_in_words(listing.created_at) %> ago</small></td>
+                <td><%= link_to "View", ticket_listing_path(listing), class: "btn-dash btn-sm" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="dash-empty padded">
+        <p>No ticket listings yet.</p>
+        <%= link_to "Create First Listing", new_ticket_listing_path, class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,15 @@
+<%#
+  locals: title, action (optional), padded (optional bool)
+  Use: render layout: "dashboards/panel", locals: { title: "...", action: link_to(...) } do ... end
+%>
+<div class="dash-panel">
+  <div class="dash-panel__head">
+    <h2 class="dash-panel__title"><%= title %></h2>
+    <% if local_assigns[:action].present? %>
+      <div><%= action %></div>
+    <% end %>
+  </div>
+  <div class="dash-panel__body <%= 'padded' if local_assigns[:padded] %>">
+    <%= yield %>
+  </div>
+</div>

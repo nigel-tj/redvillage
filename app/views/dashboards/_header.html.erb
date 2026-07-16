@@ -1,0 +1,21 @@
+<%#
+  locals: title, subtitle, eyebrow (optional), primary_path/primary_label (optional),
+          primary_icon (optional, default fa-plus), user (optional)
+%>
+<div class="dash-hero">
+  <% if local_assigns[:eyebrow].present? %>
+    <div class="dash-hero__eyebrow"><%= eyebrow %></div>
+  <% end %>
+  <h1><%= title %></h1>
+  <% if local_assigns[:subtitle].present? %>
+    <p class="dash-hero__sub"><%= subtitle %></p>
+  <% end %>
+  <div class="dash-hero__actions">
+    <% if local_assigns[:primary_path].present? && local_assigns[:primary_label].present? %>
+      <%= link_to primary_path, class: "btn-dash-primary" do %>
+        <i class="<%= local_assigns[:primary_icon].presence || 'fas fa-plus' %> me-1"></i> <%= primary_label %>
+      <% end %>
+    <% end %>
+    <%= render "shared/profile_quick_links", user: local_assigns[:user] || @user || current_user %>
+  </div>
+</div>

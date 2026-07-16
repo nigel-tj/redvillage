@@ -1,4 +1,12 @@
 module DashboardHelper
+  CATEGORY_LABELS = {
+    "rcv_playlist" => "RCV Playlist",
+    "albums_mixtapes" => "Albums / Mixtapes",
+    "healthyLiving" => "Healthy Living",
+    "streetHustle" => "Street Hustle",
+    "behind-the-scenes" => "Behind the Scenes"
+  }.freeze
+
   def dashboard_path_for_user(user = current_user)
     return root_path unless user
     
@@ -53,6 +61,13 @@ module DashboardHelper
   
   def dashboard_path
     dashboard_path_for_user(current_user)
+  end
+
+  def humanize_category(value)
+    return "" if value.blank?
+
+    key = value.to_s
+    CATEGORY_LABELS[key] || key.tr("_-", " ").split.map(&:capitalize).join(" ")
   end
 end
 
