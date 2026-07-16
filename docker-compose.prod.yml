@@ -1,0 +1,75 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env.production}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-redvillage_production}
+      MYSQL_USER: ${DATABASE_USERNAME:-redvillage}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env.production}
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "127.0.0.1:3306:3306"  # Only bind to localhost
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - redvillage_network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: bundle exec puma -C config/puma.rb
+    volumes:
+      # Persist uploaded files
+      - uploads_data:/app/storage
+      - tmp_data:/app/tmp
+      # Mount public/uploads if needed for file serving
+      - ./public/uploads:/app/public/uploads:rw
+    ports:
+      - "127.0.0.1:3000:3000"  # Only bind to localhost (use nginx reverse proxy)
+    environment:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - DATABASE_USERNAME=${DATABASE_USERNAME:-redvillage}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env.production}
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - RAILS_MAX_THREADS=${RAILS_MAX_THREADS:-5}
+      - PORT=3000
+      - RAILS_LOG_TO_STDOUT=true
+      - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES:-false}
+    env_file:
+      - .env.production
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - redvillage_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/up || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mysql_data:
+    name: redvillage_mysql_production
+  uploads_data:
+    name: redvillage_uploads_production
+  tmp_data:
+    name: redvillage_tmp_production
+
+networks:
+  redvillage_network:
+    name: redvillage_production_network

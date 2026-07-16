@@ -1,138 +1,61 @@
-<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
-<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
-<script src="/scripts/isotope.init.js" type="text/javascript"></script>
-<div class="container">
-  <!-- start news tabs -->
-  <div id="gallery">
-    <!-- banner -->
-    <div class="row">
-      <div class="col-sm-12 banner">
-        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
-      </div>
-    </div>
-    <!-- banner end -->
-    <!-- start services -->
-    <div class="row">
-      <div class="col-sm-9 services">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="tabs tabs-style-linebox wow fadeInUp" data-wow-duration="2s">
-              <nav class="pull-right">
-                <ul class="content_filter">
-                  <li class="hvr-sweep-to-top active filter" data-filter=".rcv_playlist" id="#rcv_playlist">
-                    <span>RCV Playlist</span>
-                  </li>
-                  <li class="hvr-sweep-to-top filter" data-filter=".albums_mixtapes" id="#albums">
-                    <span>Albums / Mixtapes</span>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+<% content_for :title, "Music — Red Village" %>
 
-          <div class="col-sm-12" id="gallery-content">
-            <div class="grid">
-              <% for track in @tracks %>
-                <% if(track.category == "rcv_playlist") %>
-                  <div class="grid-item grid-sizer col-sm-4 servicebox rcv_playlist">
-                    <div class="servicebox-image">
-                      <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="#" onclick="playSong()">
-                        <% if track.image.present? %>
-                          <img alt="<%= track.title %>" src="<%= track.image_url(:thumb) %>">
-                        <% else %>
-                          <img alt="<%= track.title %>" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%23888' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(track.title) %>%3C/text%3E%3C/svg%3E">
-                        <% end %>
-                      </a>
-                    </div>
-                    <div class="servicebox-inner">
-                      <p><%= track.title %></p>
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-
-              <% for album in @albums %>
-                <div class="grid-item grid-sizer col-sm-4 servicebox albums_mixtapes">
-                  <div class="servicebox-image">
-                    <a class="vid-item pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="#" onclick="playSong()">
-                      <% if album.image.present? %>
-                        <img alt="<%= album.name %>" src="<%= album.image_url(:thumb) %>">
-                      <% else %>
-                        <img alt="<%= album.name %>" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%23888' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(album.name) %>%3C/text%3E%3C/svg%3E">
-                      <% end %>
-                    </a>
-                  </div>
-                  <div class="servicebox-inner">
-                    <p><%= album.name %></p>
-                  </div>
-                </div>
-              <% end %>
-
-              <% if @tracks.empty? && @albums.empty? %>
-                <div class="col-sm-12 text-center py-5">
-                  <p class="text-muted">No music or albums published yet. Check back soon!</p>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Adverts -->
-      <div class="col-sm-3">
-        <div class="side-adverts">
-          <ul class="advert-image">
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
-            </li>
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- Adverts -->
-      <div class="col-sm-3">
-        <div class="side-adverts">
-          <ul class="advert-image">
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
-            </li>
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- Adverts -->
-      <div class="col-sm-3">
-        <div class="side-adverts">
-          <ul class="advert-image">
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
-            </li>
-            <li>
-              <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+<div class="container py-4">
+  <div class="rv-section-head">
+    <h1 class="rv-gradient-text">Music</h1>
+    <p class="rv-sub">Tracks and albums from independent artists on Red Village.</p>
+    <hr class="rv-rule">
   </div>
+
+  <% tracks = @tracks.to_a %>
+  <% albums = @albums.to_a %>
+
+  <% if tracks.any? %>
+    <h2 class="h4 fw-bold mb-3">Tracks</h2>
+    <div class="row g-4 mb-5">
+      <% tracks.each do |track| %>
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="card rv-card h-100">
+            <% img = (track.respond_to?(:image) && track.image.present?) ? (track.image_url(:thumb) rescue track.image_url) : nil %>
+            <% if img.present? %>
+              <%= image_tag img, alt: track.title, class: "rv-img" %>
+            <% else %>
+              <div class="rv-thumb-placeholder"><i class="fas fa-music fa-2x"></i></div>
+            <% end %>
+            <div class="card-body">
+              <h3 class="h6 card-title mb-1"><%= track.title %></h3>
+              <% if track.respond_to?(:artist_name) && track.artist_name.present? %>
+                <p class="text-muted small mb-0"><%= track.artist_name %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if albums.any? %>
+    <h2 class="h4 fw-bold mb-3">Albums &amp; mixtapes</h2>
+    <div class="row g-4">
+      <% albums.each do |album| %>
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="card rv-card h-100">
+            <% img = (album.respond_to?(:image) && album.image.present?) ? (album.image_url(:thumb) rescue album.image_url) : nil %>
+            <% if img.present? %>
+              <%= image_tag img, alt: album.name, class: "rv-img" %>
+            <% else %>
+              <div class="rv-thumb-placeholder"><i class="fas fa-compact-disc fa-2x"></i></div>
+            <% end %>
+            <div class="card-body">
+              <h3 class="h6 card-title mb-0"><%= album.name %></h3>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if tracks.empty? && albums.empty? %>
+    <p class="text-center text-muted py-5 mb-0">No music published yet. Check back soon.</p>
+  <% end %>
 </div>
-
-<script>
-  function playSong() {
-    document.getElementById("audio_player").src = "https://raw.githubusercontent.com/kolber/audiojs/master/mp3/bensound-dubstep.mp3";
-  }
-
-  $(document).ready(function(){    
-    document.getElementById('#rcv_playlist').classList.add("active");
-    $('.grid').masonry({
-      // options...
-      itemSelector: '.grid-item',
-      columnWidth: '.grid-sizer',
-      percentPosition: true
-    });
-  });
-</script>
-

@@ -137,6 +137,27 @@ module RoleBasedAccess
     end
   end
 
+  def require_music_manager
+    unless current_user&.admin? || current_user&.artist? || current_user&.dj? || current_user&.curator? || current_user&.editor?
+      flash[:alert] = "Music manager access required."
+      redirect_to root_path
+    end
+  end
+
+  def require_events_manager
+    unless current_user&.admin? || current_user&.dj? || current_user&.curator? || current_user&.editor?
+      flash[:alert] = "Events manager access required."
+      redirect_to root_path
+    end
+  end
+
+  def require_video_manager
+    unless current_user&.admin? || current_user&.videographer? || current_user&.curator? || current_user&.editor?
+      flash[:alert] = "Video manager access required."
+      redirect_to root_path
+    end
+  end
+
   # Helper method to check if current user can access specific resource
   def can_access?(resource)
     return false unless current_user

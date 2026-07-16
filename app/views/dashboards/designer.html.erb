@@ -59,7 +59,7 @@
                   <tr>
                     <th>Banner Name</th>
                     <th>Page</th>
-                    <th>Created</th>
+                    <th>Title</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -74,7 +74,7 @@
                           <span class="text-muted">N/A</span>
                         <% end %>
                       </td>
-                      <td><%= time_ago_in_words(banner.created_at) %> ago</td>
+                      <td><%= banner.title.presence || "—" %></td>
                       <td>
                         <%= link_to "View", main_banner_path(banner), class: "btn btn-sm btn-primary me-1" %>
                         <%= link_to "Edit", edit_main_banner_path(banner), class: "btn btn-sm btn-outline-secondary" %>
@@ -107,9 +107,11 @@
                   <%= link_to banner.name || "Untitled Banner", main_banner_path(banner), class: "fw-bold" %>
                   <small class="text-muted d-block">
                     <% if banner.page.present? %>
-                      Page: <%= banner.page %> - 
+                      Page: <%= banner.page %>
                     <% end %>
-                    <%= time_ago_in_words(banner.created_at) %> ago
+                    <% if banner.title.present? %>
+                      — <%= banner.title %>
+                    <% end %>
                   </small>
                 </li>
               <% end %>

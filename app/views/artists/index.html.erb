@@ -1,60 +1,55 @@
+<% content_for :title, "Artists — Red Village" %>
+
 <div class="container py-4">
-  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="h3 mb-1">Artists</h1>
-      <p class="text-muted mb-0">Discover the creators behind Red Village &mdash; musicians, painters, and makers.</p>
+  <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div class="rv-section-head text-start mb-0">
+      <h1 class="rv-gradient-text">Artists</h1>
+      <p class="rv-sub mb-0">Discover the creators behind Red Village.</p>
+      <hr class="rv-rule rv-rule-start">
     </div>
-    <%= link_to "Browse the Marketplace", stores_path, class: "btn btn-outline-secondary" %>
+    <%= link_to "Browse stores", stores_path, class: "btn btn-outline-rv btn-rv-sm" %>
   </div>
 
   <% artists = (@artists_model || []) + (@user_artists || []) %>
 
   <% if artists.any? %>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <div class="row g-4">
       <% artists.each do |artist| %>
         <%
-          # Resolve a display name, profile link, and image for either an
-          # Artist model record or a User-with-profile artist.
           if artist.is_a?(Artist)
             name      = artist.name
             link      = artist_path(artist)
             picture   = artist.profile_picture
-            image_url = artist.profile_picture_url(:thumb)
+            image_url = artist.profile_picture_url(:thumb) rescue nil
             subtitle  = artist.category.presence || "Artist"
           else
             name      = artist.name
             link      = profile_path(artist.profile)
             picture   = artist.profile&.profile_picture
-            image_url = artist.profile&.profile_picture_url(:thumb)
+            image_url = artist.profile&.profile_picture_url(:thumb) rescue nil
             subtitle  = artist.role.to_s.titleize
           end
         %>
-        <div class="col">
-          <div class="card h-100 shadow-sm artist-card">
-            <a href="<%= link %>" class="text-decoration-none text-dark">
-              <div class="artist-thumb ratio ratio-1x1 bg-light">
-                <% if picture.present? && image_url.present? %>
-                  <img src="<%= image_url %>" alt="<%= CGI.escapeHTML(name) %>" class="card-img-top object-fit-cover">
-                <% else %>
-                  <img alt="<%= CGI.escapeHTML(name) %>" class="card-img-top object-fit-cover"
-                       src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Crect width='300' height='300' fill='%23e9ecef'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='%236c757d' text-anchor='middle' dy='.3em'%3E<%= CGI.escapeHTML(name) %>%3C/text%3E%3C/svg%3E">
-                <% end %>
-              </div>
-              <div class="card-body text-center">
-                <h5 class="card-title mb-0"><%= name %></h5>
-                <small class="text-muted"><%= subtitle %></small>
-              </div>
-            </a>
-          </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <%= link_to link, class: "rv-event-tile text-decoration-none" do %>
+            <div class="rv-event-tile__media">
+              <% if picture.present? && image_url.present? %>
+                <%= image_tag image_url, alt: name, class: "rv-event-tile__img" %>
+              <% else %>
+                <div class="rv-event-tile__placeholder d-flex align-items-center justify-content-center">
+                  <span class="fw-bold" style="color:#ff8fbf;"><%= name.to_s.first(2).upcase %></span>
+                </div>
+              <% end %>
+            </div>
+            <div class="rv-event-tile__body">
+              <h2 class="rv-event-tile__title h6"><%= name %></h2>
+              <p class="small text-muted mb-0 mt-1"><%= subtitle %></p>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
   <% else %>
-    <div class="text-center py-5">
-      <div class="mb-3 text-muted" style="font-size:3rem;"><i class="fas fa-palette"></i></div>
-      <h2 class="h4">No artists featured yet</h2>
-      <p class="text-muted">Artists will appear here once they publish a public profile. In the meantime, explore the marketplace.</p>
-      <%= link_to "Browse Stores", stores_path, class: "btn btn-primary mt-2" %>
-    </div>
+    <p class="text-center text-muted py-5 mb-0">No artists listed yet.</p>
   <% end %>
 </div>

@@ -1,44 +1,36 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Galleries</h1>
-        <%= link_to "New Gallery", new_gallery_path, class: "btn btn-primary" %>
-      </div>
-    </div>
+<% content_for :title, "Galleries — Red Village" %>
+
+<div class="container py-4">
+  <div class="rv-section-head">
+    <h1 class="rv-gradient-text">Galleries</h1>
+    <p class="rv-sub">Photography collections from the Red Village community.</p>
+    <hr class="rv-rule">
   </div>
 
-  <div class="row">
-    <% @galleries.each do |gallery| %>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          <% if gallery.image? %>
-            <div class="card-img-top">
-              <%= image_tag gallery.image_url(:thumbnail), class: "img-fluid card-img-top" %>
+  <% if @galleries.present? %>
+    <div class="row g-4">
+      <% @galleries.each do |gallery| %>
+        <div class="col-sm-6 col-lg-4">
+          <%= link_to show_gallery_path(gallery), class: "rv-event-tile text-decoration-none" do %>
+            <div class="rv-event-tile__media">
+              <% cover = gallery.image_url.presence || gallery.images.first&.image_url %>
+              <% if cover.present? %>
+                <%= image_tag cover, alt: gallery.name, class: "rv-event-tile__img" %>
+              <% else %>
+                <div class="rv-event-tile__placeholder" aria-hidden="true"></div>
+              <% end %>
+            </div>
+            <div class="rv-event-tile__body">
+              <h2 class="rv-event-tile__title h5"><%= gallery.name.presence || "Gallery" %></h2>
+              <% if gallery.category.present? %>
+                <p class="text-muted small mb-0 mt-1"><%= gallery.category %></p>
+              <% end %>
             </div>
           <% end %>
-          <div class="card-body">
-            <h5 class="card-title"><%= link_to gallery.name, gallery %></h5>
-            <p class="card-text">
-              <small class="text-muted">Images: <%= gallery.images.size %></small>
-            </p>
-            <div class="btn-group" role="group">
-              <%= link_to "View", gallery, class: "btn btn-sm btn-outline-primary" %>
-              <%= link_to "Edit", edit_gallery_path(gallery), class: "btn btn-sm btn-outline-secondary" %>
-            </div>
-          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-
-  <% if @galleries.empty? %>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="alert alert-info text-center">
-          No galleries found. <%= link_to "Create your first gallery", new_gallery_path %>
-        </div>
-      </div>
+      <% end %>
     </div>
+  <% else %>
+    <p class="text-center text-muted py-5 mb-0">No galleries yet. Check back soon.</p>
   <% end %>
 </div>

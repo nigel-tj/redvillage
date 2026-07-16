@@ -2,8 +2,9 @@ class FeaturesController < ApplicationController
   include RoleBasedAccess
   
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :require_curator_or_admin, only: [:new, :create, :update, :edit, :destroy]
+  before_action :require_curator_or_admin, only: [:new, :create, :update, :edit, :destroy, :admin_index]
   layout "admin", only: [:new, :create, :update, :edit, :admin_index]
+  layout "marketplace", only: [:index, :show]
   
   def index
     @features = Feature.order('created_at DESC')

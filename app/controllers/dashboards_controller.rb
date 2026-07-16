@@ -3,10 +3,17 @@ class DashboardsController < ApplicationController
   include Impersonation
 
   before_action :authenticate_user!
-  
+  before_action :require_admin, only: [:admin, :ad_revenue]
+  before_action :require_dj, only: [:dj]
+  before_action :require_artist, only: [:artist]
+  before_action :require_photographer, only: [:photographer]
+  before_action :require_videographer, only: [:videographer]
+  before_action :require_curator, only: [:curator]
+  before_action :require_designer, only: [:designer]
+  before_action :require_editor, only: [:editor]
+
   # Admin dashboard
   def admin
-    require_admin
     @stats = {
       total_users: User.count,
       djs: User.djs.count,
@@ -47,8 +54,6 @@ class DashboardsController < ApplicationController
 
   # Ad Revenue Dashboard - comprehensive view
   def ad_revenue
-    require_admin
-    
     # Date range filtering (default to last 30 days)
     @date_range = params[:date_range] || '30'
     days = @date_range.to_i
@@ -234,8 +239,6 @@ class DashboardsController < ApplicationController
   public
 
   def dj
-    require_dj
-    
     @user = current_user
     @events = Event.order(date: :desc).limit(10)
     @upcoming_events = Event.where("date >= ?", Date.today).order(date: :asc).limit(5)
@@ -247,8 +250,6 @@ class DashboardsController < ApplicationController
 
   # Artist dashboard
   def artist
-    require_artist
-    
     @user = current_user
     @tracks = Track.order(created_at: :desc).limit(20)
     @albums = Album.order(created_at: :desc).limit(10)
@@ -270,8 +271,6 @@ class DashboardsController < ApplicationController
 
   # Photographer dashboard
   def photographer
-    require_photographer
-    
     @user = current_user
     @galleries = Gallery.order(created_at: :desc).limit(10)
     @recent_galleries = Gallery.order(created_at: :desc).limit(5)
@@ -288,8 +287,6 @@ class DashboardsController < ApplicationController
 
   # Videographer dashboard
   def videographer
-    require_videographer
-    
     @user = current_user
     @videos = Video.order(created_at: :desc).limit(20)
     @recent_videos = Video.order(created_at: :desc).limit(5)
@@ -304,8 +301,6 @@ class DashboardsController < ApplicationController
 
   # Curator dashboard
   def curator
-    require_curator
-    
     @user = current_user
     @features = Feature.order(created_at: :desc).limit(20)
     @recent_features = Feature.order(created_at: :desc).limit(5)
@@ -324,11 +319,10 @@ class DashboardsController < ApplicationController
 
   # Designer dashboard
   def designer
-    require_designer
-    
     @user = current_user
-    @banners = MainBanner.order(created_at: :desc).limit(20)
-    @recent_banners = MainBanner.order(created_at: :desc).limit(5)
+    # main_banners has no timestamps — order by id
+    @banners = MainBanner.order(id: :desc).limit(20)
+    @recent_banners = MainBanner.order(id: :desc).limit(5)
     
     @stats = {
       total_banners: MainBanner.count,
@@ -341,8 +335,6 @@ class DashboardsController < ApplicationController
 
   # Editor dashboard
   def editor
-    require_editor
-    
     @user = current_user
     @features = Feature.order(created_at: :desc).limit(20)
     @recent_features = Feature.order(created_at: :desc).limit(5)

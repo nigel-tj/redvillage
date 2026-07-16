@@ -1,30 +1,34 @@
-<% content_for :title, "Reset Password | The Red Cup Village" %>
+<% content_for :title, "Reset Password | Red Village" %>
 
-<div class="card auth-card">
-  <div class="card-header text-center">
-    <h2 class="mb-2">
-      <i class="fas fa-key mr-2"></i>
-      Forgot Your Password?
-    </h2>
-    <p class="auth-subtext mb-0">Enter your email and we'll send reset instructions</p>
-  </div>
+<section class="rv-auth rv-reveal">
+  <div class="container">
+    <div class="rv-auth__panel">
+      <header class="rv-auth__brand">
+        <p class="rv-auth__brand-name">RED VILLAGE</p>
+        <hr class="rv-rule">
+        <h1 class="rv-auth__title">Reset password</h1>
+        <p class="rv-auth__lede">Enter your email and we'll send reset instructions</p>
+      </header>
 
-  <div class="card-body">
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'auth-form' }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "rv-auth__form" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="mb-4">
-        <%= f.label :email, class: 'form-label' %>
-        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control form-control-lg', placeholder: 'Enter your email address' %>
-      </div>
+        <div class="mb-4">
+          <%= f.label :email, class: "form-label" %>
+          <%= f.email_field :email,
+                autofocus: true,
+                autocomplete: "email",
+                class: "form-control form-control-lg",
+                placeholder: "you@example.com",
+                required: true %>
+        </div>
 
-      <%= f.submit 'Send Reset Instructions', class: 'btn btn-auth-primary w-100' %>
-    <% end %>
-  </div>
+        <%= f.submit "Send reset instructions", class: "btn btn-rv w-100" %>
+      <% end %>
 
-  <div class="card-footer">
-    <div class="auth-links">
-      <%= render "devise/shared/links" %>
+      <footer class="rv-auth__footer">
+        <%= render "devise/shared/links" %>
+      </footer>
     </div>
   </div>
-</div>
+</section>

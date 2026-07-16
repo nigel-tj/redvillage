@@ -1,56 +1,73 @@
-version: '3'
 services:
   db:
     image: mysql:8.0
-    restart: always
+    container_name: redvillage_db_dev
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: redvillage_development
-      MYSQL_USER: redvillage
-      MYSQL_PASSWORD: redvillage
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-redvillage_development}
+      MYSQL_USER: ${DATABASE_USERNAME:-redvillage}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-redvillage}
       MYSQL_ROOT_HOST: '%'
     ports:
-      - "3307:3306"
+      - "${DB_PORT:-3307}:3306"
     volumes:
-      - type: volume
-        source: mysql_data
-        target: /var/lib/mysql
-      - type: bind
-        source: ./docker/mysql/init.sql
-        target: /docker-entrypoint-initdb.d/init.sql
-    command: --default-authentication-plugin=mysql_native_password
+      - mysql_dev_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
       interval: 5s
-      timeout: 5s
+      timeout: 3s
       retries: 5
+      start_period: 10s
+    networks:
+      - redvillage_dev_network
 
   web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: redvillage_web_dev
+    command: bundle exec rails server -b 0.0.0.0 -p 3000
     volumes:
-      - type: bind
-        source: .
-        target: /app
-      - type: volume
-        source: bundle
-        target: /usr/local/bundle
+      # Mount source code for live reloading
+      - .:/app
+      # Persist bundle gems (faster rebuilds)
+      - bundle_dev:/usr/local/bundle
+      # Persist node_modules if you add them later
+      - node_modules:/app/node_modules
+      # Exclude tmp and log from mount (let them be container-specific)
+      - /app/tmp
+      - /app/log
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     environment:
       - RAILS_ENV=development
       - RACK_ENV=development
-      - DATABASE_USERNAME=redvillage
-      - DATABASE_PASSWORD=redvillage
+      - DATABASE_USERNAME=${DATABASE_USERNAME:-redvillage}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD:-redvillage}
       - DATABASE_HOST=db
+      - RAILS_MAX_THREADS=${RAILS_MAX_THREADS:-5}
+      - RAILS_LOG_TO_STDOUT=true
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
     stdin_open: true
     tty: true
+    networks:
+      - redvillage_dev_network
 
 volumes:
-  bundle:
-    name: redvillage_bundle
-  mysql_data:
-    name: redvillage_mysql 
+  bundle_dev:
+    name: redvillage_bundle_dev
+  mysql_dev_data:
+    name: redvillage_mysql_dev
+  node_modules:
+    name: redvillage_node_modules_dev
+
+networks:
+  redvillage_dev_network:
+    name: redvillage_dev_network 

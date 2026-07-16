@@ -1,42 +1,40 @@
-<script src="/scripts/masonry.pkgd.min.js" type="text/javascript"></script>
-<script src="/scripts/isotope.pkgd.min.js" type="text/javascript"></script>
-<script src="/scripts/isotope.init.js" type="text/javascript"></script>
+<% content_for :title, "#{@gallery.name} — Red Village" %>
 
-<div id="services">
-  <div class="container">
-    <div class="row">
-      <div class="row services">
-        <div class="col-sm-9">
-          <div class="row">
-            <div class="grid">
-              <% @gallery.images.each do |image| %>
-                <div class="grid-item grid-sizer col-sm-4 servicebox featured_club">
-                  <div class="servicebox-image">
-                    <a class="pretty-photo" rel="prettyPhoto[iframes]" href="/image/<%= image.id %>">
-                      <img class="img-responsive" src="<%= image.image_url(:thumb) %>" alt="<%= image.name %>" />
-                    </a>
-                  </div>
-                  <div class="servicebox-inner">
-                    <p><%= image.name %></p>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
+<div class="container py-4">
+  <div class="rv-section-head">
+    <h1 class="rv-gradient-text"><%= @gallery.name.presence || "Gallery" %></h1>
+    <% if @gallery.category.present? %>
+      <p class="rv-sub"><%= @gallery.category %></p>
+    <% end %>
+    <hr class="rv-rule">
+  </div>
+
+  <% images = @gallery.images.to_a %>
+  <% if images.any? %>
+    <div class="row g-3">
+      <% images.each do |image| %>
+        <div class="col-6 col-md-4 col-lg-3">
+          <% url = image.image_url(:original) rescue image.image_url %>
+          <% thumb = (image.image_url(:thumb) rescue nil) || (image.image_url(:thumbnail) rescue nil) || url %>
+          <% if thumb.present? %>
+            <a href="<%= url %>" target="_blank" rel="noopener" class="d-block">
+              <%= image_tag thumb, alt: image.name.to_s, class: "img-fluid rounded-3 w-100", style: "height:200px;object-fit:cover;" %>
+            </a>
+            <% if image.name.present? %>
+              <p class="small text-muted mt-2 mb-0"><%= image.name %></p>
+            <% end %>
+          <% else %>
+            <div class="rv-thumb-placeholder" style="height:200px;border-radius:0.75rem;"><i class="fas fa-image fa-2x"></i></div>
+          <% end %>
         </div>
-      </div>
+      <% end %>
     </div>
+  <% else %>
+    <p class="text-center text-muted py-5 mb-0">No images in this gallery yet.</p>
+  <% end %>
+
+  <div class="text-center mt-4">
+    <%= link_to "All galleries", galleries_path, class: "btn btn-outline-rv btn-rv-sm" %>
+    <%= link_to "Visual showcase", "/gallery", class: "btn btn-outline-rv btn-rv-sm" %>
   </div>
 </div>
-
-<script>
-  $(document).ready(function() {
-    document.getElementById('#all_tab').classList.add("active");
-    $('.grid').masonry({
-      // options...
-      itemSelector: '.grid-item',
-      columnWidth: '.grid-sizer',
-      percentPosition: true
-    });
-  });
-</script>

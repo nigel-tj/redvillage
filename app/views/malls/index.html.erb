@@ -1,32 +1,35 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Malls</h1>
+<% content_for :title, "Malls — Red Village" %>
+
+<div class="container py-4">
+  <div class="rv-section-head">
+    <h1 class="rv-gradient-text">Malls</h1>
+    <p class="rv-sub">Shared spaces where makers open storefronts together.</p>
+    <hr class="rv-rule">
   </div>
 
   <% if @malls.any? %>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="row g-4">
       <% @malls.each do |mall| %>
-        <div class="col">
-          <div class="card h-100 shadow-sm">
+        <div class="col-md-6 col-lg-4">
+          <div class="card rv-card h-100">
             <div class="card-body">
-              <h5 class="card-title"><%= link_to mall.name, mall_path(mall), class: "text-decoration-none" %></h5>
+              <h2 class="h5 card-title">
+                <%= link_to mall.name, mall_path(mall), class: "text-decoration-none" %>
+              </h2>
               <% if mall.description.present? %>
                 <p class="card-text text-muted"><%= truncate(mall.description, length: 140) %></p>
               <% end %>
-              <p class="card-text"><small class="text-muted"><%= pluralize(mall.stores.active.count, "store") %></small></p>
+              <p class="small text-muted mb-0"><%= pluralize(mall.stores.active.count, "store") %></p>
             </div>
-            <div class="card-footer bg-transparent">
-              <%= link_to "Visit mall", mall_path(mall), class: "btn btn-outline-primary btn-sm" %>
+            <div class="card-footer border-0 bg-transparent">
+              <%= link_to "Visit mall", mall_path(mall), class: "btn btn-outline-rv btn-rv-sm" %>
             </div>
           </div>
         </div>
       <% end %>
     </div>
-
-    <div class="mt-4">
-      <%= paginate @malls if respond_to?(:paginate) %>
-    </div>
+    <div class="mt-4"><%= paginate @malls if respond_to?(:paginate) && @malls.respond_to?(:current_page) %></div>
   <% else %>
-    <div class="alert alert-info">No malls have been created yet.</div>
+    <p class="text-center text-muted py-5 mb-0">No malls have been created yet.</p>
   <% end %>
 </div>

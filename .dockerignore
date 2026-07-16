@@ -1,0 +1,83 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+*.adoc
+README*
+LICENSE
+CHANGELOG*
+
+# Environment files
+.env*
+!.env.example
+!.env.production.example
+
+# Logs
+log/*
+*.log
+
+# Temporary files
+tmp/*
+!tmp/.keep
+*.pid
+*.swp
+*.swo
+*~
+
+# Database
+db/*.sqlite3
+db/*.sqlite3-*
+
+# Coverage reports
+coverage/
+.byebug_history
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+# Node modules (if any)
+node_modules/
+
+# Spring
+spring/*.pid
+
+# Docker
+docker-compose.override.yml
+.docker-sync/
+Dockerfile*
+docker-compose*.yml
+!docker-compose.yml
+!docker-compose.prod.yml
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Local development files
+.ruby-version
+.rbenv-version
+.rbenv-vars
+
+# Public assets (will be precompiled in container)
+public/assets/
+public/packs/
+public/packs-test/
+
+# Uploads (should be persisted via volumes)
+storage/*
+!storage/.keep
+tmp/storage/*
+!tmp/storage/.keep
+
+# Secrets
+config/master.key
+config/credentials/*.key
+config/secrets.yml
+
+

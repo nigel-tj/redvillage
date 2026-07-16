@@ -1,42 +1,27 @@
-<div class="container">
-  <!-- start news tabs -->
-  <div id="gallery">
-    <!-- banner -->
-    <div class="row">
-      <div class="col-sm-12 banner">
-        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
-      </div>
-    </div>
-    <!-- banner end -->
+<% content_for :title, "#{@feature.heading} — Red Village" %>
 
-    <!--news tabs -->
-    <div class="row">
-      <div class="col-sm-8">
-        <div class="row">
-          <div class="col-sm-8">
-            <p><%= @feature.heading %></p>
-          </div>
-          <!-- Go to www.addthis.com/dashboard to customize your tools -->
-          <div class="addthis_sharing_toolbox"></div>
-        </div>
-      </div>
-      <!-- Adverts -->
-      <div class="col-sm-4">
-        <div class="row front-news">
-          <div class="col-sm-12">
-            <h1 class="wow fadeInUp" data-wow-duration="2s">Adverts</h1>
-            <ul class="advert-image">
-              <li>
-                <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/20/davincii_cropped.jpg">
-              </li>
-              <li>
-                <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/16/COUSIN_JMF_do_it_like_boss_banner_redcup.jpg">
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+<div class="container py-4">
+  <div class="rv-section-head text-start">
+    <p class="small text-muted mb-2"><%= @feature.created_at.strftime("%d %B %Y") %></p>
+    <h1 class="rv-gradient-text"><%= @feature.heading %></h1>
+    <hr class="rv-rule rv-rule-start">
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <% img = @feature.image_url rescue nil %>
+      <% if img.present? %>
+        <%= image_tag img, alt: @feature.heading, class: "img-fluid rounded-4 mb-4 w-100", style: "max-height:420px;object-fit:cover;" %>
+      <% end %>
+      <% if @feature.intro.present? %>
+        <div class="lead text-muted mb-4"><%= simple_format(@feature.intro) %></div>
+      <% end %>
+      <% if @feature.link.present? %>
+        <%= link_to "Read the full story", @feature.link, class: "btn btn-rv", target: "_blank", rel: "noopener" %>
+      <% end %>
+    </div>
+    <div class="col-lg-4">
+      <%= link_to "Back to news", "/news", class: "btn btn-outline-rv w-100" %>
     </div>
   </div>
 </div>
-

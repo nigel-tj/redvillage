@@ -1,9 +1,6 @@
 class VisitorsController < ApplicationController
-  # The homepage (/) intentionally keeps the legacy Bootstrap 3 "new_look"
-  # skin. EVERY other front-end page uses the modern Bootstrap 5 marketplace
-  # skin so the public site shares ONE consistent look (this fixes the old bug
-  # where the home skin bled into About/Team/Schedule/Blog/FAQ/Contact/Gallery).
-  layout "marketplace", except: [:index]
+  # Public marketing pages share ONE Bootstrap 5 marketplace skin (rv_theme).
+  layout "marketplace"
 
   def index
     @banners = MainBanner.where(page: "home")

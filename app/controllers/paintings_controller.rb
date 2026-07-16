@@ -1,4 +1,6 @@
 class PaintingsController < ApplicationController
+  include RoleBasedAccess
+
   before_action :authenticate_user!
   before_action :require_gallery_manager
 

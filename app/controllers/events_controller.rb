@@ -3,7 +3,9 @@ class EventsController < ApplicationController
   
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_admin_or_dj, only: [:new, :create, :update, :edit, :destroy]
+  before_action :require_events_manager, only: [:admin_all_events, :admin_show_event]
   layout "admin", only: [:new, :create, :update,  :admin_all_events, :admin_show_event, :edit]
+  layout "marketplace", only: [:index, :show]
   
   def index
     @events = Event.order('created_at DESC')  

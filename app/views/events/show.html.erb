@@ -1,2 +1,49 @@
+<% content_for :title, "#{@event.name} — Red Village" %>
 
+<div class="container py-4">
+  <div class="rv-hero mb-4">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <% if @event.date.present? %>
+          <p class="text-uppercase small mb-2" style="letter-spacing:0.08em;color:#ff8fbf;">
+            <%= @event.date.strftime("%d %B %Y") %>
+            <% if @event.start_time.present? %> · <%= @event.start_time %><% end %>
+          </p>
+        <% end %>
+        <h1 class="mb-3"><%= @event.name %></h1>
+        <% if @event.summary.present? %>
+          <p class="rv-sub mb-4"><%= simple_format(@event.summary) %></p>
+        <% elsif @event.venue.present? %>
+          <p class="rv-sub mb-4"><i class="fas fa-map-marker-alt me-1"></i><%= @event.venue %></p>
+        <% end %>
+        <div class="d-flex flex-wrap gap-2">
+          <%= link_to "Ticket marketplace", ticket_listings_path(event_id: @event.id), class: "btn btn-rv" %>
+          <%= link_to "All events", events_path, class: "btn btn-outline-rv" %>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <% img = shrine_image_url(@event, :image, :original) || shrine_image_url(@event, :image) rescue nil %>
+        <% if img.present? %>
+          <%= image_tag img, alt: @event.name, class: "img-fluid rounded-4 w-100", style: "max-height:360px;object-fit:cover;" %>
+        <% else %>
+          <div class="rv-thumb-placeholder rounded-4" style="height:280px;border-radius:1rem;"></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
+  <% other = (@events || []).reject { |e| e.id == @event.id }.first(3) %>
+  <% if other.any? %>
+    <div class="rv-section-head">
+      <h2 class="rv-gradient-text h3">More events</h2>
+      <hr class="rv-rule">
+    </div>
+    <div class="row g-4">
+      <% other.each do |event| %>
+        <div class="col-md-4">
+          <%= link_to event.name, event_path(event), class: "rv-explore-link" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

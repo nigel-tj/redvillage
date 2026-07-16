@@ -4,6 +4,7 @@ gem 'rails', '~> 7.2', '>= 7.2.2'
 gem 'sassc-rails', '~> 2.1'  # Replacing sass-rails
 gem 'bootstrap', '~> 5.0'    # Bootstrap 5
 gem 'jquery-rails' # If needed
+gem 'mysql2', '~> 0.5'       # MySQL adapter (prod + dev + test all use MySQL)
 #gem 'jquery', '~> 3.6' # jQuery version for compatibility
 gem 'devise'
 gem 'pundit'
@@ -24,7 +25,6 @@ gem 'coffee-script', '~> 2.4'
 
 # Development and Test gems
 group :development, :test do
-  gem 'sqlite3', '~> 1.4'
   gem 'byebug'
   gem 'spring'
 end

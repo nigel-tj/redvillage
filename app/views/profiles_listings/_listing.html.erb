@@ -1,0 +1,21 @@
+<% title = local_assigns[:title] || "Creators" %>
+<% subtitle = local_assigns[:subtitle] || "Meet the Red Village community." %>
+<% members = local_assigns[:members] || [] %>
+
+<div class="container py-4">
+  <div class="rv-section-head">
+    <h1 class="rv-gradient-text"><%= title %></h1>
+    <p class="rv-sub"><%= subtitle %></p>
+    <hr class="rv-rule">
+  </div>
+
+  <% if members.any? %>
+    <div class="row creator-flex">
+      <% members.each do |member| %>
+        <%= render "profiles_listings/profile_card", profile: member.profile, user: member %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-muted py-5 mb-0">No public profiles yet. Check back soon!</p>
+  <% end %>
+</div>

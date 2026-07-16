@@ -154,6 +154,64 @@
 .admin-body {
   display: flex;
   min-height: 100vh;
+  background-color: #f4f6f9;
+  color: #212529;
+}
+
+/* Readable typography/cards on light admin canvas (overrides marketplace globals) */
+.admin-body .admin-main-content h1,
+.admin-body .admin-main-content h2,
+.admin-body .admin-main-content h3,
+.admin-body .admin-main-content h4,
+.admin-body .admin-main-content h5,
+.admin-body .admin-main-content h6 {
+  color: #212529;
+}
+
+.admin-body .admin-main-content {
+  color: #212529;
+}
+
+.admin-body .admin-main-content .text-muted {
+  color: #6c757d !important;
+}
+
+.admin-body .admin-main-content .card {
+  background-color: #fff;
+  color: #212529;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.admin-body .admin-main-content .card-header {
+  background-color: #f8f9fa;
+  color: #212529;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.admin-body .admin-main-content .card-title,
+.admin-body .admin-main-content .card-body {
+  color: #212529;
+}
+
+.admin-body .admin-main-content .table {
+  color: #212529;
+}
+
+.admin-body .admin-main-content .list-group-item {
+  background-color: #fff;
+  color: #212529;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.admin-body .admin-main-content .btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.admin-body .admin-main-content .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
 }
 
 /* Mobile Menu Toggle Button */

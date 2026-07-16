@@ -36,10 +36,27 @@ Commands:
   assets:clean          Clobber compiled assets
   logs                  Tail development log
 
+Docker Commands:
+  docker:build          Build Docker image (development)
+  docker:build:prod     Build Docker image for production
+  docker:up              Start containers (development)
+  docker:up:prod         Start production containers
+  docker:down            Stop containers
+  docker:down:prod       Stop production containers
+  docker:logs            View container logs
+  docker:logs:prod       View production container logs
+  docker:console         Open Rails console in container
+  docker:console:prod    Open Rails console in production container
+  docker:migrate         Run migrations in container
+  docker:migrate:prod    Run migrations in production container
+  docker:shell           Open shell in container
+  docker:shell:prod      Open shell in production container
+
 Environment variables:
   RAILS_ENV=development|test|production
   PORT=3000 (for start/start:daemon)
   PIDFILE=tmp/pids/puma.pid (for daemon mode)
+  DOCKER_COMPOSE_FILE=docker-compose.yml (override compose file)
 USAGE
 }
 
@@ -165,24 +182,120 @@ assets_clean() { ensure_bundle; rails_cmd assets:clobber; }
 console() { ensure_bundle; rails_cmd console; }
 logs() { tail -f "log/${RAILS_ENV}.log"; }
 
+# Prefer Docker Compose v2 plugin (`docker compose`); fall back to v1 binary.
+docker_compose_bin() {
+  if docker compose version &>/dev/null; then
+    docker compose "$@"
+  elif command -v docker-compose &>/dev/null; then
+    docker-compose "$@"
+  else
+    echo "Docker Compose is not installed. Install Docker Compose v2 (docker compose)." >&2
+    exit 1
+  fi
+}
+
+# Docker helper functions
+docker_compose() {
+  local file="${DOCKER_COMPOSE_FILE:-docker-compose.yml}"
+  docker_compose_bin -f "$file" "$@"
+}
+
+docker_compose_prod() {
+  docker_compose_bin -f docker-compose.prod.yml "$@"
+}
+
+docker_build() {
+  docker_compose build "$@"
+}
+
+docker_build_prod() {
+  docker_compose_prod build "$@"
+}
+
+docker_up() {
+  docker_compose up -d "$@"
+}
+
+docker_up_prod() {
+  docker_compose_prod up -d "$@"
+}
+
+docker_down() {
+  docker_compose down "$@"
+}
+
+docker_down_prod() {
+  docker_compose_prod down "$@"
+}
+
+docker_logs() {
+  docker_compose logs -f "$@"
+}
+
+docker_logs_prod() {
+  docker_compose_prod logs -f "$@"
+}
+
+docker_exec() {
+  local service="${1:-web}"
+  shift
+  docker_compose exec "$service" "$@"
+}
+
+docker_exec_prod() {
+  local service="${1:-web}"
+  shift
+  docker_compose_prod exec "$service" "$@"
+}
+
+# Docker commands
+docker_build_cmd() { docker_build; }
+docker_build_prod_cmd() { docker_build_prod; }
+docker_up_cmd() { docker_up; }
+docker_up_prod_cmd() { docker_up_prod; }
+docker_down_cmd() { docker_down; }
+docker_down_prod_cmd() { docker_down_prod; }
+docker_logs_cmd() { docker_logs; }
+docker_logs_prod_cmd() { docker_logs_prod; }
+docker_console() { docker_exec web bundle exec rails console; }
+docker_console_prod() { docker_exec_prod web bundle exec rails console; }
+docker_migrate() { docker_exec web bundle exec rails db:migrate; }
+docker_migrate_prod() { docker_exec_prod web bundle exec rails db:migrate RAILS_ENV=production; }
+docker_shell() { docker_exec web bash; }
+docker_shell_prod() { docker_exec_prod web bash; }
+
 cmd="${1:-}"; shift || true
 
 case "$cmd" in
-  setup)              setup "$@" ;;
-  update)             update "$@" ;;
-  start)              start "$@" ;;
-  start:daemon)       start_daemon "$@" ;;
-  stop)               stop "$@" ;;
-  restart)            restart "$@" ;;
-  status)             status "$@" ;;
-  console)            console "$@" ;;
-  migrate)            migrate "$@" ;;
-  db:setup)           db_setup "$@" ;;
-  db:seed)            db_seed "$@" ;;
-  assets:precompile)  assets_precompile "$@" ;;
-  assets:clean)       assets_clean "$@" ;;
-  logs)               logs "$@" ;;
-  -h|--help|help|"") usage ;;
+  setup)                  setup "$@" ;;
+  update)                 update "$@" ;;
+  start)                  start "$@" ;;
+  start:daemon)           start_daemon "$@" ;;
+  stop)                   stop "$@" ;;
+  restart)                restart "$@" ;;
+  status)                 status "$@" ;;
+  console)                console "$@" ;;
+  migrate)                migrate "$@" ;;
+  db:setup)               db_setup "$@" ;;
+  db:seed)                db_seed "$@" ;;
+  assets:precompile)      assets_precompile "$@" ;;
+  assets:clean)           assets_clean "$@" ;;
+  logs)                   logs "$@" ;;
+  docker:build)           docker_build_cmd "$@" ;;
+  docker:build:prod)       docker_build_prod_cmd "$@" ;;
+  docker:up)              docker_up_cmd "$@" ;;
+  docker:up:prod)          docker_up_prod_cmd "$@" ;;
+  docker:down)             docker_down_cmd "$@" ;;
+  docker:down:prod)        docker_down_prod_cmd "$@" ;;
+  docker:logs)             docker_logs_cmd "$@" ;;
+  docker:logs:prod)        docker_logs_prod_cmd "$@" ;;
+  docker:console)          docker_console "$@" ;;
+  docker:console:prod)     docker_console_prod "$@" ;;
+  docker:migrate)          docker_migrate "$@" ;;
+  docker:migrate:prod)     docker_migrate_prod "$@" ;;
+  docker:shell)            docker_shell "$@" ;;
+  docker:shell:prod)       docker_shell_prod "$@" ;;
+  -h|--help|help|"")       usage ;;
   *) echo "Unknown command: $cmd"; echo; usage; exit 1 ;;
 esac
 

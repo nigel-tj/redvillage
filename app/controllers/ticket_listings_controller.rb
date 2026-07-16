@@ -8,9 +8,9 @@ class TicketListingsController < ApplicationController
   def determine_layout
     case action_name
     when 'index', 'show'
-      'new_look_layout'  # Use front-end layout for public pages
+      'marketplace'
     else
-      'admin'  # Use admin layout for authenticated actions
+      'admin'
     end
   end
   
@@ -36,8 +36,8 @@ class TicketListingsController < ApplicationController
     if params[:search].present?
       search_term = "%#{params[:search]}%"
       @ticket_listings = @ticket_listings.joins(:event)
-                                        .where("events.name ILIKE ? OR ticket_listings.description ILIKE ?", 
-                                               search_term, search_term)
+                                        .where("LOWER(events.name) LIKE ? OR LOWER(ticket_listings.description) LIKE ?",
+                                               search_term.downcase, search_term.downcase)
     end
     
     # Order by price or date

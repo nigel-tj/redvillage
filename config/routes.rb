@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
+  # Docker / load-balancer health check
+  get "up" => "rails/health#show", as: :rails_health_check
+
   # Devise routes for user authentication
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
   }
   devise_for :admins, controllers: {
     sessions: 'admins/sessions',

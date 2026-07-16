@@ -1,40 +1,38 @@
-<!-- Event of the month -->
-<div class="container">
-  <div id="events">
-    <div class="row">
-      <div class="col-sm-12">
-        <h1 class="wow fadeInUp" data-wow-duration="1s">EVENTS OF THE MONTH</h1>
-      </div>
-      <ul class="event-inner bxslider one">
-        <% for event in @events %>
-          <li class="col-sm-6">
-            <div class="event-box row text-center">
-              <div class="event-box-left col-sm-6 col-md-3">
-                <h2>
-                  29
-                  <br>
-                  <span class="month">APRIL</span>
-                </h2>
-                <h3>11:00 PM</h3>
-                <p>
-                  <i class="fa fa-map-marker"></i>
-                  <br>
-                  CITY PLAZA,
-                  <br>
-                  NEW
-                </p>
-              </div>
-              <div class="event-box-right col-sm-6 col-md-9">
-                <img class="img-responsive" alt="<%= event.name %>" src="<%= event.image_url(:thumb) %>">
-              </div>
-              <div class="event-box-bottom clearfix">
-                <h2><%= event.name %></h2>
-              </div>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-</div>
+<% content_for :title, "Events — Red Village" %>
 
+<div class="container py-4">
+  <div class="rv-section-head">
+    <h1 class="rv-gradient-text">Events</h1>
+    <p class="rv-sub">Nights, festivals, and community gatherings near you.</p>
+    <hr class="rv-rule">
+  </div>
+
+  <% if @events.present? %>
+    <div class="row g-4 justify-content-center">
+      <% @events.each do |event| %>
+        <div class="col-sm-6 col-lg-4">
+          <%= link_to event_path(event), class: "rv-event-tile text-decoration-none" do %>
+            <% img = shrine_image_url(event, :image, :thumbnail) || shrine_image_url(event, :image) rescue nil %>
+            <div class="rv-event-tile__media">
+              <% if img.present? %>
+                <%= image_tag img, alt: event.name, class: "rv-event-tile__img" %>
+              <% else %>
+                <div class="rv-event-tile__placeholder" aria-hidden="true"></div>
+              <% end %>
+            </div>
+            <div class="rv-event-tile__body">
+              <% if event.date.present? %>
+                <time class="rv-event-tile__date" datetime="<%= event.date.iso8601 %>">
+                  <%= event.date.strftime("%d %b %Y") %>
+                </time>
+              <% end %>
+              <h2 class="rv-event-tile__title h5"><%= event.name %></h2>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-muted py-5 mb-0">No events published yet. Check back soon.</p>
+  <% end %>
+</div>

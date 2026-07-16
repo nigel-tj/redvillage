@@ -4,13 +4,14 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-   config.secret_key = 'c6a93ff2ade28fe6418f6f6a1fe01b15bbd7ce4aa138cc90a753808300316029bb81a5c50b724b055fd93b7520312722286a6ec78c62dcdac431bf5058532708'
+  # Prefer ENV; fall back to Rails secret_key_base (never commit a fixed hex).
+  config.secret_key = ENV.fetch("DEVISE_SECRET_KEY") { Rails.application.secret_key_base }
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = ENV.fetch("DEVISE_MAILER_SENDER", "noreply@redvillage.test")
 
   # Configure the class responsible to send e-mails.
    config.mailer = 'Devise::Mailer'
@@ -260,12 +261,12 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
-  config.secret_key = '482eff324eec43b437b51e0be229c90dcc915dbff12e9644b704dee7f85f3788412c38010154fcb33e94ff0e1e70b7c4765d312d0827384b761a4ac16eb19359'
 end
 
-# Configure Devise layouts
+# Default Devise chrome for any controller that does not set its own layout.
+# Users::* controllers use marketplace; Admins::* set layout "admin".
 Rails.application.config.to_prepare do
-  Devise::SessionsController.layout "authentication"
-  Devise::RegistrationsController.layout "authentication"
-  Devise::PasswordsController.layout "authentication"
+  Devise::SessionsController.layout "marketplace"
+  Devise::RegistrationsController.layout "marketplace"
+  Devise::PasswordsController.layout "marketplace"
 end

@@ -3,9 +3,10 @@ class GalleriesController < ApplicationController
   
   # Public: browsing galleries is open to everyone.
   before_action :authenticate_user!, except: [:index, :show, :show_gallery]
-  before_action :require_photographer_or_admin, only: [:new, :create, :update, :edit, :destroy]
+  before_action :require_gallery_manager, only: [:new, :create, :update, :edit, :destroy, :admin_show]
   before_action :authorize_gallery, only: [:update, :edit, :destroy]
-  layout "admin", only: [:new, :create, :update, :admin_show, :index, :show]
+  layout "admin", only: [:new, :create, :update, :admin_show, :edit]
+  layout "marketplace", only: [:index, :show, :show_gallery]
   
   def index
     @galleries = Gallery.order('created_at DESC')

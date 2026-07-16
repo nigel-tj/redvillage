@@ -6,30 +6,18 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <!-- Bootstrap 5 CSS -->
   <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
         integrity: 'sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH',
         crossorigin: 'anonymous' %>
-  <!-- Font Awesome -->
   <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
         integrity: 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==',
         crossorigin: 'anonymous', referrerpolicy: 'no-referrer' %>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
 
-  <title><%= content_for?(:title) ? yield(:title) : "Red Village Marketplace" %></title>
-  <style>
-    .marketplace-nav { background:#03111e; border-bottom:1px solid rgba(255,255,255,0.08); }
-    .marketplace-nav .nav-link { color:#e9e9f0; }
-    .marketplace-nav .nav-link:hover { color:#ff6975; }
-    .marketplace-nav .nav-link.active { color:#ff6975; }
-    .navbar-toggler { border-color: rgba(255,255,255,0.3); }
-    .dropdown-menu { background:#0b1d2e; border:1px solid rgba(255,255,255,0.08); }
-    .dropdown-menu .dropdown-item { color:#e9e9f0; }
-    .dropdown-menu .dropdown-item:hover { background:#ff6975; color:#fff; }
-  </style>
+  <title><%= content_for?(:title) ? yield(:title) : "Red Village" %></title>
 </head>
-<body class="marketplace-body">
-  <nav class="navbar navbar-expand-lg marketplace-nav">
+<body class="marketplace-body<%= ' rv-home' if content_for?(:full_bleed) %>">
+  <nav class="navbar navbar-expand-lg marketplace-nav sticky-top">
     <div class="container">
       <a class="navbar-brand" href="/">RED VILLAGE</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#marketplaceNav"
@@ -39,40 +27,35 @@
       <div class="collapse navbar-collapse" id="marketplaceNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><%= link_to "Home", "/", class: "nav-link #{'active' if current_page?('/')}" %></li>
-          <li class="nav-item"><%= link_to "Malls", malls_path, class: "nav-link #{'active' if controller_name == 'malls'}" %></li>
-          <li class="nav-item"><%= link_to "Stores", stores_path, class: "nav-link #{'active' if controller_name == 'stores'}" %></li>
           <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link #{'active' if controller_name == 'events'}" %></li>
-          <li class="nav-item"><%= link_to "Gallery", "/gallery", class: "nav-link #{'active' if current_page?('/gallery')}" %></li>
-          <li class="nav-item"><%= link_to "Artists", artists_path, class: "nav-link #{'active' if controller_name == 'artists'}" %></li>
           <li class="nav-item"><%= link_to "Music", "/music", class: "nav-link #{'active' if current_page?('/music')}" %></li>
+          <li class="nav-item"><%= link_to "Gallery", "/gallery", class: "nav-link #{'active' if current_page?('/gallery')}" %></li>
+          <li class="nav-item"><%= link_to "Stores", stores_path, class: "nav-link #{'active' if controller_name == 'stores'}" %></li>
+          <li class="nav-item"><%= link_to "Malls", malls_path, class: "nav-link #{'active' if controller_name == 'malls'}" %></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle #{'active' if controller_name == 'profiles_listings'}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Creators</a>
+            <a class="nav-link dropdown-toggle #{'active' if controller_name == 'profiles_listings' || current_page?(team_path)}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Creators</a>
             <ul class="dropdown-menu">
-              <li><%= link_to "Top DJs", top_dj_path, class: "dropdown-item #{'active' if current_page?(top_dj_path)}" %></li>
-              <li><%= link_to "DJs", djs_listing_path, class: "dropdown-item #{'active' if current_page?(djs_listing_path)}" %></li>
-              <li><%= link_to "Artists", artists_listing_path, class: "dropdown-item #{'active' if current_page?(artists_listing_path)}" %></li>
-              <li><%= link_to "Photographers", photographers_listing_path, class: "dropdown-item #{'active' if current_page?(photographers_listing_path)}" %></li>
-              <li><%= link_to "Videographers", videographers_listing_path, class: "dropdown-item #{'active' if current_page?(videographers_listing_path)}" %></li>
-              <li><%= link_to "All Creators", all_creators_listing_path, class: "dropdown-item #{'active' if current_page?(all_creators_listing_path)}" %></li>
+              <li><%= link_to "Top DJs", top_dj_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Artists", artists_listing_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Photographers", photographers_listing_path, class: "dropdown-item" %></li>
+              <li><%= link_to "All Creators", all_creators_listing_path, class: "dropdown-item" %></li>
+              <li><hr class="dropdown-divider border-secondary"></li>
+              <li><%= link_to "Our Team", team_path, class: "dropdown-item" %></li>
             </ul>
           </li>
-          <li class="nav-item"><%= link_to "Team", team_path, class: "nav-link #{'active' if current_page?(team_path)}" %></li>
-          <li class="nav-item"><%= link_to "Schedule", schedule_path, class: "nav-link #{'active' if current_page?(schedule_path)}" %></li>
-          <li class="nav-item"><%= link_to "Blog", blog_path, class: "nav-link #{'active' if current_page?(blog_path)}" %></li>
-          <li class="nav-item"><%= link_to "FAQ", faq_path, class: "nav-link #{'active' if current_page?(faq_path)}" %></li>
           <li class="nav-item"><%= link_to "Contact", contact_us_path, class: "nav-link #{'active' if current_page?(contact_us_path)}" %></li>
         </ul>
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
           <% if user_signed_in? %>
             <li class="nav-item"><%= link_to "My Stores", my_stores_path, class: "nav-link" %></li>
             <li class="nav-item">
               <%= link_to destroy_user_session_path, method: :delete, class: "nav-link" do %>
-                <i class="fas fa-sign-out-alt me-1"></i> Logout
+                Logout
               <% end %>
             </li>
           <% else %>
             <li class="nav-item"><%= link_to "Login", new_user_session_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Register", new_user_registration_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Join", new_user_registration_path, class: "btn btn-rv btn-rv-sm ms-lg-2" %></li>
           <% end %>
         </ul>
       </div>
@@ -88,7 +71,7 @@
     <% end %>
   <% end %>
 
-  <main class="py-4">
+  <main class="<%= content_for?(:full_bleed) ? 'rv-main-bleed' : 'py-4' %>">
     <%= yield %>
   </main>
 
@@ -97,15 +80,16 @@
       <div class="row g-4">
         <div class="col-md-5">
           <p class="rv-footer-brand mb-1">RED VILLAGE</p>
-          <p class="text-muted small mb-0">Zimbabwe's creative marketplace — for the makers, the musicians, and the fans. Harare &middot; Est. creative community.</p>
+          <p class="text-muted small mb-0">A global creative marketplace — for the makers, the musicians, and the fans. Est. creative community.</p>
         </div>
         <div class="col-6 col-md-3">
           <h6 class="fw-bold mb-3">Explore</h6>
           <ul class="list-unstyled small">
-            <li class="mb-2"><%= link_to "Malls", malls_path %></li>
-            <li class="mb-2"><%= link_to "Stores", stores_path %></li>
             <li class="mb-2"><%= link_to "Events", events_path %></li>
+            <li class="mb-2"><%= link_to "Music", "/music" %></li>
             <li class="mb-2"><%= link_to "Gallery", "/gallery" %></li>
+            <li class="mb-2"><%= link_to "Stores", stores_path %></li>
+            <li class="mb-2"><%= link_to "Malls", malls_path %></li>
           </ul>
         </div>
         <div class="col-6 col-md-2">
@@ -122,6 +106,7 @@
             <li class="mb-2"><%= link_to "About", about_us_path %></li>
             <li class="mb-2"><%= link_to "Blog", blog_path %></li>
             <li class="mb-2"><%= link_to "FAQ", faq_path %></li>
+            <li class="mb-2"><%= link_to "Schedule", schedule_path %></li>
             <li class="mb-2"><%= link_to "Contact", contact_us_path %></li>
           </ul>
         </div>

@@ -1,36 +1,47 @@
-<% content_for :title, "Change Password | The Red Cup Village" %>
+<% content_for :title, "Change Password | Red Village" %>
 
-<div class="card auth-card">
-  <div class="card-header text-center">
-    <h2 class="mb-2">
-      <i class="fas fa-lock mr-2"></i>
-      Change Your Password
-    </h2>
-    <p class="auth-subtext mb-0">Choose a strong password to keep your account safe</p>
-  </div>
+<section class="rv-auth rv-reveal">
+  <div class="container">
+    <div class="rv-auth__panel">
+      <header class="rv-auth__brand">
+        <p class="rv-auth__brand-name">RED VILLAGE</p>
+        <hr class="rv-rule">
+        <h1 class="rv-auth__title">Choose a new password</h1>
+        <p class="rv-auth__lede">Pick something strong you haven't used elsewhere</p>
+      </header>
 
-  <div class="card-body">
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'auth-form' }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-      <%= f.hidden_field :reset_password_token %>
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "rv-auth__form" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+        <%= f.hidden_field :reset_password_token %>
 
-      <div class="mb-3">
-        <%= f.label :password, 'New password', class: 'form-label' %>
-        <%= f.password_field :password, autocomplete: 'new-password', class: 'form-control form-control-lg', placeholder: 'Enter new password (minimum 8 characters)' %>
-      </div>
+        <div class="mb-3">
+          <%= f.label :password, "New password", class: "form-label" %>
+          <%= f.password_field :password,
+                autofocus: true,
+                autocomplete: "new-password",
+                class: "form-control form-control-lg",
+                placeholder: "At least #{@minimum_password_length || 8} characters",
+                required: true %>
+          <% if @minimum_password_length %>
+            <small class="form-text text-muted"><%= @minimum_password_length %> characters minimum</small>
+          <% end %>
+        </div>
 
-      <div class="mb-4">
-        <%= f.label :password_confirmation, 'Confirm new password', class: 'form-label' %>
-        <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control form-control-lg', placeholder: 'Confirm your new password' %>
-      </div>
+        <div class="mb-4">
+          <%= f.label :password_confirmation, "Confirm new password", class: "form-label" %>
+          <%= f.password_field :password_confirmation,
+                autocomplete: "new-password",
+                class: "form-control form-control-lg",
+                placeholder: "Confirm your new password",
+                required: true %>
+        </div>
 
-      <%= f.submit 'Change Password', class: 'btn btn-auth-primary w-100' %>
-    <% end %>
-  </div>
+        <%= f.submit "Update password", class: "btn btn-rv w-100" %>
+      <% end %>
 
-  <div class="card-footer">
-    <div class="auth-links">
-      <%= render "devise/shared/links" %>
+      <footer class="rv-auth__footer">
+        <%= render "devise/shared/links" %>
+      </footer>
     </div>
   </div>
-</div>
+</section>
