@@ -1,62 +1,53 @@
-<div id="services">
-  <div class="container">
-    <div class="row">
-      <div id="gallery" class="text-center">
-        <div class="container">
-          <div class="row text-center">
-            <div class="tabs tabs-style-linebox wow fadeInUp" data-wow-duration="2s">
-              <nav>
-                <ul class="filters">
-                  <li class="hvr-sweep-to-top active filter" data-filter="all" id="#all_tab">
-                    <span>All</span>
-                  </li>
-                  <li class="hvr-sweep-to-top filter" data-filter=".new">
-                    <span>Latest</span>
-                  </li>
-                  <li class="hvr-sweep-to-top filter" data-filter=".hallOfFame">
-                    <span>Hall Of Fame</span>
-                  </li>
-                </ul>
-              </nav>
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "Albums",
+        eyebrow: "Music & entertainment",
+        subtitle: "Browse and manage albums and mixtapes.",
+        primary_path: new_album_path,
+        primary_label: "New Album",
+        primary_icon: "fas fa-compact-disc",
+        user: current_user %>
+
+  <div class="dash-stats dash-stats--3">
+    <%= render "dashboards/stat_card", label: "Total Albums", value: @albums.size, icon: "fas fa-layer-group" %>
+    <%= render "dashboards/stat_card", label: "Total Tracks", value: @albums.sum { |a| a.tracks.size }, icon: "fas fa-music" %>
+    <%= render "dashboards/stat_card", label: "Artists", value: @albums.map(&:artist_name).compact.uniq.size, icon: "fas fa-microphone" %>
+  </div>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "All Albums",
+        action: link_to("Upload New Album", new_album_path, class: "btn-dash")
+      } do %>
+    <% if @albums.any? %>
+      <div class="dash-media-grid">
+        <% @albums.each do |album| %>
+          <% cover = shrine_image_url(album, :image, :thumbnail) || shrine_image_url(album, :image) %>
+          <div class="dash-media-card">
+            <div class="dash-media-card__thumb">
+              <% if cover.present? %>
+                <%= image_tag cover, alt: album.name %>
+              <% else %>
+                <i class="fas fa-compact-disc"></i>
+              <% end %>
             </div>
-          </div>
-        </div>
-      </div>
-      <div id="services">
-        <div class="container">
-          <div class="row">
-            <div id="gallery" class="text-center">
-              <div class="container-fluid">
-                <div class="row gallery text-center">
-                  <div class="col-md-12 noPadding">
-                    <div class="gallery-photo-grid">
-                      <div class="gallery-photos">
-                        <div class="gallery-photos-thumb">
-                          <% for track in @album.tracks %>
-                            <div class="gallery-photo-item mix new fadeIn">
-                              <a class="pretty-photo" data-gal="prettyPhoto[gallery-photo-thumb]" href="<%= album.cover_url %>">
-                                <div class="photo-thumb">
-                                  <%= image_tag track.image_url(:thumb) if track.image? %>
-                                </div>
-                                <div class="overlay">
-                                  <span class="gallery-icon">
-                                    <i class="fa fa-search-plus fa-2x"></i>
-                                  </span>
-                                </div>
-                              </a>
-                            </div>
-                          <% end %>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div class="dash-media-card__body">
+              <h3 class="dash-media-card__title"><%= album.name %></h3>
+              <p class="dash-media-card__meta"><%= album.artist_name.presence || "Unknown artist" %></p>
+              <p class="dash-media-card__meta"><%= pluralize(album.tracks.size, "track") %></p>
+              <div class="dash-media-card__actions">
+                <%= link_to "View", album_path(album), class: "btn-dash btn-sm" %>
+                <%= link_to "Edit", edit_album_path(album), class: "btn-dash-outline btn-sm" %>
+                <%= link_to "Add tracks", new_track_path(album_id: album.id), class: "btn-dash-outline btn-sm" %>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       </div>
-    </div>
-  </div>
+    <% else %>
+      <div class="dash-empty padded">
+        <p>No albums yet.</p>
+        <%= link_to "Create Your First Album", new_album_path, class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
 </div>
-

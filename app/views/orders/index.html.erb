@@ -1,60 +1,61 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Orders</h2>
-    <%= link_to "Back to Store", store_path(@store), class: "btn btn-outline-primary" %>
-  </div>
-  
-  <% if @orders.any? %>
-    <div class="table-responsive">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Order #</th>
-            <th>Date</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @orders.each do |order| %>
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "Orders",
+        eyebrow: @store.name,
+        subtitle: "Track and fulfill customer purchases.",
+        primary_path: store_path(@store),
+        primary_label: "Back to Store",
+        primary_icon: "fas fa-store",
+        user: current_user %>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Order history",
+        action: link_to("Store dashboard", store_dashboard_path(@store), class: "btn-dash-outline")
+      } do %>
+    <% if @orders.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
             <tr>
-              <td><strong>#<%= order.id %></strong></td>
-              <td><%= order.created_at.strftime("%b %d, %Y") %></td>
-              <td><%= order.order_items.sum(:quantity) %> items</td>
-              <td><strong><%= order.formatted_total %></strong></td>
-              <td>
-                <span class="badge bg-<%= 
-                  case order.status
-                  when 'delivered' then 'success'
-                  when 'shipped' then 'info'
-                  when 'processing' then 'primary'
-                  when 'cancelled' then 'danger'
-                  else 'warning'
-                  end
-                %>">
-                  <%= order.status.titleize %>
-                </span>
-              </td>
-              <td>
-                <%= link_to store_order_path(@store, order), class: "btn btn-sm btn-outline-primary" do %>
-                  <i class="fas fa-eye"></i> View
-                <% end %>
-              </td>
+              <th>Order #</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    
-    <%= paginate @orders %>
-  <% else %>
-    <div class="text-center py-5">
-      <i class="fas fa-shopping-bag fa-4x mb-3 text-muted"></i>
-      <h4>No orders yet</h4>
-      <p class="text-muted">Orders will appear here once customers start purchasing.</p>
-    </div>
+          </thead>
+          <tbody>
+            <% @orders.each do |order| %>
+              <tr>
+                <td><strong>#<%= order.id %></strong></td>
+                <td><%= order.created_at.strftime("%b %d, %Y") %></td>
+                <td><%= order.order_items.sum(:quantity) %> items</td>
+                <td><strong><%= order.formatted_total %></strong></td>
+                <td>
+                  <% badge_class = case order.status
+                     when "delivered" then "dash-badge--ok"
+                     when "cancelled" then "dash-badge--danger"
+                     when "pending" then "dash-badge--warn"
+                     else ""
+                     end %>
+                  <span class="dash-badge <%= badge_class %>"><%= order.status.titleize %></span>
+                </td>
+                <td>
+                  <%= link_to "View", store_order_path(@store, order), class: "btn-dash btn-sm" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-3 pb-3"><%= paginate @orders if @orders.respond_to?(:current_page) %></div>
+    <% else %>
+      <div class="dash-empty padded">
+        <i class="fas fa-shopping-bag d-block"></i>
+        <h3>No orders yet</h3>
+        <p>Orders will appear here once customers start purchasing.</p>
+      </div>
+    <% end %>
   <% end %>
 </div>
-

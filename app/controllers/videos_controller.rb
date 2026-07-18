@@ -3,7 +3,7 @@ class VideosController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_video_manager, only: [:new, :create, :update, :edit, :destroy, :all_videos]
-  layout "admin", only: [:new, :create, :update, :all_videos]
+  layout "admin", only: [:new, :create, :update, :edit, :all_videos]
 
   def index
     @videos = Video.order('created_at DESC')

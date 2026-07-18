@@ -1,74 +1,62 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="mb-0">
-            <i class="fas fa-edit me-2"></i>
-            Edit Banner
-          </h2>
-        </div>
-        <div class="card-body">
-          <%= form_for @banner, html: { multipart: true } do |f| %>
-            <%= render 'shared/errors', object: @banner %>
-            
-            <div class="mb-3">
-              <%= f.label :image, class: "form-label" %>
-              <% if @banner.image %>
-                <% img_url = shrine_image_url(@banner, :image, :thumbnail) || shrine_image_url(@banner, :image) %>
-                <% if img_url %>
-                  <div class="mb-3">
-                    <img class="img-thumbnail" src="<%= img_url %>" alt="<%= @banner.name %>" style="max-width: 300px;">
-                  </div>
-                <% end %>
-              <% end %>
-              <%= f.hidden_field :image, value: @banner.image_data %>
-              <%= f.file_field :image, class: 'form-control', accept: 'image/*' %>
-              <small class="form-text text-muted">Upload a new banner image if you want to replace the current one</small>
-            </div>
+<div class="dash">
+  <%= render "shared/dash_page_header",
+        title: "Edit Banner",
+        eyebrow: "Design",
+        subtitle: @banner.name,
+        user: current_user %>
 
-            <div class="mb-3">
-              <%= f.label :name, class: "form-label" %>
-              <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Banner name' %>
-              <small class="form-text text-muted">Banner name</small>
-            </div>
+  <%= render layout: "dashboards/panel", locals: { title: "Banner details", padded: true } do %>
+    <%= form_for @banner, html: { multipart: true, class: "dash-form" } do |f| %>
+      <%= render "shared/errors", object: @banner %>
 
-            <div class="mb-3">
-              <%= f.label :title, class: "form-label" %>
-              <%= f.text_field :title, class: 'form-control', required: true, placeholder: 'Text to show on banner' %>
-              <small class="form-text text-muted">Text to show on banner</small>
-            </div>
+      <div class="mb-3">
+        <% img_url = shrine_image_url(@banner, :image, :thumbnail) || shrine_image_url(@banner, :image) %>
+        <%= f.hidden_field :image, value: @banner.image_data %>
+        <%= render "shared/dash_upload",
+              form: f,
+              method: :image,
+              label: "Banner image",
+              hint: "Leave empty to keep the current image",
+              current_url: img_url %>
+      </div>
 
-            <div class="mb-3">
-              <%= f.label :page, class: "form-label" %>
-              <%= f.select "page", 
-                  [["Select page to display banner","none"],
-                   ["Home","home"], 
-                   ["Videos","videos"],
-                   ["Music","music"],
-                   ["Events","events"],
-                   ["Artists","artists"]], 
-                  {}, 
-                  { class: 'form-select' } %>
-              <small class="form-text text-muted">Select the page where this banner should appear</small>
-            </div>
+      <div class="mb-3">
+        <%= f.label :name, class: "form-label" %>
+        <%= f.text_field :name, class: "form-control", required: true, placeholder: "Internal name" %>
+      </div>
 
-            <div class="mb-3">
-              <label class="form-label">Options</label>
-              <div class="form-check mt-2">
-                <%= f.check_box :ticket_promo, class: 'form-check-input' %>
-                <%= f.label :ticket_promo, "Enable ticket booking and promo video section", class: 'form-check-label' %>
-              </div>
-              <small class="form-text text-muted">When enabled, this banner will show the ticket booking and promo video section</small>
-            </div>
+      <div class="mb-3">
+        <%= f.label :title, "On-banner text", class: "form-label" %>
+        <%= f.text_field :title, class: "form-control", required: true, placeholder: "Text shown on the banner" %>
+      </div>
 
-            <div class="d-flex justify-content-between mt-4">
-              <%= link_to 'Cancel', main_banners_path, class: 'btn btn-secondary' %>
-              <%= f.submit 'Update Banner', class: 'btn btn-primary' %>
-            </div>
-          <% end %>
+      <div class="mb-3">
+        <%= f.label :page, class: "form-label" %>
+        <%= f.select :page,
+              [
+                ["Select page", "none"],
+                ["Home", "home"],
+                ["Videos", "videos"],
+                ["Music", "music"],
+                ["Events", "events"],
+                ["Artists", "artists"]
+              ],
+              {},
+              { class: "form-select" } %>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Options</label>
+        <div class="form-check mt-2">
+          <%= f.check_box :ticket_promo, class: "form-check-input" %>
+          <%= f.label :ticket_promo, "Enable ticket booking and promo video section", class: "form-check-label" %>
         </div>
       </div>
-    </div>
-  </div>
-</div> 
+
+      <%= render "shared/dash_form_actions",
+            form: f,
+            cancel_path: main_banners_path,
+            submit_label: "Update Banner" %>
+    <% end %>
+  <% end %>
+</div>

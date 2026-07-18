@@ -1,87 +1,43 @@
-<div class="container mt-4">
-  <div class="row">
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "Storefront Settings",
+        eyebrow: @store.name,
+        subtitle: "Current branding and theme for this store.",
+        primary_path: edit_store_storefront_settings_path(@store),
+        primary_label: "Edit Settings",
+        primary_icon: "fas fa-paint-brush",
+        user: current_user %>
+
+  <div class="row g-3">
     <div class="col-lg-8">
-      <div class="card shadow-sm">
-        <div class="card-header">
-          <h3 class="mb-0"><i class="fas fa-paint-brush me-2"></i>Storefront Settings</h3>
-        </div>
-        <div class="card-body">
-          <p class="text-muted">Customize your store's appearance and branding.</p>
-          
-          <div class="row mb-4">
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <div style="width: 100%; height: 100px; background-color: <%= @storefront_settings.primary_color || '#007bff' %>; border-radius: 0.25rem;"></div>
-                  <small class="text-muted mt-2 d-block">Primary Color</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <div style="width: 100%; height: 100px; background-color: <%= @storefront_settings.secondary_color || '#6c757d' %>; border-radius: 0.25rem;"></div>
-                  <small class="text-muted mt-2 d-block">Secondary Color</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <div style="width: 100%; height: 100px; background-color: <%= @storefront_settings.accent_color || '#28a745' %>; border-radius: 0.25rem;"></div>
-                  <small class="text-muted mt-2 d-block">Accent Color</small>
-                </div>
-              </div>
-            </div>
+      <%= render layout: "dashboards/panel", locals: { title: "Color palette", padded: true } do %>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div style="height: 100px; border-radius: 14px; background: <%= @storefront_settings.primary_color || '#ff6975' %>;"></div>
+            <div class="small text-muted mt-2">Primary · <%= @storefront_settings.primary_color %></div>
           </div>
-          
-          <div class="d-grid gap-2">
-            <%= link_to edit_store_storefront_settings_path(@store), class: "btn btn-primary" do %>
-              <i class="fas fa-edit me-1"></i> Edit Settings
-            <% end %>
-            <%= link_to preview_store_storefront_settings_path(@store), class: "btn btn-outline-primary", target: "_blank" do %>
-              <i class="fas fa-eye me-1"></i> Preview Storefront
-            <% end %>
+          <div class="col-md-4">
+            <div style="height: 100px; border-radius: 14px; background: <%= @storefront_settings.secondary_color || '#03111e' %>;"></div>
+            <div class="small text-muted mt-2">Secondary · <%= @storefront_settings.secondary_color %></div>
+          </div>
+          <div class="col-md-4">
+            <div style="height: 100px; border-radius: 14px; background: <%= @storefront_settings.accent_color || '#a730b2' %>;"></div>
+            <div class="small text-muted mt-2">Accent · <%= @storefront_settings.accent_color %></div>
           </div>
         </div>
-      </div>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <%= link_to "Edit Settings", edit_store_storefront_settings_path(@store), class: "btn-dash" %>
+          <%= link_to "Preview", preview_store_storefront_settings_path(@store), class: "btn-dash-outline", target: "_blank" %>
+        </div>
+      <% end %>
     </div>
-    
     <div class="col-lg-4">
-      <div class="card shadow-sm">
-        <div class="card-header">
-          <h5 class="mb-0">Current Settings</h5>
-        </div>
-        <div class="card-body">
-          <ul class="list-unstyled">
-            <li class="mb-2">
-              <strong>Theme:</strong> <%= @storefront_settings.theme.titleize %>
-            </li>
-            <li class="mb-2">
-              <strong>Font:</strong> <%= @storefront_settings.font_family %>
-            </li>
-            <li class="mb-2">
-              <strong>Primary:</strong> 
-              <span class="badge" style="background-color: <%= @storefront_settings.primary_color %>">
-                <%= @storefront_settings.primary_color %>
-              </span>
-            </li>
-            <li class="mb-2">
-              <strong>Secondary:</strong> 
-              <span class="badge" style="background-color: <%= @storefront_settings.secondary_color %>">
-                <%= @storefront_settings.secondary_color %>
-              </span>
-            </li>
-            <li>
-              <strong>Accent:</strong> 
-              <span class="badge" style="background-color: <%= @storefront_settings.accent_color %>">
-                <%= @storefront_settings.accent_color %>
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <%= render layout: "dashboards/panel", locals: { title: "Current settings", padded: true } do %>
+        <ul class="dash-feed">
+          <li><span>Theme</span><strong><%= @storefront_settings.theme.to_s.titleize %></strong></li>
+          <li><span>Font</span><strong><%= @storefront_settings.font_family.presence || "—" %></strong></li>
+        </ul>
+      <% end %>
     </div>
   </div>
 </div>
-

@@ -31,6 +31,9 @@ class User < ActiveRecord::Base
   # Store associations
   has_many :stores, dependent: :destroy
 
+  # Creators get one storefront until multi-store plans exist. Admins are unlimited.
+  MAX_STORES_PER_NON_ADMIN = 1
+
   # Scopes for role-based queries
   scope :djs, -> { where(role: :dj) }
   scope :artists, -> { where(role: :artist) }
@@ -53,6 +56,22 @@ class User < ActiveRecord::Base
 
   def content_creator?
     photographer? || videographer? || curator? || designer? || editor? || artist? || dj?
+  end
+
+  # Marketplace store nav / creation rules
+  def can_create_store?
+    return false unless persisted?
+    return true if admin?
+
+    stores.count < MAX_STORES_PER_NON_ADMIN
+  end
+
+  def show_all_stores_nav?
+    admin?
+  end
+
+  def show_my_stores_nav?
+    stores.count > 1
   end
 
   private

@@ -1,0 +1,44 @@
+<%#
+  Styled file dropzone for admin forms.
+
+  Usage:
+    render "shared/dash_upload", form: f, method: :cover, accept: "image/*"
+    render "shared/dash_upload", form: f, method: :cover, label: "Cover image",
+           hint: "JPG or PNG", current_url: cover_url, required: true
+
+  locals:
+    form         (required) form builder
+    method       (required) attribute name / field symbol
+    accept       (optional, default image/*)
+    label        (optional) shown above dropzone
+    hint         (optional) secondary line in dropzone
+    text         (optional) primary dropzone line
+    icon         (optional, default fa-cloud-upload-alt)
+    current_url  (optional) preview image URL
+    required     (optional, default false)
+%>
+<% field = local_assigns.fetch(:method)
+   accept = local_assigns[:accept].presence || "image/*"
+   label_text = local_assigns[:label]
+   hint = local_assigns[:hint].presence || "PNG or JPG"
+   text = local_assigns[:text].presence || "Drop file or click to browse"
+   icon = local_assigns[:icon].presence || "fas fa-cloud-upload-alt"
+   current_url = local_assigns[:current_url]
+   required = local_assigns.fetch(:required, false) %>
+
+<% if label_text.present? %>
+  <label class="form-label"><%= label_text %></label>
+<% end %>
+<label class="dash-upload">
+  <span class="dash-upload__icon"><i class="<%= icon %>"></i></span>
+  <span class="dash-upload__text">
+    <strong><%= text %></strong>
+    <span class="dash-upload__hint"><%= hint %></span>
+  </span>
+  <%= form.file_field field, class: "dash-upload__input", accept: accept, required: required %>
+</label>
+<% if current_url.present? %>
+  <div class="dash-upload__preview mt-2">
+    <%= image_tag current_url, alt: "Current #{(label_text || field).to_s.humanize.downcase}" %>
+  </div>
+<% end %>

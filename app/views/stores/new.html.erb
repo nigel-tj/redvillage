@@ -1,54 +1,57 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="mb-0">
-            <i class="fas fa-store me-2"></i>
-            Add New Store
-          </h2>
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "Add New Store",
+        eyebrow: "Marketplace",
+        subtitle: "Open a storefront in the Red Village marketplace.",
+        primary_path: my_stores_path,
+        primary_label: "My Stores",
+        primary_icon: "fas fa-store",
+        user: current_user %>
+
+  <%= render layout: "dashboards/panel", locals: { title: "Store details", padded: true } do %>
+    <%= form_for @store, html: { multipart: true, class: "dash-form" } do |f| %>
+      <%= render "shared/errors", object: @store %>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <%= f.label :name, "Store name", class: "form-label" %>
+          <%= f.text_field :name, class: "form-control", required: true, placeholder: "e.g. Midnight Merch" %>
         </div>
-        <div class="card-body">
-          <%= form_for @store, html: { multipart: true } do |f| %>
-            <%= render 'shared/errors', object: @store %>
-            <div class="mb-3">
-              <%= f.label :name, class: "form-label" %>
-              <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Store name' %>
-              <small class="form-text text-muted">Store name</small>
-            </div>
-            <div class="mb-3">
-              <%= f.label :cover, class: "form-label" %>
-              <%= f.file_field :cover, class: 'form-control', accept: 'image/*' %>
-              <small class="form-text text-muted">Store cover image</small>
-            </div>
-            <div class="mb-3">
-              <%= f.label :email, class: "form-label" %>
-              <%= f.email_field :email, class: 'form-control', required: true, placeholder: 'store@example.com' %>
-              <small class="form-text text-muted">Store email</small>
-            </div>
-            <div class="mb-3">
-              <%= f.label :contact_number, class: "form-label" %>
-              <%= f.text_field :contact_number, class: 'form-control', placeholder: 'Contact number' %>
-              <small class="form-text text-muted">Contact number</small>
-            </div>
-            <div class="mb-3">
-              <%= f.label :description, class: "form-label" %>
-              <%= f.text_area :description, class: 'form-control', required: true, rows: 4, placeholder: 'Store description' %>
-              <small class="form-text text-muted">Store description</small>
-            </div>
-            <div class="mb-3">
-              <%= f.label :mall_id, "Mall (Optional)", class: "form-label" %>
-              <%= f.select :mall_id, options_from_collection_for_select(@malls, :id, :name, @store.mall_id), { prompt: 'Select a mall (optional)' }, { class: 'form-select' } %>
-              <small class="form-text text-muted">Optionally assign your store to a mall</small>
-            </div>
-            <div class="d-flex justify-content-between mt-4">
-              <%= link_to 'Cancel', stores_path, class: 'btn btn-secondary' %>
-              <%= f.submit 'Create Store', class: 'btn btn-primary' %>
-            </div>
-          <% end %>
+        <div class="col-md-6">
+          <%= f.label :email, "Store email", class: "form-label" %>
+          <%= f.email_field :email, class: "form-control", required: true, placeholder: "store@example.com" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :contact_number, "Contact number", class: "form-label" %>
+          <%= f.text_field :contact_number, class: "form-control", placeholder: "Optional phone" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :mall_id, "Mall (optional)", class: "form-label" %>
+          <%= f.select :mall_id,
+                options_from_collection_for_select(@malls, :id, :name, @store.mall_id),
+                { prompt: "Standalone store" },
+                { class: "form-select" } %>
+        </div>
+        <div class="col-12">
+          <%= f.label :description, "Description", class: "form-label" %>
+          <%= f.text_area :description, class: "form-control", required: true, rows: 4,
+                placeholder: "What you sell and what makes the store special" %>
+        </div>
+        <div class="col-12">
+          <%= render "shared/dash_upload",
+                form: f,
+                method: :cover,
+                label: "Cover image",
+                text: "Drop cover image or click to browse",
+                hint: "JPG or PNG · wide landscape works best",
+                icon: "fas fa-image" %>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
+      <%= render "shared/dash_form_actions",
+            form: f,
+            cancel_path: my_stores_path,
+            submit_label: "Create Store" %>
+    <% end %>
+  <% end %>
+</div>

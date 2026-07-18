@@ -39,7 +39,8 @@ RUN bundle install --jobs 4 --retry 3 && \
 
 COPY . .
 
-# Dummy secret is enough for asset compilation at build time
+# Dummy secret is enough for asset compilation at build time.
+# css_compressor must stay disabled in production.rb (SassC breaks on modern CSS).
 RUN SECRET_KEY_BASE=dummy bundle exec rails assets:precompile && \
     rm -rf tmp/cache node_modules
 

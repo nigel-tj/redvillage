@@ -1,29 +1,26 @@
-<%= form_for @image, html: { multipart: true } do |f| %>
+<%= form_for @image, html: { multipart: true, class: "dash-form" } do |f| %>
   <%= f.hidden_field :gallery_id %>
-  
-  <div class="card">
-    <div class="card-body">
-      <div class="mb-3">
-        <%= f.label :name, class: "form-label" %>
-        <%= f.text_field :name, class: 'form-control', placeholder: 'Image name' %>
-      </div>
-      
-      <div class="mb-3">
-        <%= f.label :images, "Upload Images", class: "form-label" %>
-        <%= f.file_field :images, multiple: true, class: 'form-control', accept: 'image/*' %>
-        <small class="form-text text-muted">You can select multiple images to upload</small>
-      </div>
-      
-      <div class="mb-3">
-        <%= f.label :remote_image_url, "Or Image URL", class: "form-label" %>
-        <%= f.text_field :remote_image_url, class: 'form-control', placeholder: 'https://example.com/image.jpg' %>
-        <small class="form-text text-muted">Enter a URL to upload an image from the web</small>
-      </div>
-      
-      <div class="d-flex justify-content-between mt-4">
-        <%= link_to 'Cancel', @image.gallery, class: 'btn btn-secondary' %>
-        <%= f.submit 'Save Images', class: 'btn btn-primary' %>
-      </div>
-    </div>
+  <%= render "shared/errors", object: @image %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "Optional label for these images" %>
   </div>
+
+  <div class="mb-3">
+    <%= f.label :images, "Upload images", class: "form-label" %>
+    <%= f.file_field :images, multiple: true, class: "form-control", accept: "image/*", required: @image.new_record? %>
+    <small class="form-text text-muted">You can select multiple images</small>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :remote_image_url, "Or image URL", class: "form-label" %>
+    <%= f.text_field :remote_image_url, class: "form-control", placeholder: "https://example.com/image.jpg" %>
+    <small class="form-text text-muted">Optional: import a single image from a URL</small>
+  </div>
+
+  <%= render "shared/dash_form_actions",
+        form: f,
+        cancel_path: (@image.gallery_id.present? ? admin_show_path(id: @image.gallery_id) : dashboard_path_for_user(current_user)),
+        submit_label: "Save Images" %>
 <% end %>

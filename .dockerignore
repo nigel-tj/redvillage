@@ -75,9 +75,11 @@ storage/*
 tmp/storage/*
 !tmp/storage/.keep
 
-# Secrets
+# Secrets (keep secrets.yml — production only reads SECRET_KEY_BASE from ENV)
 config/master.key
 config/credentials/*.key
-config/secrets.yml
+config/credentials/*.yml.enc
+*.pem
+*.p12
 
 

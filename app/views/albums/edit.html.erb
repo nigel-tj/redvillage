@@ -1,3 +1,48 @@
-<h1>Albums#edit</h1>
-<p>Find me in app/views/albums/edit.html.erb</p>
+<% cover = shrine_image_url(@album, :image, :thumbnail) || shrine_image_url(@album, :image) %>
 
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "Edit Album",
+        eyebrow: "Music & entertainment",
+        subtitle: "Update details for #{@album.name}.",
+        primary_path: album_path(@album),
+        primary_label: "View Album",
+        primary_icon: "fas fa-eye",
+        user: current_user %>
+
+  <%= render layout: "dashboards/panel", locals: { title: "Album details", padded: true } do %>
+    <%= form_for @album, html: { multipart: true, class: "dash-form" } do |f| %>
+      <%= render "shared/errors", object: @album %>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <%= f.label :name, "Album name", class: "form-label" %>
+          <%= f.text_field :name, class: "form-control", required: true, placeholder: "Album name" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :artist_name, "Artist name", class: "form-label" %>
+          <%= f.text_field :artist_name, class: "form-control", required: true, placeholder: "Primary artist" %>
+        </div>
+        <div class="col-12">
+          <%= f.label :image, "Cover image", class: "form-label" %>
+          <% if cover.present? %>
+            <div class="dash-upload__preview mb-2">
+              <%= image_tag cover, alt: @album.name %>
+            </div>
+          <% end %>
+          <label class="dash-upload">
+            <span class="dash-upload__icon"><i class="fas fa-image"></i></span>
+            <span class="dash-upload__text"><%= cover.present? ? "Replace cover image" : "Drop cover image or click to browse" %></span>
+            <span class="dash-upload__hint">JPG or PNG · leave empty to keep current</span>
+            <%= f.file_field :image, class: "dash-upload__input", accept: "image/*" %>
+          </label>
+        </div>
+      </div>
+
+      <div class="dash-form__actions">
+        <%= link_to "Cancel", album_path(@album), class: "btn-dash-outline" %>
+        <%= f.submit "Update Album", class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

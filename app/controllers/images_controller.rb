@@ -1,5 +1,8 @@
 class ImagesController < ApplicationController
-  before_action :authenticate_admin!
+  include RoleBasedAccess
+
+  before_action :authenticate_user!
+  before_action :require_gallery_manager
   layout "admin", only: [:new, :create, :update, :edit, :destroy]
 
   def new

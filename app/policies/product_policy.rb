@@ -32,13 +32,10 @@ class ProductPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user.present?
-        # Users can see active products and products from their own stores
-        scope.where(status: 'active').or(
-          scope.joins(:store).where(stores: { user_id: user.id })
-        )
+        owned_store_ids = Store.where(user_id: user.id).select(:id)
+        scope.where(status: "active").or(scope.where(store_id: owned_store_ids))
       else
-        # Public users can only see active products
-        scope.where(status: 'active')
+        scope.where(status: "active")
       end
     end
   end

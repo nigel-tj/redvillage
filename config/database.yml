@@ -1,31 +1,38 @@
-# SQLite version 3.x
-#   gem install sqlite3
+# MySQL configuration. Prefer DATABASE_URL in production (Fly / managed MySQL).
 #
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
+# Discrete vars (local docker-compose / classic setups):
+#   DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_NAME
+
 default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['DATABASE_USERNAME'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
-  host: <%= ENV['DATABASE_HOST'] %>
+  username: <%= ENV["DATABASE_USERNAME"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host: <%= ENV.fetch("DATABASE_HOST", "127.0.0.1") %>
+  port: <%= ENV.fetch("DATABASE_PORT", "3306") %>
 
 development:
   <<: *default
-  database: redvillage_development
+  database: <%= ENV.fetch("DATABASE_NAME", "redvillage_development") %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: redvillage_test
+  database: <%= ENV.fetch("DATABASE_NAME", "redvillage_test") %>
 
 production:
+<% if ENV["DATABASE_URL"].to_s.strip != "" %>
+  url: <%= ENV["DATABASE_URL"] %>
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+<% else %>
   <<: *default
-  database: redvillage_production
-  username: <%= ENV['DATABASE_USERNAME'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
-  host: <%= ENV['DATABASE_HOST'] %>
+  database: <%= ENV.fetch("DATABASE_NAME", "redvillage_production") %>
+  username: <%= ENV["DATABASE_USERNAME"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host: <%= ENV["DATABASE_HOST"] %>
+  port: <%= ENV.fetch("DATABASE_PORT", "3306") %>
+<% end %>

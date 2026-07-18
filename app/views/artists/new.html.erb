@@ -1,63 +1,65 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="mb-0">
-            <i class="fas fa-user-plus me-2"></i>
-            Add New Artist
-          </h2>
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "Add New Artist",
+        eyebrow: "Music & entertainment",
+        subtitle: "Create an artist record for the catalog.",
+        primary_path: admin_artist_index_path,
+        primary_label: "All Artists",
+        primary_icon: "fas fa-list",
+        user: current_user %>
+
+  <%= render layout: "dashboards/panel", locals: { title: "Artist details", padded: true } do %>
+    <%= form_for @artist, html: { multipart: true, class: "dash-form" } do |f| %>
+      <%= render "shared/errors", object: @artist %>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <%= f.label :name, "Name", class: "form-label" %>
+          <%= f.text_field :name, class: "form-control", required: true, placeholder: "Artist name" %>
         </div>
-        <div class="card-body">
-          <%= form_for @artist, html: { multipart: true } do |f| %>
-            <%= render 'shared/errors', object: @artist %>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <%= f.label :name, class: "form-label" %>
-                <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Artist name' %>
-                <small class="form-text text-muted">Artist name</small>
-              </div>
-              <div class="col-md-6 mb-3">
-                <%= f.label :email, class: "form-label" %>
-                <%= f.email_field :email, class: 'form-control', required: true, placeholder: 'artist@example.com' %>
-                <small class="form-text text-muted">Artist email</small>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <%= f.label :cover, class: "form-label" %>
-                <%= f.file_field :cover, class: 'form-control', accept: 'image/*' %>
-                <small class="form-text text-muted">Cover image</small>
-              </div>
-              <div class="col-md-6 mb-3">
-                <%= f.label :profile_picture, class: "form-label" %>
-                <%= f.file_field :profile_picture, class: 'form-control', accept: 'image/*' %>
-                <small class="form-text text-muted">Profile picture</small>
-              </div>
-            </div>
-            <div class="mb-3">
-              <%= f.label :category, class: "form-label" %>
-              <%= f.select "category", [["Select category","none"],["Model","model"], ["Label","label"], ["Management","management"]], {}, { class: 'form-select' } %>
-              <small class="form-text text-muted">Artist category</small>
-            </div>
-            <div class="mb-3">
-              <%= f.label :cell_number, class: "form-label" %>
-              <%= f.text_field :cell_number, class: 'form-control', placeholder: 'Cellphone number' %>
-              <small class="form-text text-muted">Contact number</small>
-            </div>
-            <div class="mb-3">
-              <%= f.label :bio, class: "form-label" %>
-              <%= f.text_area :bio, class: 'form-control', required: true, rows: 4, placeholder: 'Artist biography' %>
-              <small class="form-text text-muted">Artist biography</small>
-            </div>
-            <div class="d-flex justify-content-between mt-4">
-              <%= link_to 'Cancel', artists_path, class: 'btn btn-secondary' %>
-              <%= f.submit 'Create Artist', class: 'btn btn-primary' %>
-            </div>
-          <% end %>
+        <div class="col-md-6">
+          <%= f.label :email, "Email", class: "form-label" %>
+          <%= f.email_field :email, class: "form-control", required: true, placeholder: "artist@example.com" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :cover, "Cover image", class: "form-label" %>
+          <label class="dash-upload">
+            <span class="dash-upload__icon"><i class="fas fa-image"></i></span>
+            <span class="dash-upload__text">Drop cover or click to browse</span>
+            <span class="dash-upload__hint">Optional · JPG or PNG</span>
+            <%= f.file_field :cover, class: "dash-upload__input", accept: "image/*" %>
+          </label>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :profile_picture, "Profile picture", class: "form-label" %>
+          <label class="dash-upload">
+            <span class="dash-upload__icon"><i class="fas fa-user-circle"></i></span>
+            <span class="dash-upload__text">Drop photo or click to browse</span>
+            <span class="dash-upload__hint">Optional · square works best</span>
+            <%= f.file_field :profile_picture, class: "dash-upload__input", accept: "image/*" %>
+          </label>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :category, "Category", class: "form-label" %>
+          <%= f.select :category,
+                [["Select category", ""], ["Model", "model"], ["Label", "label"], ["Management", "management"]],
+                {},
+                { class: "form-select" } %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :cell_number, "Phone", class: "form-label" %>
+          <%= f.text_field :cell_number, class: "form-control", placeholder: "Contact number" %>
+        </div>
+        <div class="col-12">
+          <%= f.label :bio, "Biography", class: "form-label" %>
+          <%= f.text_area :bio, class: "form-control", required: true, rows: 4, placeholder: "Short artist biography" %>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
+      <div class="dash-form__actions">
+        <%= link_to "Cancel", admin_artist_index_path, class: "btn-dash-outline" %>
+        <%= f.submit "Create Artist", class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

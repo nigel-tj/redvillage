@@ -8,6 +8,7 @@ class Store < ActiveRecord::Base
   has_one :storefront_settings, dependent: :destroy
   has_many :products, dependent: :destroy
   has_many :orders, dependent: :destroy
+  has_many :order_items, through: :orders
   has_many :carts, dependent: :destroy
   
   # Validations

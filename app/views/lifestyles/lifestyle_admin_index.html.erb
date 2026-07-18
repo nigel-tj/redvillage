@@ -1,28 +1,76 @@
-<div class="container">
-  <!-- start news tabs -->
-  <div id="gallery">
-    <!-- banner -->
-    <div class="row">
-      <div class="col-sm-12 banner">
-        <img class="img-responsive" alt="image" src="http://www.redvillage.co.za/uploads/main_banner/image/21/RCV_7STARS_scampD.jpg">
-      </div>
-    </div>
-    <!-- banner end -->
-    <div id="gallery">
-      <div id="gallery-content" class="services">
-        <div id="gallery-content-center" class="row">
-          <% for article in @lifestyle %>
-            <a class="servicebox col-sm-3 all latest" href="<%= article.link %>">
-              <img class="img-responsive" alt="<%= article.title %>" src="<%= article.image_url %>">
-              <div class="servicebox-inner text-left">
-                <h2><%= article.title %></h2>
-                <p><%= article.intro %></p>
-              </div>
-            </a>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="dash">
+  <%= render "shared/dash_page_header",
+        title: "Lifestyle Articles",
+        eyebrow: "Editorial",
+        subtitle: "Fashion, living, hustle, and gadget stories.",
+        primary_path: new_lifestyle_path,
+        primary_label: "New Article",
+        primary_icon: "fas fa-leaf",
+        user: current_user %>
 
+  <div class="dash-stats dash-stats--3">
+    <%= render "dashboards/stat_card", label: "Articles", value: @lifestyle.size, icon: "fas fa-leaf" %>
+    <%= render "dashboards/stat_card",
+          label: "Categories",
+          value: @lifestyle.map(&:category).compact.uniq.size,
+          icon: "fas fa-tags" %>
+    <%= render "dashboards/stat_card",
+          label: "Latest",
+          value: @lifestyle.first&.created_at&.strftime("%b %d") || "—",
+          icon: "fas fa-clock" %>
+  </div>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Lifestyle catalog",
+        action: link_to("New Article", new_lifestyle_path, class: "btn-dash")
+      } do %>
+    <% if @lifestyle.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Cover</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Intro</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @lifestyle.each do |article| %>
+              <% thumb = (article.image_url rescue nil) %>
+              <tr>
+                <td>
+                  <% if thumb.present? %>
+                    <%= image_tag thumb, alt: article.title, class: "dash-thumb" %>
+                  <% else %>
+                    <div class="dash-thumb d-inline-flex align-items-center justify-content-center text-muted">
+                      <i class="fas fa-leaf"></i>
+                    </div>
+                  <% end %>
+                </td>
+                <td><strong><%= article.title %></strong></td>
+                <td>
+                  <% if article.category.present? && article.category != "none" %>
+                    <span class="dash-badge"><%= humanize_category(article.category) %></span>
+                  <% end %>
+                </td>
+                <td class="text-muted"><%= truncate(article.intro.to_s, length: 70) %></td>
+                <td>
+                  <% if article.link.present? %>
+                    <%= link_to "Open", article.link, class: "btn-dash btn-sm me-1", target: "_blank", rel: "noopener" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="dash-empty padded">
+        <p>No lifestyle articles yet.</p>
+        <%= link_to "Create Your First Article", new_lifestyle_path, class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

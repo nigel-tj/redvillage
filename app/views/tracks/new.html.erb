@@ -1,63 +1,71 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="mb-0">
-            <i class="fas fa-music me-2"></i>
-            <%= @page_heading %>
-          </h2>
+<div class="dash">
+  <%= render "dashboards/header",
+        title: @page_heading.presence || "Add new track",
+        eyebrow: "Music & entertainment",
+        subtitle: @number_of_tracks == "multiple" ? "Upload one or more audio files to this album." : "Upload a single track with cover art.",
+        primary_path: admin_all_music_path,
+        primary_label: "All Music",
+        primary_icon: "fas fa-list",
+        user: current_user %>
+
+  <%= render layout: "dashboards/panel", locals: { title: "Track details", padded: true } do %>
+    <%= form_for @track, html: { multipart: true, class: "dash-form" } do |f| %>
+      <%= render "shared/errors", object: @track %>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <%= f.label :title, "Track title", class: "form-label" %>
+          <%= f.text_field :title, class: "form-control", required: true, placeholder: "Track title" %>
         </div>
-        <div class="card-body">
-          <%= form_for @track, html: { multipart: true } do |f| %>
-            <%= render 'shared/errors', object: @track %>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <%= f.label :title, class: "form-label" %>
-                <%= f.text_field :title, class: 'form-control', required: true, placeholder: 'Track name' %>
-                <small class="form-text text-muted">Track name</small>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <%= f.label :artist_name, class: "form-label" %>
-                <%= f.text_field :artist_name, class: 'form-control', required: true, placeholder: 'Artist name' %>
-                <small class="form-text text-muted">Artist name</small>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <%= f.label :category, class: "form-label" %>
-              <%= f.select :category, [["Select category", "none"], ["RCV Playlist", "rcv_playlist"], ["Albums / Mixtapes", "albums_mixtapes"]], {}, { class: 'form-select' } %>
-              <small class="form-text text-muted">Select track category</small>
-            </div>
-
-            <% if @number_of_tracks == "single" %>
-              <div class="mb-3">
-                <%= f.label :image, class: "form-label" %>
-                <%= f.file_field :image, class: 'form-control', required: true, accept: 'image/*' %>
-                <small class="form-text text-muted">Track cover image</small>
-              </div>
-            <% end %>
-
-            <div class="mb-3">
-              <%= f.label :track, class: "form-label" %>
-              <% if @number_of_tracks == "single" %>
-                <%= f.file_field :track, class: 'form-control', required: true, accept: 'audio/*' %>
-              <% else %>
-                <%= f.hidden_field :album_id %>
-                <%= f.file_field :tracks, class: 'form-control', required: true, multiple: true, accept: 'audio/*' %>
-                <small class="form-text text-muted">You can select multiple tracks to upload</small>
-              <% end %>
-            </div>
-
-            <div class="d-flex justify-content-between mt-4">
-              <%= link_to 'Cancel', tracks_path, class: 'btn btn-secondary' %>
-              <%= f.submit 'Save Track', class: 'btn btn-primary' %>
-            </div>
-          <% end %>
+        <div class="col-md-6">
+          <%= f.label :artist_name, "Artist name", class: "form-label" %>
+          <%= f.text_field :artist_name, class: "form-control", required: true, placeholder: "Artist name" %>
         </div>
+        <div class="col-12">
+          <%= f.label :category, "Category", class: "form-label" %>
+          <%= f.select :category,
+                [["Select category", ""], ["RCV Playlist", "rcv_playlist"], ["Albums / Mixtapes", "albums_mixtapes"]],
+                {},
+                { class: "form-select" } %>
+        </div>
+
+        <% if @number_of_tracks == "single" %>
+          <div class="col-md-6">
+            <%= f.label :image, "Cover image", class: "form-label" %>
+            <label class="dash-upload">
+              <span class="dash-upload__icon"><i class="fas fa-image"></i></span>
+              <span class="dash-upload__text">Drop cover or click to browse</span>
+              <span class="dash-upload__hint">JPG or PNG</span>
+              <%= f.file_field :image, class: "dash-upload__input", required: true, accept: "image/*" %>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <%= f.label :track, "Audio file", class: "form-label" %>
+            <label class="dash-upload">
+              <span class="dash-upload__icon"><i class="fas fa-file-audio"></i></span>
+              <span class="dash-upload__text">Drop audio or click to browse</span>
+              <span class="dash-upload__hint">MP3, WAV, or similar</span>
+              <%= f.file_field :track, class: "dash-upload__input", required: true, accept: "audio/*" %>
+            </label>
+          </div>
+        <% else %>
+          <%= f.hidden_field :album_id %>
+          <div class="col-12">
+            <%= f.label :tracks, "Audio files", class: "form-label" %>
+            <label class="dash-upload">
+              <span class="dash-upload__icon"><i class="fas fa-file-audio"></i></span>
+              <span class="dash-upload__text">Select one or more audio files</span>
+              <span class="dash-upload__hint">You can upload multiple tracks at once</span>
+              <%= f.file_field :tracks, class: "dash-upload__input", required: true, multiple: true, accept: "audio/*" %>
+            </label>
+          </div>
+        <% end %>
       </div>
-    </div>
-  </div>
+
+      <div class="dash-form__actions">
+        <%= link_to "Cancel", admin_all_music_path, class: "btn-dash-outline" %>
+        <%= f.submit @number_of_tracks == "multiple" ? "Upload Tracks" : "Save Track", class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
 </div>

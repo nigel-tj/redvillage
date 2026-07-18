@@ -20,10 +20,8 @@ class OrderPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user.present?
-        # Users can see their own orders and orders for their stores
-        scope.where(user_id: user.id).or(
-          scope.joins(:store).where(stores: { user_id: user.id })
-        )
+        owned_store_ids = Store.where(user_id: user.id).select(:id)
+        scope.where(user_id: user.id).or(scope.where(store_id: owned_store_ids))
       else
         scope.none
       end

@@ -12,7 +12,6 @@ class FeaturesController < ApplicationController
 
   def admin_index
     @features = Feature.order('created_at DESC')
-    render :index
   end
   
   def new

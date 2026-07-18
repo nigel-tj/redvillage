@@ -8,7 +8,7 @@ class StorePolicy < ApplicationPolicy
   end
 
   def create?
-    user.present? # Any authenticated user can create a store
+    user.present? && user.can_create_store?
   end
 
   def new?
@@ -33,6 +33,10 @@ class StorePolicy < ApplicationPolicy
 
   def deactivate?
     user.present? && user.admin?
+  end
+
+  def my_stores?
+    user.present?
   end
 
   class Scope < Scope

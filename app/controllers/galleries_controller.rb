@@ -18,7 +18,7 @@ class GalleriesController < ApplicationController
   end
 
   def admin_show
-    @photo_gallery = Image.where(:gallery_id => params[:id])
+    @gallery = Gallery.find(params[:id])
   end
 
   def show_gallery
@@ -35,9 +35,9 @@ class GalleriesController < ApplicationController
     @gallery = Gallery.new(gallery_params)
     if @gallery.save
       flash[:notice] = "Successfully created gallery."
-      render :action => 'admin_show'
+      redirect_to admin_show_path(id: @gallery.id)
     else
-      render :action => 'new'
+      render :new
     end
   end
 

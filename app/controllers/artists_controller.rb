@@ -4,8 +4,7 @@ class ArtistsController < ApplicationController
   # Public: artist directory + individual artist pages are open.
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_curator_or_admin, only: [:new, :create, :edit, :update, :admin_artist_index]
-  layout "admin", only: [:new, :create, :update, :admin_artist_index, :edit]
-  layout "marketplace", only: [:index, :show]
+  layout :artists_layout
 
   def index
     # Show both Artist model records and User artists with public profiles
@@ -52,6 +51,10 @@ class ArtistsController < ApplicationController
   end
 
   private
+
+  def artists_layout
+    %w[index show].include?(action_name) ? "marketplace" : "admin"
+  end
 
   def artist_params
     params.require(:artist).permit(:name, :email, :cell_number, :bio, :cover, :profile_picture, :category)

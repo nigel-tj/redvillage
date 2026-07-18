@@ -4,8 +4,7 @@ class TracksController < ApplicationController
   before_action :authenticate_user!, except: [:show, :music]
   before_action :require_admin_or_artist, only: [:new, :create, :update, :edit, :destroy]
   before_action :require_music_manager, only: [:admin_all_music, :index]
-  layout "admin", only: [:new, :create, :update, :admin_all_music, :index, :edit]
-  layout "marketplace", only: [:music, :show]
+  layout :tracks_layout
   
   def index
     @tracks = Track.order('created_at DESC')
@@ -96,6 +95,10 @@ class TracksController < ApplicationController
   end
 
   private
+
+  def tracks_layout
+    %w[music show].include?(action_name) ? "marketplace" : "admin"
+  end
   
   def track_params
     params.require(:track).permit(:title,:intro,:thumb,:track,:image,:category,:album_id, :artist_name, :tracks)

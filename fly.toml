@@ -8,6 +8,10 @@ console_command = '/app/bin/rails console'
 
 [build]
 
+# Run migrations once per deploy (avoids multi-machine race in entrypoint).
+[deploy]
+  release_command = 'bundle exec rails db:prepare'
+
 [http_service]
   internal_port = 8080
   force_https = true
@@ -15,6 +19,13 @@ console_command = '/app/bin/rails console'
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
+
+  [[http_service.checks]]
+    interval = '15s'
+    timeout = '5s'
+    grace_period = '45s'
+    method = 'GET'
+    path = '/up'
 
 [[vm]]
   memory = '1gb'

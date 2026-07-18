@@ -1,8 +1,14 @@
-<% title "Edit Gallery" %>
+<div class="dash">
+  <%= render "shared/dash_page_header",
+        title: "Edit Gallery",
+        eyebrow: "Visual archive",
+        subtitle: @gallery.name,
+        primary_path: admin_show_path(id: @gallery.id),
+        primary_label: "Manage images",
+        primary_icon: "fas fa-images",
+        user: current_user %>
 
-<%= render 'form' %>
-
-<p>
-  <%= link_to "Show", @gallery %> |
-  <%= link_to "View All", galleries_path %>
-</p>
+  <%= render layout: "dashboards/panel", locals: { title: "Gallery details", padded: true } do %>
+    <%= render "form" %>
+  <% end %>
+</div>

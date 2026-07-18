@@ -1,66 +1,198 @@
-<% content_for :title, "#{@store.name} — Red Village" %>
+<% manage = user_signed_in? && (@store.owner?(current_user) || current_user.admin?)
+   cover_url = nil
+   if @store.cover.present? && @store.cover.to_s.strip.present?
+     cover_url = @store.cover.to_s.strip
+     cover_url = "/#{cover_url}" unless cover_url.start_with?("http://", "https://", "/")
+   end
+   products = @store.respond_to?(:products) ? @store.products.to_a : [] %>
 
-<div class="container py-4">
-  <div class="card rv-card mb-4 overflow-hidden">
-    <% if @store.cover.present? && @store.cover.to_s.strip.present? %>
-      <% cover_url = @store.cover.to_s.strip %>
-      <% cover_url = "/#{cover_url}" unless cover_url.start_with?('http://', 'https://', '/') %>
-      <%= image_tag cover_url, alt: @store.name, class: "w-100", style: "max-height:360px;object-fit:cover;" %>
-    <% else %>
-      <div class="rv-thumb-placeholder" style="height:220px;border-radius:0;"><i class="fas fa-store fa-3x"></i></div>
-    <% end %>
-    <div class="card-body">
-      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
-        <div>
-          <h1 class="h2 mb-2"><%= @store.name %></h1>
-          <% unless @store.active? %>
-            <span class="badge mb-2" style="background:rgba(255,201,87,0.2);color:#ffc857;">Inactive</span>
+<% if manage %>
+  <div class="dash">
+    <%= render "dashboards/header",
+          title: @store.name,
+          eyebrow: "Marketplace",
+          subtitle: truncate(@store.description.to_s, length: 120),
+          primary_path: store_dashboard_path(@store),
+          primary_label: "Dashboard",
+          primary_icon: "fas fa-chart-line",
+          user: current_user %>
+
+    <div class="dash-stats dash-stats--auto">
+      <%= render "dashboards/stat_card", label: "Products", value: products.size, icon: "fas fa-box" %>
+      <%= render "dashboards/stat_card", label: "Status", value: (@store.active? ? "Active" : "Inactive"), icon: "fas fa-toggle-on" %>
+      <% if @store.mall.present? %>
+        <%= render "dashboards/stat_card", label: "Mall", value: @store.mall.name, icon: "fas fa-building" %>
+      <% end %>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <%= render layout: "dashboards/panel", locals: { title: "Store overview", padded: true } do %>
+          <% if cover_url.present? %>
+            <%= image_tag cover_url, alt: @store.name, class: "dash-cover mb-3" %>
+          <% else %>
+            <div class="dash-cover-placeholder"><i class="fas fa-store"></i></div>
           <% end %>
+
+          <% unless @store.active? %>
+            <span class="dash-badge dash-badge--warn mb-2">Inactive</span>
+          <% end %>
+
           <% if @store.description.present? %>
             <div class="text-muted"><%= simple_format(@store.description) %></div>
           <% end %>
-        </div>
-        <div class="d-flex flex-wrap gap-2">
-          <%= link_to "All stores", stores_path, class: "btn btn-outline-rv btn-rv-sm" %>
-          <% if @store.mall.present? %>
-            <%= link_to @store.mall.name, mall_path(@store.mall), class: "btn btn-outline-rv btn-rv-sm" %>
+
+          <div class="row g-3 mt-1">
+            <% if @store.email.present? %>
+              <div class="col-md-6">
+                <div class="small text-muted text-uppercase fw-bold">Email</div>
+                <div><%= mail_to @store.email %></div>
+              </div>
+            <% end %>
+            <% if @store.contact_number.present? %>
+              <div class="col-md-6">
+                <div class="small text-muted text-uppercase fw-bold">Phone</div>
+                <div><%= link_to @store.contact_number, "tel:#{@store.contact_number}" %></div>
+              </div>
+            <% end %>
+            <% if @store.user.present? %>
+              <div class="col-md-6">
+                <div class="small text-muted text-uppercase fw-bold">Owner</div>
+                <div><%= @store.user.name %></div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%= render layout: "dashboards/panel", locals: {
+              title: "Products",
+              action: link_to("Manage", store_products_path(@store), class: "btn-dash-outline")
+            } do %>
+          <% if products.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% products.first(8).each do |product| %>
+                    <tr>
+                      <td><strong><%= product.name %></strong></td>
+                      <td>
+                        <% if product.respond_to?(:formatted_price) %>
+                          <%= product.formatted_price %>
+                        <% elsif product.respond_to?(:price) && product.price.present? %>
+                          <%= number_to_currency(product.price) rescue product.price %>
+                        <% else %>
+                          —
+                        <% end %>
+                      </td>
+                      <td class="text-end">
+                        <%= link_to "View", store_product_path(@store, product), class: "btn-dash btn-sm" rescue nil %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="dash-empty padded">
+              <p>No products yet.</p>
+              <%= link_to "Add Product", new_store_product_path(@store), class: "btn-dash" %>
+            </div>
           <% end %>
-        </div>
+        <% end %>
       </div>
 
-      <div class="row g-3 mt-2">
-        <% if @store.email.present? %>
-          <div class="col-md-6"><span class="small text-muted">Email</span><div><%= mail_to @store.email %></div></div>
-        <% end %>
-        <% if @store.contact_number.present? %>
-          <div class="col-md-6"><span class="small text-muted">Phone</span><div><%= link_to @store.contact_number, "tel:#{@store.contact_number}" %></div></div>
-        <% end %>
-        <% if @store.user.present? %>
-          <div class="col-md-6"><span class="small text-muted">Owner</span><div><%= @store.user.name %></div></div>
+      <div class="col-lg-4">
+        <%= render layout: "dashboards/panel", locals: { title: "Quick actions", padded: true } do %>
+          <div class="d-grid gap-2">
+            <%= link_to "Edit Store", edit_store_path(@store), class: "btn-dash" %>
+            <%= link_to "Add Product", new_store_product_path(@store), class: "btn-dash-outline" %>
+            <%= link_to "Orders", store_orders_path(@store), class: "btn-dash-outline" %>
+            <%= link_to "Customize Storefront", edit_store_storefront_settings_path(@store), class: "btn-dash-outline" %>
+            <%= link_to "Public storefront", store_path(@store), class: "btn-dash-ghost" %>
+            <% if @store.mall.present? %>
+              <%= link_to @store.mall.name, mall_path(@store.mall), class: "btn-dash-ghost" %>
+            <% end %>
+            <% if current_user.admin? %>
+              <% if @store.active? %>
+                <%= button_to "Deactivate", deactivate_store_path(@store), method: :patch, class: "btn-dash-danger w-100", form: { class: "d-grid" } %>
+              <% else %>
+                <%= button_to "Activate", activate_store_path(@store), method: :patch, class: "btn-dash w-100", form: { class: "d-grid" } %>
+              <% end %>
+            <% end %>
+          </div>
         <% end %>
       </div>
     </div>
   </div>
+<% else %>
+  <% content_for :title, "#{@store.name} — Red Village" %>
 
-  <% products = @store.respond_to?(:products) ? @store.products.to_a : [] %>
-  <% if products.any? %>
-    <div class="rv-section-head">
-      <h2 class="rv-gradient-text h3">Products</h2>
-      <hr class="rv-rule">
-    </div>
-    <div class="row g-4">
-      <% products.each do |product| %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="card rv-card h-100">
-            <div class="card-body">
-              <h3 class="h6 card-title"><%= link_to product.name, store_product_path(@store, product), class: "text-decoration-none" rescue product.name %></h3>
-              <% if product.respond_to?(:price) && product.price.present? %>
-                <p class="mb-0" style="color:#ff8fbf;"><%= number_to_currency(product.price) rescue product.price %></p>
-              <% end %>
-            </div>
+  <div class="container py-4">
+    <div class="card rv-card mb-4 overflow-hidden">
+      <% if cover_url.present? %>
+        <%= image_tag cover_url, alt: @store.name, class: "w-100", style: "max-height:360px;object-fit:cover;" %>
+      <% else %>
+        <div class="rv-thumb-placeholder" style="height:220px;border-radius:0;"><i class="fas fa-store fa-3x"></i></div>
+      <% end %>
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+          <div>
+            <h1 class="h2 mb-2"><%= @store.name %></h1>
+            <% unless @store.active? %>
+              <span class="badge mb-2" style="background:rgba(255,201,87,0.2);color:#ffc857;">Inactive</span>
+            <% end %>
+            <% if @store.description.present? %>
+              <div class="text-muted"><%= simple_format(@store.description) %></div>
+            <% end %>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <%= link_to "All stores", stores_path, class: "btn btn-outline-rv btn-rv-sm" %>
+            <% if @store.mall.present? %>
+              <%= link_to @store.mall.name, mall_path(@store.mall), class: "btn btn-outline-rv btn-rv-sm" %>
+            <% end %>
           </div>
         </div>
-      <% end %>
+
+        <div class="row g-3 mt-2">
+          <% if @store.email.present? %>
+            <div class="col-md-6"><span class="small text-muted">Email</span><div><%= mail_to @store.email %></div></div>
+          <% end %>
+          <% if @store.contact_number.present? %>
+            <div class="col-md-6"><span class="small text-muted">Phone</span><div><%= link_to @store.contact_number, "tel:#{@store.contact_number}" %></div></div>
+          <% end %>
+          <% if @store.user.present? %>
+            <div class="col-md-6"><span class="small text-muted">Owner</span><div><%= @store.user.name %></div></div>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-</div>
+
+    <% if products.any? %>
+      <div class="rv-section-head">
+        <h2 class="rv-gradient-text h3">Products</h2>
+        <hr class="rv-rule">
+      </div>
+      <div class="row g-4">
+        <% products.each do |product| %>
+          <div class="col-sm-6 col-lg-4">
+            <div class="card rv-card h-100">
+              <div class="card-body">
+                <h3 class="h6 card-title"><%= link_to product.name, store_product_path(@store, product), class: "text-decoration-none" rescue product.name %></h3>
+                <% if product.respond_to?(:price) && product.price.present? %>
+                  <p class="mb-0" style="color:#ff8fbf;"><%= number_to_currency(product.price) rescue product.price %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

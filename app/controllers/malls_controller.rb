@@ -1,5 +1,5 @@
 class MallsController < ApplicationController
-  layout "marketplace"
+  layout :determine_layout
 
   before_action :set_mall, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
@@ -63,6 +63,15 @@ class MallsController < ApplicationController
   end
 
   private
+
+  def determine_layout
+    case action_name
+    when "new", "create", "edit", "update", "destroy"
+      "admin"
+    else
+      "marketplace"
+    end
+  end
 
   def set_mall
     @mall = Mall.friendly.find(params[:id])

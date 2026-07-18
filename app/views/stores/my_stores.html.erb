@@ -1,91 +1,77 @@
-<div class="container mt-4">
-  <div class="row mb-4">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center">
-        <h1>
-          <i class="fas fa-store me-2"></i>
-          My Stores
-        </h1>
-        <%= link_to new_store_path, class: 'btn btn-primary' do %>
-          <i class="fas fa-plus me-1"></i> Create New Store
-        <% end %>
-      </div>
-    </div>
+<div class="dash">
+  <% can_create_store = current_user.can_create_store? %>
+  <%= render "dashboards/header",
+        title: "My Stores",
+        eyebrow: "Marketplace",
+        subtitle: "Manage your storefronts, products, and orders.",
+        primary_path: (can_create_store ? new_store_path : nil),
+        primary_label: (can_create_store ? "Create Store" : nil),
+        primary_icon: "fas fa-plus",
+        user: current_user %>
+
+  <% all_stores = current_user.stores %>
+  <div class="dash-stats dash-stats--3">
+    <%= render "dashboards/stat_card", label: "Stores", value: all_stores.count, icon: "fas fa-store" %>
+    <%= render "dashboards/stat_card", label: "Active", value: all_stores.where(active: true).count, icon: "fas fa-check-circle" %>
+    <%= render "dashboards/stat_card", label: "In a mall", value: all_stores.where.not(mall_id: nil).count, icon: "fas fa-building" %>
   </div>
 
-  <% if @stores.any? %>
-    <div class="row">
-      <% @stores.each do |store| %>
-        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
-          <div class="card h-100 shadow-sm">
-            <% if store.cover.present? && store.cover.to_s.strip.present? %>
-              <%= link_to store_path(store) do %>
-                <div style="height: 200px; overflow: hidden; background: #f8f9fa;">
-                  <% cover_url = store.cover.to_s.strip %>
-                  <% cover_url = "/#{cover_url}" unless cover_url.start_with?('http://', 'https://') || cover_url.start_with?('/') %>
-                  <%= image_tag cover_url, alt: store.name, style: "width: 100%; height: 100%; object-fit: cover;" %>
-                </div>
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Your storefronts",
+        action: (can_create_store ? link_to("Create Store", new_store_path, class: "btn-dash") : nil)
+      } do %>
+    <% if @stores.any? %>
+      <div class="dash-card-grid" style="padding: 1rem 1.15rem 1.15rem;">
+        <% @stores.each do |store| %>
+          <% cover_url = nil
+             if store.cover.present? && store.cover.to_s.strip.present?
+               cover_url = store.cover.to_s.strip
+               cover_url = "/#{cover_url}" unless cover_url.start_with?("http://", "https://", "/")
+             end %>
+          <article class="dash-media-card">
+            <div class="dash-media-card__thumb">
+              <% if cover_url.present? %>
+                <%= link_to store_path(store) do %>
+                  <%= image_tag cover_url, alt: store.name %>
+                <% end %>
+              <% else %>
+                <i class="fas fa-store"></i>
               <% end %>
-            <% else %>
-              <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
-                <i class="fas fa-store fa-4x text-white"></i>
-              </div>
-            <% end %>
-            
-            <div class="card-body">
-              <h5 class="card-title">
-                <%= link_to store.name, store_path(store), class: "text-decoration-none" %>
-              </h5>
-              <p class="card-text text-muted">
-                <%= truncate(store.description, length: 100) %>
-              </p>
-              
-              <% if store.mall.present? %>
-                <div class="mb-2">
-                  <small class="text-muted">
-                    <i class="fas fa-building me-1"></i>
-                    <%= store.mall.name %>
-                  </small>
-                </div>
-              <% end %>
-              
-              <div class="mb-2">
+            </div>
+            <div class="dash-media-card__body">
+              <h3 class="dash-media-card__title">
+                <%= link_to store.name, store_path(store) %>
+              </h3>
+              <p class="dash-media-card__meta"><%= truncate(store.description.to_s, length: 90) %></p>
+              <div class="mt-2">
                 <% if store.active? %>
-                  <span class="badge bg-success">Active</span>
+                  <span class="dash-badge dash-badge--ok">Active</span>
                 <% else %>
-                  <span class="badge bg-warning text-dark">Inactive</span>
+                  <span class="dash-badge dash-badge--warn">Inactive</span>
+                <% end %>
+                <% if store.mall.present? %>
+                  <span class="dash-badge dash-badge--muted"><%= store.mall.name %></span>
                 <% end %>
               </div>
-            </div>
-            
-            <div class="card-footer bg-white">
-              <div class="btn-group w-100" role="group">
-                <%= link_to "View", store_path(store), class: "btn btn-sm btn-outline-primary" %>
-                <%= link_to "Edit", edit_store_path(store), class: "btn btn-sm btn-outline-secondary" %>
+              <div class="dash-media-card__actions">
+                <%= link_to "Dashboard", store_dashboard_path(store), class: "btn-dash btn-sm" %>
+                <%= link_to "Edit", edit_store_path(store), class: "btn-dash-outline btn-sm" %>
+                <%= link_to "Products", store_products_path(store), class: "btn-dash-outline btn-sm" %>
               </div>
             </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    
-    <div class="row mt-4">
-      <div class="col-12">
-        <%= paginate @stores %>
+          </article>
+        <% end %>
       </div>
-    </div>
-  <% else %>
-    <div class="row">
-      <div class="col-12">
-        <div class="empty-state text-center py-5">
-          <i class="fas fa-store fa-4x mb-3 text-muted"></i>
-          <h3>You don't have any stores yet</h3>
-          <p class="mb-4 text-muted">
-            <%= link_to "Create your first store", new_store_path, class: "btn btn-primary" %>
-          </p>
-        </div>
+      <div class="px-3 pb-3"><%= paginate @stores if @stores.respond_to?(:current_page) %></div>
+    <% else %>
+      <div class="dash-empty padded">
+        <i class="fas fa-store d-block"></i>
+        <h3>No stores yet</h3>
+        <p>Create your first storefront to start selling.</p>
+        <% if can_create_store %>
+          <%= link_to "Create Store", new_store_path, class: "btn-dash" %>
+        <% end %>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
-

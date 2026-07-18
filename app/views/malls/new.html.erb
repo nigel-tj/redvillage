@@ -1,0 +1,50 @@
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "Create Mall",
+        eyebrow: "Marketplace",
+        subtitle: "Add a shared space where makers can open storefronts.",
+        primary_path: malls_path,
+        primary_label: "All Malls",
+        primary_icon: "fas fa-building",
+        user: current_user %>
+
+  <%= render layout: "dashboards/panel", locals: { title: "Mall details", padded: true } do %>
+    <%= form_for @mall, html: { class: "dash-form" } do |f| %>
+      <%= render "shared/errors", object: @mall %>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <%= f.label :name, "Mall name", class: "form-label" %>
+          <%= f.text_field :name, class: "form-control", required: true, placeholder: "e.g. Red Village Arcade" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :contact_email, "Contact email", class: "form-label" %>
+          <%= f.email_field :contact_email, class: "form-control", placeholder: "Optional" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :contact_phone, "Contact phone", class: "form-label" %>
+          <%= f.text_field :contact_phone, class: "form-control", placeholder: "Optional" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.label :address, "Address", class: "form-label" %>
+          <%= f.text_field :address, class: "form-control", placeholder: "Optional location" %>
+        </div>
+        <div class="col-12">
+          <%= f.label :description, "Description", class: "form-label" %>
+          <%= f.text_area :description, class: "form-control", rows: 4, placeholder: "What this mall is about" %>
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <%= f.check_box :active, class: "form-check-input", checked: @mall.active != false %>
+            <%= f.label :active, "Active — visible in the marketplace", class: "form-check-label" %>
+          </div>
+        </div>
+      </div>
+
+      <%= render "shared/dash_form_actions",
+            form: f,
+            cancel_path: malls_path,
+            submit_label: "Create Mall" %>
+    <% end %>
+  <% end %>
+</div>

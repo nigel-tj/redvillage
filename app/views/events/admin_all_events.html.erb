@@ -1,159 +1,100 @@
-<!-- Event of the month -->
-<div class="container mt-5">
-  <div class="card shadow-sm">
-    <div class="card-body p-4">
-      <div id="events">
-        <div class="row mb-4">
-          <div class="col-sm-8">
-            <h1 class="card-title">EVENTS OF THE MONTH</h1>
-          </div>
-          <div class="col-sm-4 text-right">
-            <%= link_to "Add New Event", new_event_path, class: "btn btn-success" %>
-          </div>
-        </div>
-        
-        <div class="row">
-          <% @events.each do |event| %>
-            <div class="col-md-4 mb-4">
-              <div class="card h-100 event-card">
-                <% if event.image %>
-                  <img class="card-img-top" alt="<%= event.name %>" src="<%= event.image_url(:thumbnail) %>" />
-                <% else %>
-                  <div class="bg-light text-center py-5">No Image</div>
-                <% end %>
-                <% if event.featured? %>
-                  <div class="featured-badge">
-                    <span><i class="fas fa-star"></i> Featured</span>
-                  </div>
-                <% end %>
-                <div class="card-body">
-                  <h5 class="card-title"><%= event.name %></h5>
-                  <p class="card-text text-muted">
-                    <% if event.date %>
-                      <i class="far fa-calendar-alt"></i> <%= event.date.strftime("%B %d, %Y") %>
-                    <% end %>
-                    <% if event.start_time.present? %>
-                      <br>
-                      <i class="far fa-clock"></i> <%= event.formatted_start_time %>
-                    <% end %>
-                    <% if event.venue.present? %>
-                      <br>
-                      <i class="fas fa-map-marker-alt"></i> <%= event.venue %>
-                    <% end %>
-                    <% if event.standard_ticket_price.present? || event.vip_ticket_price.present? %>
-                      <br>
-                      <i class="fas fa-ticket-alt"></i> Tickets:
-                      <% if event.standard_ticket_price.present? %>
-                        <br>
-                        <span class="ml-3">Standard: <%= format_price(event.standard_ticket_price, event.currency) %></span>
-                      <% end %>
-                      <% if event.vip_ticket_price.present? %>
-                        <br>
-                        <span class="ml-3">VIP: <%= format_price(event.vip_ticket_price, event.currency) %></span>
-                      <% end %>
-                    <% end %>
-                  </p>
-                  <p class="card-text"><%= truncate(event.summary, length: 100) if event.summary %></p>
-                </div>
-                <div class="card-footer bg-white border-top-0">
-                  <div class="d-flex justify-content-between">
-                    <%= link_to "View", event_new_look_with_id_path(event.id), class: "btn btn-success", target: "_blank" %>
-                    <%= link_to "Edit", edit_event_path(event), class: "btn btn-primary" %>
-                    <%= button_to event_path(event),
-                        method: :delete, 
-                        form: { 
-                          data: { turbo_confirm: "Are you sure you want to delete this event?" },
-                          class: "d-inline-block m-0" 
-                        },
-                        class: "btn btn-danger" do %>
-                      Delete
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-        
-        <% if @events.empty? %>
-          <div class="row">
-            <div class="col-12 text-center py-5">
-              <p class="text-muted">No events found. Click "Add New Event" to create your first event.</p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="dash">
+  <%= render "shared/dash_page_header",
+        title: "Events",
+        eyebrow: "Calendar",
+        subtitle: "Manage featured and upcoming events of the month.",
+        primary_path: new_event_path,
+        primary_label: "Add Event",
+        primary_icon: "fas fa-calendar-plus",
+        user: current_user %>
 
-<style>
-  .card {
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .event-card {
-    transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-  }
-  
-  .event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  }
-  
-  .card-img-top {
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-  }
-  
-  .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-  }
-  
-  .card-body {
-    padding: 1.5rem;
-  }
-  
-  .card-footer {
-    padding: 1rem 1.5rem 1.5rem;
-  }
-  
-  .card-title {
-    margin-bottom: 1rem;
-  }
-  
-  /* Fix for button_to form display */
-  form.d-inline-block {
-    display: inline-block !important;
-  }
-  
-  .card-footer .btn {
-    min-width: 80px;
-  }
-  
-  .featured-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #ff1493;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 3px;
-    font-size: 12px;
-    font-weight: bold;
-    z-index: 10;
-  }
-  
-  .featured-badge i {
-    margin-right: 3px;
-    color: gold;
-  }
-</style>
+  <div class="dash-stats dash-stats--3">
+    <%= render "dashboards/stat_card", label: "Events", value: @events.size, icon: "fas fa-calendar-alt" %>
+    <%= render "dashboards/stat_card",
+          label: "Featured",
+          value: @events.count(&:featured?),
+          icon: "fas fa-star" %>
+    <%= render "dashboards/stat_card",
+          label: "Upcoming",
+          value: @events.count { |e| e.date.present? && e.date >= Date.current },
+          icon: "fas fa-clock" %>
+  </div>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Event catalog",
+        action: link_to("Add Event", new_event_path, class: "btn-dash")
+      } do %>
+    <% if @events.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Poster</th>
+              <th>Event</th>
+              <th>Date</th>
+              <th>Venue</th>
+              <th>Tickets</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @events.each do |event| %>
+              <% thumb = shrine_image_url(event, :image, :thumbnail) || shrine_image_url(event, :image) rescue nil %>
+              <tr>
+                <td>
+                  <% if thumb.present? %>
+                    <%= image_tag thumb, alt: event.name, class: "dash-thumb" %>
+                  <% else %>
+                    <div class="dash-thumb d-inline-flex align-items-center justify-content-center text-muted">
+                      <i class="fas fa-calendar"></i>
+                    </div>
+                  <% end %>
+                </td>
+                <td>
+                  <strong><%= event.name %></strong>
+                  <% if event.featured? %>
+                    <span class="dash-badge ms-1">Featured</span>
+                  <% end %>
+                  <% if event.summary.present? %>
+                    <div class="text-muted small"><%= truncate(event.summary, length: 60) %></div>
+                  <% end %>
+                </td>
+                <td>
+                  <%= event.date&.strftime("%b %d, %Y") || "—" %>
+                  <% if event.start_time.present? %>
+                    <div class="text-muted small"><%= event.formatted_start_time %></div>
+                  <% end %>
+                </td>
+                <td><%= event.venue.presence || "—" %></td>
+                <td class="small">
+                  <% if event.standard_ticket_price.present? %>
+                    Std: <%= format_price(event.standard_ticket_price, event.currency) %><br>
+                  <% end %>
+                  <% if event.vip_ticket_price.present? %>
+                    VIP: <%= format_price(event.vip_ticket_price, event.currency) %>
+                  <% end %>
+                  <% if event.standard_ticket_price.blank? && event.vip_ticket_price.blank? %>
+                    —
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to "View", event_new_look_with_id_path(event.id), class: "btn-dash btn-sm me-1", target: "_blank", rel: "noopener" %>
+                  <%= link_to "Edit", edit_event_path(event), class: "btn-dash-outline btn-sm me-1" %>
+                  <%= button_to "Delete", event_path(event),
+                        method: :delete,
+                        form: { data: { turbo_confirm: "Delete this event?" }, class: "d-inline" },
+                        class: "btn-dash-danger btn-sm" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="dash-empty padded">
+        <p>No events found.</p>
+        <%= link_to "Create Your First Event", new_event_path, class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

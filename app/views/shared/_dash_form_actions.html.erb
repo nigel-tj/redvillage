@@ -1,0 +1,29 @@
+<%#
+  Cancel + primary submit row for admin forms.
+
+  Usage with a form builder:
+    render "shared/dash_form_actions",
+           form: f,
+           cancel_path: albums_path,
+           submit_label: "Save Album"
+
+  Usage with a pre-built submit (e.g. custom button_tag):
+    render "shared/dash_form_actions",
+           cancel_path: stores_path,
+           submit: (button_tag "Publish", type: "submit", class: "btn-dash")
+
+  locals:
+    cancel_path   (required)
+    cancel_label  (optional, default "Cancel")
+    form          (optional) form builder — renders form.submit
+    submit_label  (optional, default "Save"; used with form)
+    submit        (optional) HTML-safe submit control when form is omitted
+%>
+<div class="dash-form__actions">
+  <%= link_to local_assigns.fetch(:cancel_label, "Cancel"), cancel_path, class: "btn-dash-outline" %>
+  <% if local_assigns[:form].present? %>
+    <%= form.submit local_assigns.fetch(:submit_label, "Save"), class: "btn-dash" %>
+  <% elsif local_assigns[:submit].present? %>
+    <%= submit %>
+  <% end %>
+</div>

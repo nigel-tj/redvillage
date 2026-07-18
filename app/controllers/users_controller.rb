@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
   include RoleBasedAccess
-  
+
   before_action :authenticate_user!
   before_action :require_admin, only: [:index, :update, :destroy]
   after_action :verify_authorized
+  layout "admin", only: [:index]
 
   def index
     @users = User.all

@@ -1,27 +1,62 @@
-<div class="container" style="margin-top:200px">
-  <div class="row">
-    
-    <h1> <%= @gallery.name %><h1>                
-          <p>
-            <%= link_to "Add Images", new_image_path(:gallery_id => @gallery) %> |
+<div class="dash">
+  <%= render "shared/dash_page_header",
+        title: @gallery.name,
+        eyebrow: "Gallery workspace",
+        subtitle: @gallery.category.present? ? humanize_category(@gallery.category) : "Manage images in this gallery.",
+        primary_path: new_image_path(gallery_id: @gallery.id),
+        primary_label: "Add Images",
+        primary_icon: "fas fa-plus",
+        user: current_user %>
 
-            <%= link_to "View All Galleries", galleries_path %>
-          </p>
-        </div>
-        <div id="images">
-          <% for image in @gallery.images %>
-          <div class="col-md-4" style="height:300px">
-            <%= image_tag image.image_url(:thumb) if image.image? %>
-            <div class="name"><%= image.name %></div>
-            <div class="actions">
-              <%= link_to "edit", edit_image_path(image) %> |
-              <%= link_to "remove", image, :confirm => 'Are you sure?', :method => :delete %>
+  <div class="dash-stats dash-stats--3">
+    <%= render "dashboards/stat_card", label: "Images", value: @gallery.images.size, icon: "fas fa-camera" %>
+    <%= render "dashboards/stat_card",
+          label: "Category",
+          value: @gallery.category.present? ? humanize_category(@gallery.category) : "—",
+          icon: "fas fa-tag" %>
+    <%= render "dashboards/stat_card",
+          label: "Created",
+          value: @gallery.created_at.strftime("%b %Y"),
+          icon: "fas fa-calendar" %>
+  </div>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Images",
+        action: safe_join([
+          link_to("Edit gallery", edit_gallery_path(@gallery), class: "btn-dash-outline btn-sm me-1"),
+          link_to("Add Images", new_image_path(gallery_id: @gallery.id), class: "btn-dash btn-sm")
+        ])
+      } do %>
+    <% if @gallery.images.any? %>
+      <div class="dash-media-grid">
+        <% @gallery.images.each do |image| %>
+          <% thumb = (image.image_url(:thumb) rescue nil) || (image.image_url(:thumbnail) rescue nil) || (image.image_url rescue nil) %>
+          <div class="dash-media-card">
+            <div class="dash-media-card__thumb">
+              <% if thumb.present? %>
+                <%= image_tag thumb, alt: image.name.to_s %>
+              <% else %>
+                <i class="fas fa-image"></i>
+              <% end %>
+            </div>
+            <div class="dash-media-card__body">
+              <h3 class="dash-media-card__title"><%= image.name.presence || "Untitled" %></h3>
+              <div class="dash-media-card__actions">
+                <%= link_to "Edit", edit_image_path(image), class: "btn-dash-outline btn-sm" %>
+                <%= button_to "Remove", image_path(image),
+                      method: :delete,
+                      form: { data: { turbo_confirm: "Remove this image?" }, class: "d-inline" },
+                      class: "btn-dash-danger btn-sm" %>
+              </div>
             </div>
           </div>
-          <% end %>
-          <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-        
-  </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="dash-empty padded">
+        <p>No images in this gallery yet.</p>
+        <%= link_to "Add Your First Images", new_image_path(gallery_id: @gallery.id), class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
 </div>

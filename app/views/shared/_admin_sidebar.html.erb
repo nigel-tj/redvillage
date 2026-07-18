@@ -22,7 +22,12 @@
   <% can_browse_events = can_manage_events || current_user.curator? || current_user.editor? %>
   <% show_content_nav = can_manage_gallery || can_manage_videos || can_manage_news || current_user.admin? || can_manage_banners %>
   <% show_music_nav = can_browse_music || can_manage_artists || can_browse_events %>
-  <% show_marketplace_nav = current_user.admin? || current_user.member? || current_user.stores.any? %>
+  <% show_marketplace_nav = true # any signed-in user can create/manage stores %>
+  <% stores_section_active = %w[stores products orders store_dashboards storefront_settings].include?(controller_name) ||
+                             request.path.start_with?("/my_stores", "/stores") %>
+  <% malls_section_active = controller_name == "malls" && %w[new create edit update].include?(action_name) %>
+  <% tickets_section_active = controller_name == "ticket_listings" && %w[new create edit update my_tickets].include?(action_name) %>
+  <% profile_section_active = %w[profiles].include?(controller_name) || request.path.start_with?("/my_profile") %>
   
   <!-- Mobile Menu Toggle Button -->
   <button class="mobile-menu-toggle d-lg-none" type="button" id="mobileMenuToggle">
@@ -255,60 +260,69 @@
         <div class="collapse show" id="marketplaceSection">
         
         <!-- Stores -->
-        <% if current_user.admin? || current_user.stores.any? || current_user.member? %>
         <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-toggle="collapse" href="#storesMenu" aria-expanded="false">
+          <a class="nav-link <%= stores_section_active ? '' : 'collapsed' %> <%= 'active' if stores_section_active %>"
+             data-bs-toggle="collapse" href="#storesMenu" aria-expanded="<%= stores_section_active %>">
             <i class="fas fa-store"></i>
             <span>Stores</span>
             <i class="fas fa-chevron-down ms-auto"></i>
           </a>
-          <ul class="nav collapse" id="storesMenu">
-            <li><%= link_to "All Stores", stores_path, class: 'nav-link' %></li>
-            <li><%= link_to "My Stores", my_stores_path, class: 'nav-link' %></li>
-            <li><%= link_to "Create Store", new_store_path, class: 'nav-link' %></li>
-            <% current_user.stores.limit(3).each do |store| %>
-              <li><hr class="dropdown-divider"></li>
-              <li><%= link_to store.name, store_path(store), class: 'nav-link' %></li>
-              <li><%= link_to "Dashboard", store_dashboard_path(store), class: 'nav-link ms-3' %></li>
-              <li><%= link_to "Products", store_products_path(store), class: 'nav-link ms-3' %></li>
-              <li><%= link_to "Orders", store_orders_path(store), class: 'nav-link ms-3' %></li>
+          <% owned_stores = current_user.stores.order(:name).limit(5) %>
+          <% show_all_stores_nav = current_user.show_all_stores_nav? %>
+          <% show_my_stores_nav = current_user.show_my_stores_nav? %>
+          <% can_create_store = current_user.can_create_store? %>
+          <% show_store_meta_links = show_all_stores_nav || show_my_stores_nav || can_create_store %>
+          <ul class="nav collapse <%= 'show' if stores_section_active %>" id="storesMenu">
+            <% if show_all_stores_nav %>
+              <li><%= link_to "All Stores", stores_path, class: "nav-link #{'active' if controller_name == 'stores' && action_name == 'index'}" %></li>
             <% end %>
-            <% if current_user.admin? %>
-              <li><hr class="dropdown-divider"></li>
-              <li><span class="nav-link-text"><small class="text-muted">Admin Tools</small></span></li>
-              <li><%= link_to "Manage All Stores", stores_path, class: 'nav-link' %></li>
+            <% if show_my_stores_nav %>
+              <li><%= link_to "My Stores", my_stores_path, class: "nav-link #{'active' if action_name == 'my_stores' || request.path == my_stores_path}" %></li>
+            <% end %>
+            <% if can_create_store %>
+              <li><%= link_to "Create Store", new_store_path, class: "nav-link #{'active' if controller_name == 'stores' && %w[new create].include?(action_name)}" %></li>
+            <% end %>
+            <% owned_stores.each_with_index do |store, idx| %>
+              <% if show_store_meta_links || idx > 0 %>
+                <li><hr class="dropdown-divider"></li>
+              <% end %>
+              <li><%= link_to store.name, store_path(store), class: "nav-link #{'active' if controller_name == 'stores' && action_name == 'show' && params[:id].to_s == store.to_param}" %></li>
+              <li><%= link_to "Dashboard", store_dashboard_path(store), class: "nav-link ms-3 #{'active' if controller_name == 'store_dashboards' && params[:store_id].to_s == store.to_param}" %></li>
+              <li><%= link_to "Products", store_products_path(store), class: "nav-link ms-3 #{'active' if controller_name == 'products' && params[:store_id].to_s == store.to_param}" %></li>
+              <li><%= link_to "Orders", store_orders_path(store), class: "nav-link ms-3 #{'active' if controller_name == 'orders' && params[:store_id].to_s == store.to_param}" %></li>
             <% end %>
           </ul>
         </li>
-        <% end %>
 
         <!-- Malls (Admin only) -->
         <% if current_user.admin? %>
           <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#mallsMenu" aria-expanded="false">
+            <a class="nav-link <%= malls_section_active ? '' : 'collapsed' %> <%= 'active' if malls_section_active || (controller_name == 'malls') %>"
+               data-bs-toggle="collapse" href="#mallsMenu" aria-expanded="<%= malls_section_active || controller_name == 'malls' %>">
               <i class="fas fa-building"></i>
               <span>Malls</span>
               <i class="fas fa-chevron-down ms-auto"></i>
             </a>
-            <ul class="nav collapse" id="mallsMenu">
-              <li><%= link_to "All Malls", malls_path, class: 'nav-link' %></li>
-              <li><%= link_to "Create Mall", new_mall_path, class: 'nav-link' %></li>
+            <ul class="nav collapse <%= 'show' if malls_section_active || controller_name == 'malls' %>" id="mallsMenu">
+              <li><%= link_to "All Malls", malls_path, class: "nav-link #{'active' if controller_name == 'malls' && action_name == 'index'}" %></li>
+              <li><%= link_to "Create Mall", new_mall_path, class: "nav-link #{'active' if controller_name == 'malls' && %w[new create].include?(action_name)}" %></li>
             </ul>
           </li>
         <% end %>
         
         <!-- Tickets -->
-        <% if current_user.admin? || current_user.member? %>
+        <% if current_user.admin? || current_user.member? || current_user.artist? %>
         <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-toggle="collapse" href="#ticketsMenu" aria-expanded="false">
+          <a class="nav-link <%= tickets_section_active ? '' : 'collapsed' %> <%= 'active' if tickets_section_active %>"
+             data-bs-toggle="collapse" href="#ticketsMenu" aria-expanded="<%= tickets_section_active %>">
             <i class="fas fa-ticket-alt"></i>
             <span>Tickets</span>
             <i class="fas fa-chevron-down ms-auto"></i>
           </a>
-          <ul class="nav collapse" id="ticketsMenu">
+          <ul class="nav collapse <%= 'show' if tickets_section_active %>" id="ticketsMenu">
             <li><%= link_to "Marketplace", ticket_listings_path, class: 'nav-link' %></li>
-            <li><%= link_to "Create Listing", new_ticket_listing_path, class: 'nav-link' %></li>
-            <li><%= link_to "My Listings", my_tickets_path, class: 'nav-link' %></li>
+            <li><%= link_to "Create Listing", new_ticket_listing_path, class: "nav-link #{'active' if controller_name == 'ticket_listings' && %w[new create].include?(action_name)}" %></li>
+            <li><%= link_to "My Listings", my_tickets_path, class: "nav-link #{'active' if action_name == 'my_tickets' || request.path == my_tickets_path}" %></li>
             <% if current_user.admin? %>
               <li><hr class="dropdown-divider"></li>
               <li><span class="nav-link-text"><small class="text-muted">Admin Tools</small></span></li>
@@ -385,15 +399,16 @@
 
         <!-- Profile -->
         <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-toggle="collapse" href="#profileMenu" aria-expanded="false">
+          <a class="nav-link <%= profile_section_active ? '' : 'collapsed' %> <%= 'active' if profile_section_active %>"
+             data-bs-toggle="collapse" href="#profileMenu" aria-expanded="<%= profile_section_active %>">
             <i class="fas fa-user-circle"></i>
             <span>Profile</span>
             <i class="fas fa-chevron-down ms-auto"></i>
           </a>
-          <ul class="nav collapse" id="profileMenu">
-            <li><%= link_to "My Profile", my_profile_path, class: 'nav-link' %></li>
+          <ul class="nav collapse <%= 'show' if profile_section_active %>" id="profileMenu">
+            <li><%= link_to "My Profile", my_profile_path, class: "nav-link #{'active' if request.path == my_profile_path}" %></li>
             <% if current_user.profile.present? %>
-              <li><%= link_to "Edit Profile", edit_profile_path(current_user.profile), class: 'nav-link' %></li>
+              <li><%= link_to "Edit Profile", edit_profile_path(current_user.profile), class: "nav-link #{'active' if controller_name == 'profiles' && action_name == 'edit'}" %></li>
             <% end %>
           </ul>
         </li>

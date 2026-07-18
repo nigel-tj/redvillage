@@ -4,7 +4,7 @@ class AlbumsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_admin_or_artist, only: [:new, :create, :update, :edit, :destroy]
   before_action :require_music_manager, only: [:admin_album_index, :admin_show_album]
-  layout "admin", only: [:new, :create, :update, :admin_show_album, :admin_album_index]
+  layout "admin", only: [:index, :show, :new, :create, :edit, :update, :admin_show_album, :admin_album_index]
 
   def index
     @albums = Album.all
@@ -63,7 +63,7 @@ class AlbumsController < ApplicationController
   private
   
   def album_params
-    params.require(:album).permit(:name,:cover, :artist_name, :artist_id)
+    params.require(:album).permit(:name, :cover, :image, :artist_name, :artist_id)
   end
 
 end

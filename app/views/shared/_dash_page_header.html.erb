@@ -1,0 +1,15 @@
+<%#
+  Page header for admin list/form screens.
+
+  Prefer reusing dashboards/header directly on role dashboards:
+    render "dashboards/header", title: "...", subtitle: "...", eyebrow: "...",
+           primary_path: ..., primary_label: "...", user: current_user
+
+  This shared alias exists so Music/Stores/Content views can look under shared/:
+    render "shared/dash_page_header", title: "Albums", subtitle: "...",
+           primary_path: new_album_path, primary_label: "New Album"
+
+  locals: title (required), subtitle, eyebrow, primary_path, primary_label,
+          primary_icon (default fa-plus), user
+%>
+<%= render partial: "dashboards/header", locals: local_assigns %>

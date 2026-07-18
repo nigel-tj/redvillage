@@ -1,17 +1,11 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="mb-0">
-            <i class="fas fa-image me-2"></i>
-            New Image
-          </h2>
-        </div>
-        <div class="card-body">
-          <%= render 'form' %>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="dash">
+  <%= render "shared/dash_page_header",
+        title: "Add Images",
+        eyebrow: "Gallery workspace",
+        subtitle: "Upload one or more images into this gallery.",
+        user: current_user %>
+
+  <%= render layout: "dashboards/panel", locals: { title: "Image upload", padded: true } do %>
+    <%= render "form" %>
+  <% end %>
 </div>

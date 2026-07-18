@@ -1,14 +1,19 @@
 class LifestylesController < ApplicationController
-  before_action :authenticate_admin!, except: [:index]
-  layout "admin", only: [:new, :create, :update, :admin_index, :lifestyle_admin_index]   
+  include RoleBasedAccess
+
+  before_action :authenticate_user!, except: [:index]
+  before_action :require_admin, only: [:new, :create, :update, :lifestyle_admin_index]
+  layout "admin", only: [:new, :create, :update, :lifestyle_admin_index]
+  layout "marketplace", only: [:index]
+
   def index
     @lifestyle = Lifestyle.order('created_at DESC')
   end
 
   def lifestyle_admin_index
     @lifestyle = Lifestyle.order('created_at DESC')
-    render :index
   end
+
   def new
     @lifestyle = Lifestyle.new
   end
@@ -23,11 +28,9 @@ class LifestylesController < ApplicationController
     end
   end
 
-  
   private
 
   def lifestyle_params
-    params.require(:lifestyle).permit(:link,:image,:intro,:title,:category)
+    params.require(:lifestyle).permit(:link, :image, :intro, :title, :category)
   end
-
 end

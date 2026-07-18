@@ -1,19 +1,68 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <h1>Albums</h1>
-      <p><%= link_to "New Album", new_album_path %></p>
-      <% for album in @albums %>
-        <div class="col-md-4" style="height:250px">
-          <%= image_tag album.cover_url(:thumb) if album.cover? %>
-          <p>
-            <%= link_to album.name, "admin_show_album/#{album.id}" %>
-            <br>
-            Tracks: <%= album.tracks.size %>
-          </p>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</div>
+<div class="dash">
+  <%= render "dashboards/header",
+        title: "All Albums",
+        eyebrow: "Music & entertainment",
+        subtitle: "Admin catalog of albums and mixtapes.",
+        primary_path: new_album_path,
+        primary_label: "New Album",
+        primary_icon: "fas fa-compact-disc",
+        user: current_user %>
 
+  <div class="dash-stats dash-stats--3">
+    <%= render "dashboards/stat_card", label: "Albums", value: @albums.size, icon: "fas fa-layer-group" %>
+    <%= render "dashboards/stat_card", label: "Tracks", value: @albums.sum { |a| a.tracks.size }, icon: "fas fa-music" %>
+    <%= render "dashboards/stat_card", label: "With Cover", value: @albums.count { |a| a.image.present? }, icon: "fas fa-image" %>
+  </div>
+
+  <%= render layout: "dashboards/panel", locals: {
+        title: "Album catalog",
+        action: link_to("New Album", new_album_path, class: "btn-dash")
+      } do %>
+    <% if @albums.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Cover</th>
+              <th>Album</th>
+              <th>Artist</th>
+              <th>Tracks</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @albums.each do |album| %>
+              <% cover = shrine_image_url(album, :image, :thumbnail) || shrine_image_url(album, :image) %>
+              <tr>
+                <td>
+                  <% if cover.present? %>
+                    <%= image_tag cover, alt: album.name, class: "dash-thumb" %>
+                  <% else %>
+                    <div class="dash-thumb d-inline-flex align-items-center justify-content-center text-muted">
+                      <i class="fas fa-compact-disc"></i>
+                    </div>
+                  <% end %>
+                </td>
+                <td><strong><%= album.name %></strong></td>
+                <td><%= album.artist_name.presence || "—" %></td>
+                <td><span class="dash-badge"><%= album.tracks.size %></span></td>
+                <td><%= time_ago_in_words(album.created_at) %> ago</td>
+                <td>
+                  <%= link_to "View", admin_show_album_path(album), class: "btn-dash btn-sm me-1" %>
+                  <%= link_to "Edit", edit_album_path(album), class: "btn-dash-outline btn-sm me-1" %>
+                  <%= link_to "Add tracks", new_track_path(album_id: album.id), class: "btn-dash-outline btn-sm" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="dash-empty padded">
+        <p>No albums in the catalog yet.</p>
+        <%= link_to "Upload New Album", new_album_path, class: "btn-dash" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

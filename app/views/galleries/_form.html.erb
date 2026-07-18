@@ -1,0 +1,29 @@
+<%= form_for @gallery, html: { multipart: true, class: "dash-form" } do |f| %>
+  <%= render "shared/errors", object: @gallery %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", required: true, placeholder: "Gallery name" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :category, class: "form-label" %>
+    <%= f.text_field :category, class: "form-control", placeholder: "e.g. Painting, Fashion" %>
+  </div>
+
+  <div class="mb-3">
+    <% cover = (@gallery.image_url rescue nil) %>
+    <%= render "shared/dash_upload",
+          form: f,
+          method: :image,
+          label: "Cover image",
+          hint: cover.present? ? "Leave empty to keep the current cover" : "JPG or PNG",
+          current_url: cover,
+          required: @gallery.new_record? %>
+  </div>
+
+  <%= render "shared/dash_form_actions",
+        form: f,
+        cancel_path: admin_show_path(id: @gallery.id),
+        submit_label: @gallery.new_record? ? "Create Gallery" : "Update Gallery" %>
+<% end %>
